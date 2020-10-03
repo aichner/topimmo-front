@@ -1,5 +1,5 @@
 //#region > Imports
-import { DECREMENT_COUNTER, INCREMENT_COUNTER } from "../actions/authActions";
+import { TOKEN_AUTH_S, TOKEN_AUTH_F } from "../actions/authActions";
 //#endregion
 
 //#region > Config
@@ -12,10 +12,10 @@ const initState = {
 //#region > Functions
 const authReducer = (state = initState, action) => {
   switch (action.type) {
-    case INCREMENT_COUNTER:
-      return { ...state, value: state.value + 1 };
-    case DECREMENT_COUNTER:
-      return { ...state, value: state.value - 1 };
+    case TOKEN_AUTH_S:
+      return { ...state, cmsData: action.payload, error: false };
+    case TOKEN_AUTH_F:
+      return { ...state, cmsData: null, error: action.payload?.error };
     default:
       return { ...state };
   }

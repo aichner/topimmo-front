@@ -13,16 +13,20 @@ import { MDBBtn, MDBCard, MDBCardBody } from "mdbreact";
 
 //> Redux
 // Actions
-import {
-  incrementCounter,
-  decrementCounter,
-} from "../redux/actions/authActions";
+import { tokenAuth } from "../redux/actions/authActions";
 //> Style
 import styles from "../styles/modules/Home.module.scss";
 //#endregion
 
 //#region > Page
 class Home extends React.Component {
+  componentDidMount = () => {
+    // Get tokens and page data
+    this.props.tokenAuth();
+    // Refresh token every 2 minutes (120000 ms)
+    this.refreshInterval = window.setInterval(this.props.refreshToken, 120000);
+  };
+
   render() {
     return (
       <div className={styles.container}>
@@ -48,23 +52,6 @@ class Home extends React.Component {
             Get started by editing{" "}
             <code className={styles.code}>pages/index.js</code>
           </p>
-
-          <MDBCard className="mt-3">
-            <MDBCardBody className="text-center">
-              <p className="h3-responsive">
-                Counter{" "}
-                <span className="font-weight-bold">{this.props.counter}</span>
-              </p>
-              <div>
-                <MDBBtn color="elegant" onClick={this.props.decrementCounter}>
-                  Decrease
-                </MDBBtn>
-                <MDBBtn color="elegant" onClick={this.props.incrementCounter}>
-                  Increase
-                </MDBBtn>
-              </div>
-            </MDBCardBody>
-          </MDBCard>
 
           <div className={styles.grid}>
             <a href="https://nextjs.org/docs" className={styles.card}>
@@ -108,8 +95,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  incrementCounter: incrementCounter,
-  decrementCounter: decrementCounter,
+  tokenAuth,
 };
 //#endregion
 

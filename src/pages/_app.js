@@ -5,10 +5,26 @@ import React from "react";
 //> Redux
 // Basic Redux provider
 import { Provider } from "react-redux";
+// Store, Middleware, Compose
+import { createStore, applyMiddleware, compose } from "redux";
+// Thunk
+import thunk from "redux-thunk";
 // Enables us to create a store
 import withRedux from "next-redux-wrapper";
+//> Apollo
+import { ApolloClient } from "apollo-client";
+import { createHttpLink, HttpLink } from "apollo-link-http";
+import { setContext } from "apollo-link-context";
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher,
+} from "apollo-cache-inmemory";
 //> App
 import App from "next/app";
+
+//> Redux
+// Root reducer
+import rootReducer from "../redux/reducers/rootReducer";
 
 //> Global Styling
 // Local
@@ -19,8 +35,38 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "../styles/external/bootstrap.min.css";
 // External
 import "../styles/external.scss";
-// Store
-import store from "../redux/store";
+//#endregion
+
+//#region > Config
+console.log(process.env.NEXT_PUBLIC_DB_BASEURL);
+//> CMS API
+// Client
+const clientCMS = new ApolloClient({
+  link: new HttpLink({
+    uri: process.env.NEXT_PUBLIC_DB_BASEURL + "/api/graphiql",
+  }),
+  cache: new InMemoryCache({
+    fragmentMatcher: new IntrospectionFragmentMatcher({
+      introspectionQueryResultData: {
+        __schema: {
+          types: [],
+        },
+      },
+    }),
+  }),
+});
+
+const store = createStore(
+  rootReducer,
+  compose(
+    applyMiddleware(
+      thunk.withExtraArgument({
+        /* Aichner Cloud CMS binding*/
+        clientCMS,
+      })
+    )
+  )
+);
 //#endregion
 
 //#region > App
