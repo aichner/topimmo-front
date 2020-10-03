@@ -1,0 +1,49 @@
+// Global variables
+@import "../../../styles/variables.scss";
+
+.navlogo {
+  width: 50px;
+  margin: auto;
+  height: auto;
+  display: block;
+  margin-left: 0.2em;
+}
+
+.navbar {
+  box-shadow: none !important;
+  background-color: #f7f7f7;
+
+  .navbar-nav {
+    margin-right: 1em;
+    font-size: larger;
+
+    .nav-item {
+      background-color: transparent;
+    }
+
+    .nav-link {
+      background-color: transparent;
+    }
+  }
+
+  .counter {
+    display: inline-block;
+    position: initial;
+    background: $green;
+    box-shadow: none;
+
+    &.mobile {
+      position: absolute;
+      bottom: auto;
+      top: auto;
+      right: auto;
+      left: 13px;
+      margin: auto;
+    }
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2020 InspireMedia GmbH
+ */
