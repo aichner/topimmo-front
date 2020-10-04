@@ -38,12 +38,11 @@ import "../styles/external.scss";
 //#endregion
 
 //#region > Config
-console.log(process.env.NEXT_PUBLIC_DB_BASEURL);
 //> CMS API
 // Client
 const clientCMS = new ApolloClient({
   link: new HttpLink({
-    uri: process.env.NEXT_PUBLIC_DB_BASEURL + "/api/graphiql",
+    uri: process.env.NEXT_PUBLIC_BASEURL + "/api/graphiql",
   }),
   cache: new InMemoryCache({
     fragmentMatcher: new IntrospectionFragmentMatcher({
