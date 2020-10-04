@@ -16,8 +16,8 @@ import {
   MDBContainer,
 } from "mdbreact";
 
-//> CSS
-import "./navbar.module.scss";
+//> Images
+import logoImage from "../../../static/svg/logo.svg";
 //#endregion
 
 //#region > Components
@@ -52,11 +52,13 @@ class Navbar extends React.Component {
     return (
       <header>
         <MDBNavbar light expand="md" scrolling fixed="top">
-          <MDBContainer fluid>
+          <MDBContainer>
             <Link href="/">
-              <span className="navbar-brand">
-                <p>Logo</p>
-              </span>
+              <img
+                src={logoImage}
+                alt="TopImmo Logo"
+                className="navbar-brand clickable"
+              />
             </Link>
             <MDBCollapse isOpen={this.state.collapse} navbar>
               <MDBNavbarNav right>
@@ -70,42 +72,26 @@ class Navbar extends React.Component {
                 </MDBNavItem>
                 <MDBNavItem>
                   <Link
-                    href="/me"
+                    href="/vermietung"
                     onClick={this.state.collapse ? this.onClick : undefined}
                   >
-                    <a className="nav-link">Meine Röstung</a>
+                    <a className="nav-link">Vermietung</a>
                   </Link>
                 </MDBNavItem>
                 <MDBNavItem>
                   <Link
-                    href="/products"
+                    href="/verkauf"
                     onClick={this.state.collapse ? this.onClick : undefined}
                   >
-                    <a className="nav-link">Produkte</a>
+                    <a className="nav-link">Verkauf</a>
                   </Link>
                 </MDBNavItem>
                 <MDBNavItem>
                   <Link
-                    href="/profile"
+                    href="/#about"
                     onClick={this.state.collapse ? this.onClick : undefined}
                   >
-                    <a className="nav-link">Konto</a>
-                  </Link>
-                </MDBNavItem>
-                <MDBNavItem>
-                  <Link
-                    href="/cart"
-                    onClick={this.state.collapse ? this.onClick : undefined}
-                  >
-                    <a className="nav-link">
-                      <span className="d-flex align-items-center">
-                        <MDBIcon
-                          icon="shopping-basket"
-                          className="mr-1 d-inline-block"
-                        />
-                        Warenkorb
-                      </span>
-                    </a>
+                    <a className="nav-link">Über mich</a>
                   </Link>
                 </MDBNavItem>
               </MDBNavbarNav>
