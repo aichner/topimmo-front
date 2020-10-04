@@ -1,14 +1,11 @@
 //#region > Imports
 const withFonts = require("next-fonts");
-const withImages = require("next-images");
 const withPlugins = require("next-compose-plugins");
+const withImages = require("next-images");
 //#endregion
 
 //#region > Exports
-module.exports = [
-  withPlugins([withFonts, withImages]),
-  { experimental: { scss: true } },
-];
+module.exports = withImages(withFonts());
 //#endregion
 
 /**

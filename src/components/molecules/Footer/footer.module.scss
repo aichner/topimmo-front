@@ -1,16 +1,18 @@
+@import "../../../styles/variables.scss";
+
 // Footer
 footer.cloud-footer {
+  background: $dark !important;
+
   li {
-    color: #212529;
-    background: rgba(0, 0, 0, 0.1);
+    color: white;
     transition: all 0.1s ease;
-    padding: 1rem !important;
-    align-items: center;
+    margin-bottom: 1rem !important;
     margin: 0.3rem 0;
-    border: 1px lightgrey solid;
+    cursor: pointer;
 
     &:hover {
-      background: rgba(0, 0, 0, 0.2);
+      color: darken(white, 20%) !important;
     }
 
     .badge {
@@ -42,7 +44,7 @@ footer.cloud-footer {
 
   .underlined {
     &:hover {
-      color: #f44336 !important;
+      color: lighten(#2196f3, 10%) !important;
     }
   }
 
