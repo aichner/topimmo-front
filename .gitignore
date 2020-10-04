@@ -21,6 +21,9 @@ src/config/fbConfig.js
 .firebase
 .firebaserc
 
+# mdb
+mdbreact-*
+
 # misc
 .DS_Store
 *.pem
