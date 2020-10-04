@@ -180,7 +180,8 @@ class Footer extends React.Component {
         <div className="footer-copyright text-center py-3 text-dark">
           <MDBContainer fluid>
             <div>
-              &copy; {new Date().getFullYear()} Copyright: Andreas Macnik
+              &copy; {new Date().getFullYear()} Copyright: TOP Immo W.M.
+              Treuhand GmbH
               <p className="my-2 font-weight-bold">
                 Made with
                 <i
@@ -189,7 +190,7 @@ class Footer extends React.Component {
                 ></i>
                 by
                 <a
-                  href="https://www.aichner-christian.com/?ref=macnik"
+                  href="https://www.inspiremedia.at/?ref=topimmo"
                   target="_blank"
                   className="ml-1 text-dark underlined"
                   rel="noopener noreferrer"
@@ -202,10 +203,10 @@ class Footer extends React.Component {
               <small>
                 Stable release
                 <span className="pl-2 pr-2">·</span>
-                Version v{process.env.REACT_APP_VERSION}
+                Version v{process.env.NEXT_PUBLIC_VERSION}
                 <span className="pl-2 pr-2">·</span>
                 <a
-                  href="https://github.com/blue-lupi/kaffeerudel"
+                  href="https://github.com/aichner/topimmo-front"
                   rel="noopener noreferrer"
                   target="_blank"
                   className="text-dark"
@@ -215,7 +216,7 @@ class Footer extends React.Component {
                 </a>
                 <span className="pl-2 pr-2">·</span>
                 <a
-                  href="https://github.com/blue-lupi/kaffeerudel/issues/new?template=bug_report.md"
+                  href="https://github.com/aichner/topimmo-front/issues/new?template=bug_report.md"
                   rel="noopener noreferrer"
                   target="_blank"
                   className="text-dark"
