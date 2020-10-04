@@ -50,15 +50,12 @@ class Footer extends React.Component {
               <p className="lead text-left mb-2">Kontakt</p>
             </MDBCol>
             <MDBCol md="3">
-              <p className="lead text-left mb-2">Rechtliches</p>
+              <p className="lead text-left mb-2">Links</p>
               <Link href="/about">
                 <li className="list-unstyled">Impressum</li>
               </Link>
               <Link href="/privacy">
                 <li className="list-unstyled">Datenschutzerklärung</li>
-              </Link>
-              <Link href="/agb">
-                <li className="list-unstyled">Nutzungsbedingungen</li>
               </Link>
             </MDBCol>
             <MDBCol md="3">
