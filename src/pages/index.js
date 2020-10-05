@@ -13,7 +13,7 @@ import { MDBBtn, MDBCard, MDBCardBody } from "mdbreact";
 
 //> Redux
 // Actions
-import { tokenAuth } from "../redux/actions/authActions";
+import { tokenAuth, refreshToken } from "../redux/actions/authActions";
 //> Components
 //import { ScrollToTop } from "../components/atoms";
 import { Navbar, Footer, CookieModal } from "../components/molecules";
@@ -25,7 +25,7 @@ class Home extends React.Component {
     // Get tokens and page data
     this.props.tokenAuth();
     // Refresh token every 2 minutes (120000 ms)
-    this.refreshInterval = window.setInterval(this.props.refreshToken, 120000);
+    this.refreshInterval = window.setInterval(this.props.refreshToken, 10000);
   };
 
   render() {
@@ -50,6 +50,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   tokenAuth,
+  refreshToken,
 };
 //#endregion
 

@@ -9,6 +9,13 @@ export const TOKEN_AUTH_S = "AUTH_SUCCESS";
 export const TOKEN_AUTH_F = "AUTH_FAIL";
 //#endregion
 
+//#region > Functions
+const setTokens = (token, refreshToken) => {
+  localStorage.setItem("token", token);
+  localStorage.setItem("refreshToken", refreshToken);
+};
+//#endregion
+
 //#region > Creators
 export const tokenAuth = () => {
   return (dispatch, getState, { clientCMS }) => {
@@ -40,6 +47,25 @@ export const tokenAuth = () => {
             error: err,
           },
         });
+      });
+  };
+};
+
+export const refreshToken = () => {
+  return (dispatch, getState, { clientCMS }) => {
+    clientCMS
+      .mutate({
+        mutation: REFRESH_TOKEN,
+        variables: { token: localStorage.getItem("refreshToken") },
+      })
+      .then(({ data }) => {
+        // Set local storage
+        setTokens(data.refreshToken.token, data.refreshToken.refreshToken);
+
+        return true;
+      })
+      .catch((err) => {
+        return false;
       });
   };
 };

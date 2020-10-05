@@ -14,9 +14,6 @@ import {
   MDBIcon,
   MDBFormInline,
 } from "mdbreact";
-
-//> CSS
-import "./cookie.module.scss";
 //#endregion
 
 //#region > Components
@@ -27,6 +24,7 @@ class ModalPage extends React.Component {
     statistics: false,
     marketing: false,
   };
+
   componentDidMount = () => {
     this.setState({
       modal1: localStorage.getItem("cookie") ? false : true,
@@ -86,7 +84,7 @@ class ModalPage extends React.Component {
             Wir verwenden auf unserer Website Cookies, um die Benutzererfahrung
             zu verbessern. Einige davon sind essenziell für den Betrieb der
             Website.{" "}
-            <Link to="/privacy" target="_blank">
+            <Link href="/privacy" target="_blank">
               Details anzeigen
             </Link>
           </p>
