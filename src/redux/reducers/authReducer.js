@@ -5,7 +5,7 @@ import { TOKEN_AUTH_S, TOKEN_AUTH_F } from "../actions/authActions";
 //#region > Config
 // Have initial state for when state is not ready to be passed
 const initState = {
-  value: 0,
+  error: undefined,
 };
 //#endregion
 
@@ -13,9 +13,9 @@ const initState = {
 const authReducer = (state = initState, action) => {
   switch (action.type) {
     case TOKEN_AUTH_S:
-      return { ...state, cmsData: action.payload, error: false };
+      return { ...state, error: false };
     case TOKEN_AUTH_F:
-      return { ...state, cmsData: null, error: action.payload?.error };
+      return { ...state, error: action.payload?.error };
     default:
       return { ...state };
   }

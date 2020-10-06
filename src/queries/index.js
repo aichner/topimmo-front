@@ -36,11 +36,15 @@ export const GET_PAGE = gql`
             }
             slideHead
             slideButton {
+              id
               buttonTitle
               buttonEmbed
               buttonLink
               buttonPage {
                 id
+                newspage {
+                  id
+                }
               }
             }
           }

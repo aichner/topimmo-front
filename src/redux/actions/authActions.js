@@ -30,11 +30,6 @@ export const tokenAuth = () => {
 
           dispatch({
             type: TOKEN_AUTH_S,
-            payload: {
-              rudel: data.tokenAuth.rudel,
-              survey: data.tokenAuth.survey,
-              images: data.tokenAuth.images,
-            },
           });
         }
       })

@@ -1,6 +1,7 @@
 //> Reducers
 // Authentication
 import authReducer from "./authReducer";
+import pageReducer from "./pageReducer";
 
 //> Redux
 import { combineReducers } from "redux";
@@ -16,6 +17,8 @@ const rootReducer = combineReducers({
   firebase: firebaseReducer,
   /* Authentication */
   auth: authReducer,
+  /* CMS */
+  page: pageReducer,
 });
 
 export default rootReducer;

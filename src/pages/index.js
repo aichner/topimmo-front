@@ -14,6 +14,7 @@ import { MDBBtn, MDBCard, MDBCardBody } from "mdbreact";
 //> Redux
 // Actions
 import { tokenAuth, refreshToken } from "../redux/actions/authActions";
+import { getPage } from "../redux/actions/pageActions";
 //> Components
 //import { ScrollToTop } from "../components/atoms";
 import { Navbar, Footer, CookieModal } from "../components/molecules";
@@ -21,14 +22,32 @@ import { Navbar, Footer, CookieModal } from "../components/molecules";
 
 //#region > Page
 class Home extends React.Component {
+  state = { page: undefined };
+
   componentDidMount = () => {
     // Get tokens and page data
     this.props.tokenAuth();
     // Refresh token every 2 minutes (120000 ms)
-    this.refreshInterval = window.setInterval(this.props.refreshToken, 10000);
+    this.refreshInterval = window.setInterval(this.props.refreshToken, 120000);
+    // Get root page
+    this.props.getPage();
+  };
+
+  componentDidUpdate = () => {
+    const { page } = this.state;
+
+    if (!page && this.props.page) {
+      this.setState({
+        page: this.props.page,
+      });
+    }
   };
 
   render() {
+    const { page } = this.state;
+
+    console.log(page);
+
     return (
       <div className="flyout">
         <Navbar />
@@ -46,11 +65,13 @@ class Home extends React.Component {
 //#region > Functions
 const mapStateToProps = (state) => ({
   counter: state.auth.value,
+  page: state.page.root,
 });
 
 const mapDispatchToProps = {
   tokenAuth,
   refreshToken,
+  getPage,
 };
 //#endregion
 
