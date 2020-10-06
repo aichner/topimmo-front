@@ -25,6 +25,27 @@ export const GET_PAGE = gql`
     pages(token: $token) {
       ... on HomeHomePage {
         sections {
+          ... on Home_S_ContentCenter {
+            contentCenterHead
+            contentCenterLead
+            contentCenterText
+          }
+          ... on Home_S_ContentRight {
+            contentRightImg {
+              url
+            }
+            contentRightHead
+            contentRightLead
+            contentRightText
+          }
+          ... on Home_S_ContentLeft {
+            contentLeftImg {
+              url
+            }
+            contentLeftHead
+            contentLeftLead
+            contentLeftText
+          }
           ... on Home_S_FeatureBlock {
             features
           }

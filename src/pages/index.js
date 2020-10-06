@@ -18,6 +18,11 @@ import { getPage } from "../redux/actions/pageActions";
 //> Components
 //import { ScrollToTop } from "../components/atoms";
 import { Navbar, Footer, CookieModal } from "../components/molecules";
+import {
+  HeadSection,
+  ContentBlock,
+  FeaturesSection,
+} from "../components/organisms/sections";
 //#endregion
 
 //#region > Page
@@ -38,7 +43,7 @@ class Home extends React.Component {
 
     if (!page && this.props.page) {
       this.setState({
-        page: this.props.page,
+        page: this.props.page[0],
       });
     }
   };
@@ -52,7 +57,52 @@ class Home extends React.Component {
       <div className="flyout">
         <Navbar />
         <main>
-          <p>Test</p>
+          {page?.sections &&
+            page.sections.map((section, s) => {
+              console.log(section);
+              return (
+                <React.Fragment key={s}>
+                  {(() => {
+                    switch (section.__typename) {
+                      case "Home_S_ContentCenter":
+                        return <HeadSection data={section} />;
+                      case "Home_S_ShopBlock":
+                        return (
+                          <ShopSection
+                            collection={process.env.REACT_APP_HANDLE}
+                          />
+                        );
+                      case "Home_S_FeatureBlock":
+                        return (
+                          <FeaturesSection data={section} images={images} />
+                        );
+                      case "Home_S_BlueBlock":
+                        return <BlueLupi data={section} />;
+                      case "Home_S_ContentLeft":
+                        return (
+                          <ContentBlock data={section} orientation="left" />
+                        );
+                      case "Home_S_ContentRight":
+                        return (
+                          <ContentBlock data={section} orientation="right" />
+                        );
+                      case "Home_S_ImagesBlock":
+                        return <ImageSection data={section} images={images} />;
+                      case "Home_S_RatingsBlock":
+                        return <RatingsBlock data={section} />;
+                      case "Home_S_FAQBlock":
+                        return <FAQSection data={section} />;
+                      case "Home_S_InstagramBlock":
+                        return <InstagramSection data={section} />;
+                      default:
+                        console.warn(
+                          "Unimplemented section " + section.__typename
+                        );
+                    }
+                  })()}
+                </React.Fragment>
+              );
+            })}
           <CookieModal saveCookie={this.saveCookie} />
         </main>
         <Footer />

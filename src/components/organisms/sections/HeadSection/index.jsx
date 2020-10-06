@@ -16,8 +16,9 @@ class HeadSection extends React.Component {
     return (
       <section id="features" className="mt-3 pb-1">
         <MDBContainer className="text-center">
-          <h2>{data.head}</h2>
-          <p className="lead">{data.lead}</p>
+          <h2>{data.contentCenterHead}</h2>
+          <p className="lead">{data.contentCenterLead}</p>
+          <p dangerouslySetInnerHTML={{ __html: data.contentCenterText }}></p>
         </MDBContainer>
       </section>
     );
