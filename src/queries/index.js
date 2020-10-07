@@ -24,6 +24,8 @@ export const GET_PAGE = gql`
   query HomePage($token: String) {
     pages(token: $token) {
       ... on HomeHomePage {
+        about
+        privacy
         sections {
           ... on Home_S_ContentCenter {
             contentCenterHead
@@ -48,6 +50,9 @@ export const GET_PAGE = gql`
           }
           ... on Home_S_FeatureBlock {
             features
+          }
+          ... on Home_S_PartnersBlock {
+            partners
           }
         }
         headers {
