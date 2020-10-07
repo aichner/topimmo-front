@@ -48,6 +48,10 @@ class Footer extends React.Component {
           <MDBRow className="my-3 align-items-initial justify-content-center">
             <MDBCol lg="3">
               <p className="lead text-left mb-2">Kontakt</p>
+              <p className="mb-0">+43 (666) 111 111 11</p>
+              <p className="mb-2">info@top-immo.org</p>
+              <p className="mb-0">Klampfererweg 10</p>
+              <p className="mb-2">9524 Villach-St. Magdalen</p>
             </MDBCol>
             <MDBCol md="3">
               <p className="lead text-left mb-2">Links</p>
