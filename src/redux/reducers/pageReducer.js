@@ -4,6 +4,10 @@ import {
   GET_PAGE_F,
   GET_IMAGES_S,
   GET_IMAGES_F,
+  GET_NEWS_PAGE_S,
+  GET_NEWS_PAGE_F,
+  GET_PROJECTS_PAGE_S,
+  GET_PROJECTS_PAGE_F,
 } from "../actions/pageActions";
 //#endregion
 
@@ -18,7 +22,6 @@ const initState = {
 
 //#region > Functions
 const pageReducer = (state = initState, action) => {
-  console.log(action.type);
   switch (action.type) {
     case GET_PAGE_S:
       return {
@@ -37,6 +40,22 @@ const pageReducer = (state = initState, action) => {
       };
     case GET_IMAGES_F:
       return { ...state, images: null, error: action.payload?.error };
+    case GET_NEWS_PAGE_S:
+      return {
+        ...state,
+        news: action.payload.news,
+        error: false,
+      };
+    case GET_NEWS_PAGE_F:
+      return { ...state, news: null, error: action.payload?.error };
+    case GET_PROJECTS_PAGE_S:
+      return {
+        ...state,
+        projects: action.payload.projects,
+        error: false,
+      };
+    case GET_PROJECTS_PAGE_F:
+      return { ...state, projects: null, error: action.payload?.error };
     default:
       return { ...state };
   }

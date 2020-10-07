@@ -115,6 +115,7 @@ const mapDispatchToProps = {
   tokenAuth,
   refreshToken,
   getPage,
+  getImages,
 };
 //#endregion
 

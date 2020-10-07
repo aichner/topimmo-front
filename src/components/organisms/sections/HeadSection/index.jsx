@@ -14,7 +14,7 @@ class HeadSection extends React.Component {
     const { data } = this.props;
 
     return (
-      <section id="head" className="py-2">
+      <section id="head" className="pt-4 pb-2">
         <MDBContainer className="text-center">
           <h2>{data.contentCenterHead}</h2>
           {data.contentCenterLead && (
