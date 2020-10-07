@@ -22,6 +22,7 @@ import {
   HeadSection,
   ContentBlock,
   FeaturesSection,
+  HeroSection,
 } from "../components/organisms/sections";
 //#endregion
 
@@ -46,7 +47,7 @@ class Home extends React.Component {
   componentDidUpdate = () => {
     const { page, images } = this.state;
 
-    if (this.props.logged) {
+    if (this.props.logged && (!page || !images)) {
       // Get root page
       this.props.getPage();
       // Get all images
@@ -71,10 +72,13 @@ class Home extends React.Component {
   render() {
     const { page, images } = this.state;
 
+    console.log("PAGE", page);
+
     return (
       <div className="flyout">
         <Navbar />
         <main>
+          {page?.headers && <HeroSection data={page.headers} />}
           {page?.sections &&
             page.sections.map((section, s) => {
               console.log(section);
