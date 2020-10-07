@@ -28,8 +28,6 @@ class FeaturesSection extends React.Component {
         <MDBContainer>
           <MDBRow className="justify-content-center">
             {data.features.map((col, c) => {
-              console.log(col);
-
               const image = this.mapImage(col.value.feature_image);
               const urlLink = image
                 ? process.env.NEXT_PUBLIC_BASEURL + image[0].url

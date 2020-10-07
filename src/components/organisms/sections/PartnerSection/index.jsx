@@ -22,8 +22,6 @@ class PartnerSection extends React.Component {
   render() {
     const { data } = this.props;
 
-    console.log("PARTNERS", data);
-
     return (
       <section id="partners" className="py-4">
         <MDBContainer className="text-center">
