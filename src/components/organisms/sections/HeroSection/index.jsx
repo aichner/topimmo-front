@@ -5,7 +5,18 @@ import React from "react";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBCarousel,
+  MDBCarouselInner,
+  MDBCarouselItem,
+  MDBView,
+  MDBMask,
+  MDBBtn,
+  MDBIcon,
+} from "mdbreact";
 //#endregion
 
 //#region > Components
@@ -13,7 +24,55 @@ class HeroSection extends React.Component {
   render() {
     const { data } = this.props;
 
-    return <section id="hero" className="mt-3 pb-1"></section>;
+    console.log(data);
+
+    return (
+      <section id="hero" className="mt-5 pb-1">
+        <MDBView>
+          <MDBCarousel
+            activeItem={1}
+            length={data.length}
+            showControls={true}
+            showIndicators={true}
+            className="z-depth-1"
+          >
+            <MDBCarouselInner>
+              {data.map((item, i) => {
+                return (
+                  <MDBCarouselItem itemId={i + 1}>
+                    <MDBView>
+                      <img
+                        className="d-block w-100"
+                        src={
+                          process.env.NEXT_PUBLIC_BASEURL + item.slideImage.url
+                        }
+                      />
+                      <MDBMask
+                        overlay="black-strong"
+                        className="flex-center text-white text-center"
+                      >
+                        <div>
+                          <div>
+                            <h3>{item.slideHead}</h3>
+                          </div>
+                          <div>
+                            {item.slideButton && (
+                              <MDBBtn color="blue">
+                                {item.slideButton.buttonTitle}
+                              </MDBBtn>
+                            )}
+                          </div>
+                        </div>
+                      </MDBMask>
+                    </MDBView>
+                  </MDBCarouselItem>
+                );
+              })}
+            </MDBCarouselInner>
+          </MDBCarousel>
+        </MDBView>
+      </section>
+    );
   }
 }
 //#endregion

@@ -7,3 +7,17 @@
     width: 60px;
   }
 }
+
+#hero {
+  .view {
+    background-attachment: fixed;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 60vh;
+
+    .rgba-black-strong {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+}
