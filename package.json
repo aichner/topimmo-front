@@ -30,7 +30,7 @@
     "apollo-link-context": "^1.0.20",
     "apollo-link-http": "^1.5.17",
     "graphql": "^15.3.0",
-    "mdbreact": "^4.27.0",
+    "mdbreact": "file:mdbreact-4.26.1.tgz",
     "next": "^9.5.3",
     "next-compose-plugins": "^2.2.0",
     "next-fonts": "^1.4.0",
