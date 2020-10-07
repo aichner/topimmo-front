@@ -24,7 +24,7 @@ class FeaturesSection extends React.Component {
     const { data } = this.props;
 
     return (
-      <section id="features">
+      <section id="features" className="pt-5 pb-4">
         <MDBContainer>
           <MDBRow className="justify-content-center">
             {data.features.map((col, c) => {

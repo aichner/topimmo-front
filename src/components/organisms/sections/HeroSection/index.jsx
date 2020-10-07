@@ -24,10 +24,8 @@ class HeroSection extends React.Component {
   render() {
     const { data } = this.props;
 
-    console.log(data);
-
     return (
-      <section id="hero" className="mt-5 pb-1">
+      <section id="hero" className="mt-5">
         <MDBView>
           <MDBCarousel
             activeItem={1}
@@ -41,12 +39,15 @@ class HeroSection extends React.Component {
                 return (
                   <MDBCarouselItem itemId={i + 1}>
                     <MDBView>
-                      <img
-                        className="d-block w-100"
-                        src={
-                          process.env.NEXT_PUBLIC_BASEURL + item.slideImage.url
-                        }
-                      />
+                      <div
+                        className="w-100 h-100 img-banner"
+                        style={{
+                          backgroundImage: `url("${
+                            process.env.NEXT_PUBLIC_BASEURL +
+                            item.slideImage.url
+                          }")`,
+                        }}
+                      ></div>
                       <MDBMask
                         overlay="black-strong"
                         className="flex-center text-white text-center"

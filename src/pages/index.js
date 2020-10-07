@@ -23,6 +23,7 @@ import {
   ContentBlock,
   FeaturesSection,
   HeroSection,
+  PartnerSection,
 } from "../components/organisms/sections";
 //#endregion
 
@@ -100,8 +101,10 @@ class Home extends React.Component {
                         return (
                           <ContentBlock data={section} orientation="right" />
                         );
-                      case "Home_S_ImagesBlock":
-                        return <ImageSection data={section} />;
+                      case "Home_S_PartnersBlock":
+                        return (
+                          <PartnerSection data={section} images={images} />
+                        );
                       default:
                         console.warn(
                           "Unimplemented section " + section.__typename

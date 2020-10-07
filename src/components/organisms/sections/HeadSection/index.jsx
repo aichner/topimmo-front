@@ -5,7 +5,7 @@ import React from "react";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
-import { MDBContainer, MDBRow, MDBCol } from "mdbreact";
+import { MDBContainer } from "mdbreact";
 //#endregion
 
 //#region > Components
@@ -14,11 +14,20 @@ class HeadSection extends React.Component {
     const { data } = this.props;
 
     return (
-      <section id="features" className="mt-3 pb-1">
+      <section id="head" className="py-2">
         <MDBContainer className="text-center">
           <h2>{data.contentCenterHead}</h2>
-          <p className="lead">{data.contentCenterLead}</p>
-          <p dangerouslySetInnerHTML={{ __html: data.contentCenterText }}></p>
+          {data.contentCenterLead && (
+            <p className={!data.contentCenterText ? "mb-0 lead" : "lead"}>
+              {data.contentCenterLead}
+            </p>
+          )}
+          {data.contentCenterText && (
+            <p
+              dangerouslySetInnerHTML={{ __html: data.contentCenterText }}
+              className="mb-0"
+            ></p>
+          )}
         </MDBContainer>
       </section>
     );

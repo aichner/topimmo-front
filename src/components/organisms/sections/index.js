@@ -6,6 +6,7 @@ import ContentBlock from "./ContentBlock";
 import FeaturesSection from "./FeaturesSection";
 import HeadSection from "./HeadSection";
 import HeroSection from "./HeroSection";
+import PartnerSection from "./PartnerSection";
 //#endregion
 
 //#region > Exports
@@ -15,6 +16,7 @@ export {
   FeaturesSection,
   HeadSection,
   HeroSection,
+  PartnerSection,
 };
 //#endregion
 

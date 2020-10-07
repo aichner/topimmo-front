@@ -14,7 +14,7 @@ class ContentBlock extends React.Component {
     const { data, orientation } = this.props;
 
     return (
-      <section id="contentblock" className="text-center">
+      <section id="contentblock" className="text-center py-4">
         <MDBContainer>
           {orientation === "left" && (
             <MDBRow>
