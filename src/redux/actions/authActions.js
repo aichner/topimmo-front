@@ -30,6 +30,9 @@ export const tokenAuth = () => {
 
           dispatch({
             type: TOKEN_AUTH_S,
+            payload: {
+              token: data.tokenAuth.token,
+            },
           });
         }
       })

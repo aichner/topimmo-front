@@ -5,6 +5,9 @@
 @import "../components/molecules/Footer/footer.module.scss";
 @import "../components/molecules/CookieModal/cookie.module.scss";
 
+//> Sections
+@import "./sections.scss";
+
 * {
   box-sizing: border-box;
 }

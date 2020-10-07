@@ -75,6 +75,14 @@ export const GET_PAGE = gql`
   }
 `;
 
+export const GET_IMAGES = gql`
+  query img($token: String) {
+    images(token: $token) {
+      id
+      url
+    }
+  }
+`;
 //#endregion
 
 /**

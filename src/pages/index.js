@@ -14,7 +14,7 @@ import { MDBBtn, MDBCard, MDBCardBody } from "mdbreact";
 //> Redux
 // Actions
 import { tokenAuth, refreshToken } from "../redux/actions/authActions";
-import { getPage } from "../redux/actions/pageActions";
+import { getPage, getImages } from "../redux/actions/pageActions";
 //> Components
 //import { ScrollToTop } from "../components/atoms";
 import { Navbar, Footer, CookieModal } from "../components/molecules";
@@ -27,31 +27,49 @@ import {
 
 //#region > Page
 class Home extends React.Component {
-  state = { page: undefined };
+  state = { page: undefined, images: undefined };
 
   componentDidMount = () => {
     // Get tokens and page data
     this.props.tokenAuth();
     // Refresh token every 2 minutes (120000 ms)
     this.refreshInterval = window.setInterval(this.props.refreshToken, 120000);
-    // Get root page
-    this.props.getPage();
+
+    if (this.props.logged) {
+      // Get root page
+      this.props.getPage();
+      // Get all images
+      this.props.getImages();
+    }
   };
 
   componentDidUpdate = () => {
-    const { page } = this.state;
+    const { page, images } = this.state;
 
-    if (!page && this.props.page) {
+    if (this.props.logged) {
+      // Get root page
+      this.props.getPage();
+      // Get all images
+      this.props.getImages();
+    }
+
+    // Set page state
+    if (!page && this.props.page && this.props.logged) {
       this.setState({
         page: this.props.page[0],
+      });
+    }
+
+    // Set all images as state
+    if (!images && this.props.images && this.props.logged) {
+      this.setState({
+        images: this.props.images,
       });
     }
   };
 
   render() {
-    const { page } = this.state;
-
-    console.log(page);
+    const { page, images } = this.state;
 
     return (
       <div className="flyout">
@@ -66,18 +84,10 @@ class Home extends React.Component {
                     switch (section.__typename) {
                       case "Home_S_ContentCenter":
                         return <HeadSection data={section} />;
-                      case "Home_S_ShopBlock":
-                        return (
-                          <ShopSection
-                            collection={process.env.REACT_APP_HANDLE}
-                          />
-                        );
                       case "Home_S_FeatureBlock":
                         return (
                           <FeaturesSection data={section} images={images} />
                         );
-                      case "Home_S_BlueBlock":
-                        return <BlueLupi data={section} />;
                       case "Home_S_ContentLeft":
                         return (
                           <ContentBlock data={section} orientation="left" />
@@ -87,13 +97,7 @@ class Home extends React.Component {
                           <ContentBlock data={section} orientation="right" />
                         );
                       case "Home_S_ImagesBlock":
-                        return <ImageSection data={section} images={images} />;
-                      case "Home_S_RatingsBlock":
-                        return <RatingsBlock data={section} />;
-                      case "Home_S_FAQBlock":
-                        return <FAQSection data={section} />;
-                      case "Home_S_InstagramBlock":
-                        return <InstagramSection data={section} />;
+                        return <ImageSection data={section} />;
                       default:
                         console.warn(
                           "Unimplemented section " + section.__typename
@@ -114,14 +118,16 @@ class Home extends React.Component {
 
 //#region > Functions
 const mapStateToProps = (state) => ({
-  counter: state.auth.value,
+  logged: state.auth.logged,
   page: state.page.root,
+  images: state.page.images,
 });
 
 const mapDispatchToProps = {
   tokenAuth,
   refreshToken,
   getPage,
+  getImages,
 };
 //#endregion
 

@@ -13,7 +13,11 @@ class FeaturesSection extends React.Component {
   mapImage = (id) => {
     const { images } = this.props;
 
-    return images.filter((img) => parseInt(img.id) === id);
+    if (images) {
+      return images.filter((img) => parseInt(img.id) === id);
+    } else {
+      return false;
+    }
   };
 
   render() {
@@ -24,9 +28,11 @@ class FeaturesSection extends React.Component {
         <MDBContainer>
           <MDBRow className="justify-content-center">
             {data.features.map((col, c) => {
+              console.log(col);
+
               const image = this.mapImage(col.value.feature_image);
               const urlLink = image
-                ? process.env.REACT_APP_BASEURL + image[0].urlLink
+                ? process.env.NEXT_PUBLIC_BASEURL + image[0].url
                 : null;
 
               return (
@@ -41,6 +47,16 @@ class FeaturesSection extends React.Component {
                     <>
                       <hr />
                       <p>{col.value.feature_lead}</p>
+                    </>
+                  )}
+                  {col.value.feature_text && (
+                    <>
+                      <hr />
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html: col.value.feature_text,
+                        }}
+                      ></p>
                     </>
                   )}
                 </MDBCol>
