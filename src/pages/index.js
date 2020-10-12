@@ -46,7 +46,7 @@ class Home extends React.Component {
     // Refresh token every 2 minutes (120000 ms)
     this.refreshInterval = window.setInterval(this.props.refreshToken, 120000);
 
-    if (this.props.logged) {
+    if (this.props.logged && !this.props.error) {
       // Get root page
       this.props.getPage();
       // Get all images
@@ -57,22 +57,30 @@ class Home extends React.Component {
   componentDidUpdate = () => {
     const { page, images } = this.state;
 
-    if (this.props.logged && (!page || !images)) {
+    if (this.props.logged && !page && !this.props.error) {
       // Get root page
       this.props.getPage();
+    }
+
+    if (this.props.logged && !images && !this.props.error) {
       // Get all images
       this.props.getImages();
     }
 
     // Set page state
-    if (!page && this.props.page && this.props.logged) {
+    if (!page && this.props.page && this.props.logged && !this.props.error) {
       this.setState({
         page: this.props.page[0],
       });
     }
 
     // Set all images as state
-    if (!images && this.props.images && this.props.logged) {
+    if (
+      !images &&
+      this.props.images &&
+      this.props.logged &&
+      !this.props.error
+    ) {
       this.setState({
         images: this.props.images,
       });
@@ -81,6 +89,8 @@ class Home extends React.Component {
 
   render() {
     const { page, images } = this.state;
+
+    console.log(this.state);
 
     return (
       <div className="flyout">
@@ -214,6 +224,7 @@ class Home extends React.Component {
 const mapStateToProps = (state) => ({
   logged: state.auth.logged,
   page: state.page.root,
+  error: state.page.error,
   images: state.page.images,
 });
 
