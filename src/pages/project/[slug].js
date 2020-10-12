@@ -90,7 +90,7 @@ class Product extends React.Component {
 
   render() {
     const { pages } = this.state;
-    const { router } = this.props;
+    const { router, root } = this.props;
 
     const slug = router.query?.slug;
     const selectedPage = pages
@@ -223,7 +223,7 @@ class Product extends React.Component {
           </article>
           <CookieModal saveCookie={this.saveCookie} />
         </main>
-        <Footer />
+        <Footer data={root} />
       </div>
     );
   }
@@ -234,6 +234,7 @@ class Product extends React.Component {
 const mapStateToProps = (state) => ({
   logged: state.auth.logged,
   pages: state.page.projects,
+  root: state.page.root,
   images: state.page.images,
 });
 

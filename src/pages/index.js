@@ -213,7 +213,7 @@ class Home extends React.Component {
           </MDBContainer>
           <CookieModal saveCookie={this.saveCookie} />
         </main>
-        <Footer />
+        <Footer data={page} />
       </div>
     );
   }

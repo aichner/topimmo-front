@@ -33,7 +33,11 @@ import {
 //> Redux
 // Actions
 import { tokenAuth, refreshToken } from "../../redux/actions/authActions";
-import { getNewsPages, getImages } from "../../redux/actions/pageActions";
+import {
+  getNewsPages,
+  getImages,
+  getPage,
+} from "../../redux/actions/pageActions";
 //> Components
 //import { ScrollToTop } from "../components/atoms";
 import { Navbar, Footer, CookieModal } from "../../components/molecules";
@@ -53,22 +57,27 @@ class Article extends React.Component {
     if (this.props.logged && (!this.props.pages || !this.props.images)) {
       // Get root page
       this.props.getNewsPages();
+      // Get root page
+      this.props.getPage();
       // Get all images
       this.props.getImages();
-    } else if (this.props.pages && this.props.images) {
+    } else if (this.props.pages && this.props.images && this.props.root) {
       this.setState({
         pages: this.props.pages,
         images: this.props.images,
+        root: this.props.root,
       });
     }
   };
 
   componentDidUpdate = () => {
-    const { pages, images } = this.state;
+    const { pages, images, root } = this.state;
 
     if (this.props.logged && (!pages || !images)) {
       // Get root page
       this.props.getNewsPages();
+      // Get root page
+      this.props.getPage();
       // Get all images
       this.props.getImages();
     }
@@ -77,6 +86,13 @@ class Article extends React.Component {
     if (!pages && this.props.pages && this.props.logged) {
       this.setState({
         pages: this.props.pages,
+      });
+    }
+
+    // Set page state
+    if (!root && this.props.root && this.props.logged && !this.props.error) {
+      this.setState({
+        root: this.props.root[0],
       });
     }
 
@@ -89,7 +105,7 @@ class Article extends React.Component {
   };
 
   render() {
-    const { pages } = this.state;
+    const { pages, root } = this.state;
     const { router } = this.props;
 
     const slug = router.query?.slug;
@@ -223,7 +239,7 @@ class Article extends React.Component {
           </article>
           <CookieModal saveCookie={this.saveCookie} />
         </main>
-        <Footer />
+        <Footer data={root} />
       </div>
     );
   }
@@ -234,12 +250,14 @@ class Article extends React.Component {
 const mapStateToProps = (state) => ({
   logged: state.auth.logged,
   pages: state.page.news,
+  root: state.page.root,
   images: state.page.images,
 });
 
 const mapDispatchToProps = {
   tokenAuth,
   refreshToken,
+  getPage,
   getNewsPages,
   getImages,
 };
