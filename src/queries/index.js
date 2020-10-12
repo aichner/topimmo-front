@@ -61,15 +61,21 @@ export const GET_PAGE = gql`
               url
             }
             slideHead
-            slideButton {
-              id
-              buttonTitle
-              buttonEmbed
-              buttonLink
-              buttonPage {
-                id
-                newspage {
-                  id
+            slidePage {
+              __typename
+              ... on Page {
+                __typename
+                ... on ProjectsProjectsPage {
+                  slug
+                }
+                ... on NewsNewsPage {
+                  slug
+                }
+                ... on ProjectsFlatPage {
+                  slug
+                }
+                ... on HomeHomePage {
+                  slug
                 }
               }
             }
