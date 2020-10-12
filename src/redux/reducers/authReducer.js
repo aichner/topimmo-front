@@ -14,7 +14,7 @@ const initState = {
 const authReducer = (state = initState, action) => {
   switch (action.type) {
     case TOKEN_AUTH_S:
-      return { ...state, logged: action?.payload?.token, error: false };
+      return { ...state, logged: action?.payload?.token, error: undefined };
     case TOKEN_AUTH_F:
       return { ...state, logged: false, error: action.payload?.error };
     default:

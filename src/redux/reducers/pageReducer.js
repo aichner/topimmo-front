@@ -28,7 +28,7 @@ const pageReducer = (state = initState, action) => {
         ...state,
         root: action.payload?.root,
         sub: action.payload?.sub,
-        error: false,
+        error: undefined,
       };
     case GET_PAGE_F:
       return { ...state, root: null, error: action.payload?.error };
@@ -36,7 +36,7 @@ const pageReducer = (state = initState, action) => {
       return {
         ...state,
         images: action.payload.images,
-        error: false,
+        error: undefined,
       };
     case GET_IMAGES_F:
       return { ...state, images: null, error: action.payload?.error };
@@ -44,7 +44,7 @@ const pageReducer = (state = initState, action) => {
       return {
         ...state,
         news: action.payload.news,
-        error: false,
+        error: undefined,
       };
     case GET_NEWS_PAGE_F:
       return { ...state, news: null, error: action.payload?.error };
@@ -52,7 +52,7 @@ const pageReducer = (state = initState, action) => {
       return {
         ...state,
         projects: action.payload.projects,
-        error: false,
+        error: undefined,
       };
     case GET_PROJECTS_PAGE_F:
       return { ...state, projects: null, error: action.payload?.error };

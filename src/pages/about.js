@@ -4,6 +4,7 @@
 import React from "react";
 //> NextJS
 import Head from "next/head";
+import Link from "next/link";
 //> Redux
 // Basic Redux provider
 import { connect } from "react-redux";
@@ -14,6 +15,7 @@ import {
   MDBCard,
   MDBCardBody,
   MDBContainer,
+  MDBIcon,
   MDBSpinner,
 } from "mdbreact";
 
@@ -59,22 +61,30 @@ class About extends React.Component {
   componentDidUpdate = () => {
     const { page, images } = this.state;
 
-    if (this.props.logged && (!page || !images)) {
+    if (this.props.logged && !page && !this.props.error) {
       // Get root page
       this.props.getPage();
+    }
+
+    if (this.props.logged && !images && !this.props.error) {
       // Get all images
       this.props.getImages();
     }
 
     // Set page state
-    if (!page && this.props.page && this.props.logged) {
+    if (!page && this.props.page && this.props.logged && !this.props.error) {
       this.setState({
-        page: this.props.page.filter((p) => p.sections.length > 0)[0],
+        page: this.props.page[0],
       });
     }
 
     // Set all images as state
-    if (!images && this.props.images && this.props.logged) {
+    if (
+      !images &&
+      this.props.images &&
+      this.props.logged &&
+      !this.props.error
+    ) {
       this.setState({
         images: this.props.images,
       });
@@ -83,16 +93,38 @@ class About extends React.Component {
 
   render() {
     const { page } = this.state;
+    const { error } = this.props;
 
     return (
       <div className="flyout">
         <Navbar />
         <main>
           <MDBContainer className="mt-5 pt-5">
-            {page ? (
+            {page && !error ? (
               <p dangerouslySetInnerHTML={{ __html: page.about }}></p>
             ) : (
-              <MDBSpinner blue />
+              <div className="text-center">
+                {error ? (
+                  <>
+                    <MDBIcon
+                      icon="clock"
+                      far
+                      className="blue-text mb-2"
+                      size="3x"
+                    />
+                    <p>
+                      Die gewünschte Seite ist derzeit leider nicht verfügbar.
+                    </p>
+                    <Link href="/">
+                      <MDBBtn color="blue" size="md">
+                        Zurück
+                      </MDBBtn>
+                    </Link>
+                  </>
+                ) : (
+                  <MDBSpinner blue />
+                )}
+              </div>
             )}
           </MDBContainer>
           <CookieModal saveCookie={this.saveCookie} />
@@ -108,6 +140,7 @@ class About extends React.Component {
 const mapStateToProps = (state) => ({
   logged: state.auth.logged,
   page: state.page.root,
+  error: state.page.error,
   images: state.page.images,
 });
 

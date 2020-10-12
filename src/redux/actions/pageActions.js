@@ -30,6 +30,7 @@ export const getPage = () => {
         },
       })
       .then(({ data }) => {
+        console.log(data);
         if (data !== undefined) {
           dispatch({
             type: GET_PAGE_S,
