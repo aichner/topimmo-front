@@ -26,6 +26,12 @@ export const GET_PAGE = gql`
       ... on HomeHomePage {
         about
         privacy
+        telephone
+        email
+        zipCode
+        address
+        city
+        copyrightholder
         sections {
           ... on Home_S_ContentCenter {
             contentCenterHead
@@ -66,15 +72,19 @@ export const GET_PAGE = gql`
               ... on Page {
                 __typename
                 ... on ProjectsProjectsPage {
+                  __typename
                   slug
                 }
                 ... on NewsNewsPage {
+                  __typename
                   slug
                 }
                 ... on ProjectsFlatPage {
+                  __typename
                   slug
                 }
                 ... on HomeHomePage {
+                  __typename
                   slug
                 }
               }
@@ -141,6 +151,12 @@ export const GET_PROJECTS = gql`
       ... on ProjectsProjectsPage {
         __typename
         slug
+        title
+        priceMin
+        priceMax
+        buyAvailable
+        rentAvailable
+        coordinates
         headers {
           ... on Projects_H_HeroBlock {
             slideImage {
@@ -149,6 +165,12 @@ export const GET_PROJECTS = gql`
           }
         }
         sections {
+          ... on Projects_S_InfoBlock {
+            thumbnailImage {
+              url
+            }
+            infoText
+          }
           ... on Projects_S_ContentCenter {
             contentCenterHead
             contentCenterLead
@@ -176,6 +198,77 @@ export const GET_PROJECTS = gql`
             galleryImage {
               url
             }
+          }
+        }
+        flats {
+          __typename
+          ... on Projects_F_FlatsBlock {
+            __typename
+            flat {
+              __typename
+              ... on ProjectsFlatPage {
+                __typename
+                slug
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_FLATS = gql`
+  query FlatPages($token: String) {
+    pages(token: $token) {
+      ... on ProjectsFlatPage {
+        __typename
+        slug
+        available
+        lead
+        price
+        headers {
+          ... on Projects_H_HeroBlock {
+            slideImage {
+              url
+            }
+          }
+        }
+        groundPlan {
+          ... on Projects_P_GroundPlanBlock {
+            groundPlan {
+              url
+            }
+          }
+        }
+        gallery {
+          ... on Projects_G_GalleryBlock {
+            galleryImage {
+              url
+            }
+          }
+        }
+        sections {
+          ... on Projects_S_ContentCenter {
+            contentCenterHead
+            contentCenterLead
+            contentCenterText
+          }
+          ... on Projects_S_ContentLeft {
+            contentLeftImg {
+              url
+            }
+            contentLeftHead
+            contentLeftLead
+            contentLeftText
+          }
+          ... on Projects_S_ContentRight {
+            contentRightImg {
+              url
+            }
+            contentRightHead
+            contentRightLead
+            contentRightText
           }
         }
       }

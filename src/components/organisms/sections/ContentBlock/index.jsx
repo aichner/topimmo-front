@@ -19,13 +19,15 @@ class ContentBlock extends React.Component {
           {orientation === "left" && (
             <MDBRow>
               <MDBCol lg="5" className="mb-3 mb-sm-0">
-                <img
-                  src={
-                    process.env.NEXT_PUBLIC_BASEURL + data.contentLeftImg.url
-                  }
-                  alt=""
-                  className="img-fluid"
-                />
+                {data.contentLeftImg && (
+                  <img
+                    src={
+                      process.env.NEXT_PUBLIC_BASEURL + data.contentLeftImg.url
+                    }
+                    alt=""
+                    className="img-fluid"
+                  />
+                )}
               </MDBCol>
               <MDBCol lg="7" className="text-left">
                 <p className="h3-responsive">{data.contentLeftHead}</p>
@@ -50,13 +52,15 @@ class ContentBlock extends React.Component {
                 />
               </MDBCol>
               <MDBCol lg="5" className="mb-3 mb-sm-0">
-                <img
-                  src={
-                    process.env.NEXT_PUBLIC_BASEURL + data.contentRightImg.url
-                  }
-                  alt=""
-                  className="img-fluid"
-                />
+                {data.contentRightImg && (
+                  <img
+                    src={
+                      process.env.NEXT_PUBLIC_BASEURL + data.contentRightImg.url
+                    }
+                    alt=""
+                    className="img-fluid"
+                  />
+                )}
               </MDBCol>
             </MDBRow>
           )}

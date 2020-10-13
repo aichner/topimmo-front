@@ -193,6 +193,70 @@ a {
   }
 }
 
+// Curves
+.curve-dark {
+  height: 100px;
+  background: url("../static/svg/curve_dark.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.curve-light {
+  height: 100px;
+  background: url("../static/svg/curve_light.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.curve-white {
+  height: 100px;
+  background: url("../static/svg/curve_white.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.curve-med-dark {
+  height: 110px;
+  background: url("../static/svg/curve_med_dark.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.curve-med-light {
+  height: 110px;
+  background: url("../static/svg/curve_med_light.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.curve-med-white {
+  height: 110px;
+  background: url("../static/svg/curve_med_white.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.curve-med-dark {
+  height: 110px;
+  background: url("../static/svg/curve_med_dark.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.curve-strong-dark {
+  height: 150px;
+  background: url("../static/svg/curve_strong_dark.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.curve-strong-white {
+  height: 150px;
+  background: url("../static/svg/curve_strong_white.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)
  * Copyright © 2020 InspireMedia GmbH

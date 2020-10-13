@@ -33,7 +33,12 @@ import {
 //> Redux
 // Actions
 import { tokenAuth, refreshToken } from "../../redux/actions/authActions";
-import { getProjectsPages, getImages } from "../../redux/actions/pageActions";
+import {
+  getProjectsPages,
+  getImages,
+  getFlats,
+  getPage,
+} from "../../redux/actions/pageActions";
 //> Components
 //import { ScrollToTop } from "../components/atoms";
 import { Navbar, Footer, CookieModal } from "../../components/molecules";
@@ -42,7 +47,7 @@ import { HeadSection, ContentBlock } from "../../components/organisms/sections";
 
 //#region > Page
 class Product extends React.Component {
-  state = { pages: undefined, images: undefined };
+  state = { pages: undefined, images: undefined, flats: undefined };
 
   componentDidMount = () => {
     // Get tokens and page data
@@ -50,11 +55,18 @@ class Product extends React.Component {
     // Refresh token every 2 minutes (120000 ms)
     this.refreshInterval = window.setInterval(this.props.refreshToken, 120000);
 
-    if (this.props.logged && (!this.props.pages || !this.props.images)) {
+    if (
+      this.props.logged &&
+      (!this.props.pages || !this.props.images || !this.props.flats)
+    ) {
       // Get root page
       this.props.getProjectsPages();
       // Get all images
       this.props.getImages();
+      // Get all pages
+      this.props.getFlats();
+      // Get page
+      this.props.getPage();
     } else if (this.props.pages && this.props.images) {
       this.setState({
         pages: this.props.pages,
@@ -64,13 +76,21 @@ class Product extends React.Component {
   };
 
   componentDidUpdate = () => {
-    const { pages, images } = this.state;
+    const { pages, images, flats } = this.state;
 
-    if (this.props.logged && (!pages || !images)) {
+    if (this.props.logged && !pages) {
       // Get root page
       this.props.getProjectsPages();
+    }
+
+    if (this.props.logged && !images) {
       // Get all images
       this.props.getImages();
+    }
+
+    if (this.props.logged && !flats) {
+      // Get all flats
+      this.props.getFlats();
     }
 
     // Set page state
@@ -86,11 +106,20 @@ class Product extends React.Component {
         images: this.props.images,
       });
     }
+
+    // Set all flats as state
+    if (!flats && this.props.flats && this.props.logged) {
+      this.setState({
+        flats: this.props.flats,
+      });
+    }
   };
 
   render() {
-    const { pages } = this.state;
+    const { pages, flats } = this.state;
     const { router, root } = this.props;
+
+    console.log("FLATS", flats);
 
     const slug = router.query?.slug;
     const selectedPage = pages
@@ -149,9 +178,11 @@ class Product extends React.Component {
                                       }}
                                     ></div>
                                     <MDBMask
-                                      overlay="black-slight"
+                                      overlay="black-strong"
                                       className="flex-center text-white text-center"
-                                    />
+                                    >
+                                      <h1>{selectedPage.title}</h1>
+                                    </MDBMask>
                                   </MDBView>
                                 </MDBCarouselItem>
                               );
@@ -159,9 +190,7 @@ class Product extends React.Component {
                           </MDBCarouselInner>
                         </MDBCarousel>
                         <MDBCardBody>
-                          <MDBCardTitle className="indigo-text h3 m-4">
-                            {selectedPage.title}
-                          </MDBCardTitle>
+                          <MDBCardTitle className="indigo-text h3 m-4"></MDBCardTitle>
                           {selectedPage.sections.map((section, s) => {
                             return (
                               <>
@@ -194,6 +223,17 @@ class Product extends React.Component {
                               </>
                             );
                           })}
+                          {selectedPage.flats &&
+                            selectedPage.flats.map((flat, i) => {
+                              console.log("FLAT", flat);
+                              const flatDetails =
+                                flats &&
+                                flats.filter((f) => f.slug === flat.slug);
+
+                              console.log("SELE", flatDetails);
+
+                              return <p>Test</p>;
+                            })}
                           <MDBLightbox md="4" images={images} />
                         </MDBCardBody>
                       </MDBJumbotron>
@@ -205,7 +245,7 @@ class Product extends React.Component {
                   {selectedPage === false ? (
                     <div className="text-center">
                       <p className="lead">
-                        Der gewünschte Artikel ist leider nicht verfügbar.
+                        Das gewünschte Projekt ist leider nicht verfügbar.
                       </p>
                       <MDBBtn color="blue" href="/">
                         <MDBIcon icon="angle-left" />
@@ -223,7 +263,7 @@ class Product extends React.Component {
           </article>
           <CookieModal saveCookie={this.saveCookie} />
         </main>
-        <Footer data={root} />
+        <Footer data={root ? root[0] : null} />
       </div>
     );
   }
@@ -234,6 +274,7 @@ class Product extends React.Component {
 const mapStateToProps = (state) => ({
   logged: state.auth.logged,
   pages: state.page.projects,
+  flats: state.page.flats,
   root: state.page.root,
   images: state.page.images,
 });
@@ -242,6 +283,8 @@ const mapDispatchToProps = {
   tokenAuth,
   refreshToken,
   getProjectsPages,
+  getFlats,
+  getPage,
   getImages,
 };
 //#endregion

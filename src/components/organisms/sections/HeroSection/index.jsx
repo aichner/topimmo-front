@@ -2,6 +2,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+//> Next
+import Link from "next/link";
 
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
@@ -21,6 +23,19 @@ import {
 
 //#region > Components
 class HeroSection extends React.Component {
+  getLink = (typename) => {
+    switch (typename) {
+      case "ProjectsProjectsPage":
+        return "/project/";
+      case "NewsNewsPage":
+        return "/article/";
+      case "ProjectsFlatPage":
+        return "/item/";
+      default:
+        return "/";
+    }
+  };
+
   render() {
     const { data } = this.props;
 
@@ -30,9 +45,8 @@ class HeroSection extends React.Component {
           <MDBCarousel
             activeItem={1}
             length={data.length}
-            showControls={true}
-            showIndicators={true}
-            className="z-depth-1"
+            showControls={data.length > 1 ? true : false}
+            showIndicators={data.length > 1 ? true : false}
           >
             <MDBCarouselInner>
               {data.map((item, i) => {
@@ -57,10 +71,15 @@ class HeroSection extends React.Component {
                             <h3>{item.slideHead}</h3>
                           </div>
                           <div>
-                            {item.slideButton && (
-                              <MDBBtn color="blue">
-                                {item.slideButton.buttonTitle}
-                              </MDBBtn>
+                            {item.slidePage && item.slidePage.slug && (
+                              <Link
+                                href={
+                                  this.getLink(item.slidePage.__typename) +
+                                  item.slidePage.slug
+                                }
+                              >
+                                <MDBBtn color="blue">Mehr dazu</MDBBtn>
+                              </Link>
                             )}
                           </div>
                         </div>

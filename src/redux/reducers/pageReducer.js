@@ -8,6 +8,8 @@ import {
   GET_NEWS_PAGE_F,
   GET_PROJECTS_PAGE_S,
   GET_PROJECTS_PAGE_F,
+  GET_FLATS_PAGE_S,
+  GET_FLATS_PAGE_F,
 } from "../actions/pageActions";
 //#endregion
 
@@ -15,6 +17,8 @@ import {
 // Have initial state for when state is not ready to be passed
 const initState = {
   root: null,
+  sub: null,
+  flats: null,
   images: null,
   error: undefined,
 };
@@ -56,6 +60,14 @@ const pageReducer = (state = initState, action) => {
       };
     case GET_PROJECTS_PAGE_F:
       return { ...state, projects: null, error: action.payload?.error };
+    case GET_FLATS_PAGE_S:
+      return {
+        ...state,
+        flats: action.payload.flats,
+        error: undefined,
+      };
+    case GET_FLATS_PAGE_F:
+      return { ...state, flats: [], error: action.payload?.error };
     default:
       return { ...state };
   }
