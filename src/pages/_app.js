@@ -26,6 +26,9 @@ import App from "next/app";
 // Root reducer
 import rootReducer from "../redux/reducers/rootReducer";
 
+//> Components
+import { ScrollToTop } from "../components/atoms";
+
 //> Global Styling
 // Local
 import "../styles/globals.scss";
@@ -97,7 +100,9 @@ class MyApp extends App {
 
     return (
       <Provider store={store}>
-        <Component {...pageProps} />
+        <ScrollToTop>
+          <Component {...pageProps} />
+        </ScrollToTop>
       </Provider>
     );
   }

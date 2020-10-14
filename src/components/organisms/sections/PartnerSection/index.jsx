@@ -23,7 +23,11 @@ class PartnerSection extends React.Component {
     const { data } = this.props;
 
     return (
-      <section id="partners" className="py-4">
+      <section
+        id="partners"
+        className="py-4"
+        style={{ backgroundColor: data.color ? data.color : "#f0f1f1" }}
+      >
         <MDBContainer className="text-center">
           <MDBRow className="flex-center">
             {data?.partners &&

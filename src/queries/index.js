@@ -34,11 +34,13 @@ export const GET_PAGE = gql`
         copyrightholder
         sections {
           ... on Home_S_ContentCenter {
+            color
             contentCenterHead
             contentCenterLead
             contentCenterText
           }
           ... on Home_S_ContentRight {
+            color
             contentRightImg {
               url
             }
@@ -47,6 +49,7 @@ export const GET_PAGE = gql`
             contentRightText
           }
           ... on Home_S_ContentLeft {
+            color
             contentLeftImg {
               url
             }
@@ -55,9 +58,11 @@ export const GET_PAGE = gql`
             contentLeftText
           }
           ... on Home_S_FeatureBlock {
+            color
             features
           }
           ... on Home_S_PartnersBlock {
+            color
             partners
           }
         }

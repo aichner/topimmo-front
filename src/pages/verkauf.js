@@ -218,7 +218,7 @@ class Verkauf extends React.Component {
                         })}
                       </>
                     ) : (
-                      <div className="text-center">
+                      <div className="text-center white rounded p-3">
                         <p className="lead">
                           Es stehen derzeit leider keine Objekte zum Verkauf.
                         </p>
@@ -233,9 +233,9 @@ class Verkauf extends React.Component {
               ) : (
                 <>
                   {selectedPages === false ? (
-                    <div className="text-center">
+                    <div className="text-center white rounded p-3">
                       <p className="lead">
-                        Das gewünschte Projekt ist leider nicht verfügbar.
+                        Es stehen derzeit leider keine Objekte zum Verkauf.
                       </p>
                       <MDBBtn color="blue" href="/">
                         <MDBIcon icon="angle-left" />

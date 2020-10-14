@@ -259,6 +259,15 @@ class Product extends React.Component {
                                               className="img-fluid"
                                             />
                                             <MDBBadge color="blue">{`€ ${flatDetails.price}`}</MDBBadge>
+                                            {flatDetails.available ? (
+                                              <MDBBadge color="success">
+                                                Verfügbar
+                                              </MDBBadge>
+                                            ) : (
+                                              <MDBBadge color="danger">
+                                                Vermietet
+                                              </MDBBadge>
+                                            )}
                                             <MDBCardBody>
                                               <p className="lead">
                                                 {flatDetails.title}

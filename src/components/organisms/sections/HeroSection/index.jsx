@@ -4,7 +4,6 @@
 import React from "react";
 //> Next
 import Link from "next/link";
-
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -19,6 +18,9 @@ import {
   MDBBtn,
   MDBIcon,
 } from "mdbreact";
+
+//> Images
+import formLg from "../../../../static/svg/form_lg.svg";
 //#endregion
 
 //#region > Components
@@ -67,8 +69,9 @@ class HeroSection extends React.Component {
                         className="flex-center text-white text-center"
                       >
                         <div>
+                          <img src={formLg} className="form-lg" />
                           <div>
-                            <h3>{item.slideHead}</h3>
+                            <h3 className="hero-title">{item.slideHead}</h3>
                           </div>
                           <div>
                             {item.slidePage && item.slidePage.slug && (

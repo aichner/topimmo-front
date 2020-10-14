@@ -16,6 +16,9 @@ import {
   MDBBtn,
   MDBIcon,
 } from "mdbreact";
+
+//> Images
+import formSm from "../../../static/svg/form_sm.svg";
 //#endregion
 
 //#region > Components
@@ -33,7 +36,8 @@ class Footer extends React.Component {
             <MDBContainer className="text-md-left pb-3">
               <MDBRow className="mb-3 align-items-initial justify-content-center">
                 <MDBCol lg="3">
-                  <p className="lead text-left mb-2">Kontakt</p>
+                  <p className="lead text-left mb-0">Kontakt</p>
+                  <img src={formSm} className="form-img" />
                   <p className="mb-0">{data && data.phone}</p>
                   <p className="mb-2">{data && data.email}</p>
                   <p className="mb-0">{data && data.address}</p>
@@ -42,7 +46,8 @@ class Footer extends React.Component {
                   </p>
                 </MDBCol>
                 <MDBCol md="3">
-                  <p className="lead text-left mb-2">Links</p>
+                  <p className="lead text-left mb-0">Links</p>
+                  <img src={formSm} className="form-img" />
                   <Link href="/about">
                     <li className="list-unstyled">Impressum</li>
                   </Link>
@@ -51,14 +56,13 @@ class Footer extends React.Component {
                   </Link>
                 </MDBCol>
                 <MDBCol md="3">
-                  <p className="lead text-left mb-2">Sicheres Gefühl</p>
-                  <Link href="/cancellation">
-                    <li className="list-unstyled">Widerruf</li>
+                  <p className="lead text-left mb-0">Objekte</p>
+                  <img src={formSm} className="form-img" />
+                  <Link href="/vermietung">
+                    <li className="list-unstyled">Vermietung</li>
                   </Link>
-                  <Link href="/shipping">
-                    <li className="list-unstyled">
-                      Versand- und Zahlungsinformationen
-                    </li>
+                  <Link href="/verkauf">
+                    <li className="list-unstyled">Verkauf</li>
                   </Link>
                 </MDBCol>
               </MDBRow>

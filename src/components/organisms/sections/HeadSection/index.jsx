@@ -11,10 +11,14 @@ import { MDBContainer } from "mdbreact";
 //#region > Components
 class HeadSection extends React.Component {
   render() {
-    const { data } = this.props;
+    const { data, dark } = this.props;
 
     return (
-      <section id="head" className="pt-4 pb-2">
+      <section
+        id="head"
+        className={dark ? "pt-4 pb-2 text-white" : "pt-4 pb-2"}
+        style={{ backgroundColor: data.color ? data.color : "#ffffff" }}
+      >
         <MDBContainer className="text-center">
           <h2>{data.contentCenterHead}</h2>
           {data.contentCenterLead && (

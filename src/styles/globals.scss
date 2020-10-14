@@ -118,6 +118,18 @@ a {
   box-shadow: none;
 }
 
+// Form
+.form-img {
+  width: 70px;
+  max-width: 50%;
+}
+
+.form-lg {
+  width: 180px;
+  max-width: 90%;
+  margin: 1rem auto;
+}
+
 // Generic
 .clickable {
   cursor: pointer !important;

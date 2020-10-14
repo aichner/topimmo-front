@@ -28,6 +28,8 @@ import {
   MDBView,
   MDBMask,
   MDBLightbox,
+  MDBInput,
+  MDBCard,
 } from "mdbreact";
 
 //> Redux
@@ -207,6 +209,57 @@ class Article extends React.Component {
                             );
                           })}
                           <MDBLightbox md="4" images={images} />
+                          <MDBRow className="flex-center">
+                            <MDBCol lg="5">
+                              <MDBCard className="text-left z-depth-0 my-4">
+                                <MDBCardBody>
+                                  <div className="md-form">
+                                    <MDBInput
+                                      icon="user"
+                                      label="Name"
+                                      iconClass="grey-text"
+                                      type="text"
+                                      id="form-name"
+                                      outline
+                                    />
+                                  </div>
+                                  <div className="md-form">
+                                    <MDBInput
+                                      icon="envelope"
+                                      label="E-Mail"
+                                      iconClass="grey-text"
+                                      type="text"
+                                      id="form-name"
+                                      outline
+                                    />
+                                  </div>
+                                  <div className="md-form">
+                                    <MDBInput
+                                      icon="phone"
+                                      label="Telefonnummer (optional)"
+                                      iconClass="grey-text"
+                                      type="text"
+                                      id="form-name"
+                                      outline
+                                    />
+                                  </div>
+                                  <div className="md-form">
+                                    <MDBInput
+                                      icon="pen"
+                                      label="Notiz (optional)"
+                                      iconClass="grey-text"
+                                      type="textarea"
+                                      id="form-text"
+                                      outline
+                                    />
+                                  </div>
+                                  <div className="text-center">
+                                    <MDBBtn color="blue">Senden</MDBBtn>
+                                  </div>
+                                </MDBCardBody>
+                              </MDBCard>
+                            </MDBCol>
+                          </MDBRow>
                         </MDBCardBody>
                       </MDBJumbotron>
                     </MDBCol>

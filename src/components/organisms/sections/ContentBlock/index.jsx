@@ -2,10 +2,12 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBBtn, MDBRow, MDBCol, MDBContainer } from "mdbreact";
+
+//> Images
+import formSm from "../../../../static/svg/form_sm.svg";
 //#endregion
 
 //#region > Components
@@ -14,7 +16,11 @@ class ContentBlock extends React.Component {
     const { data, orientation } = this.props;
 
     return (
-      <section id="contentblock" className="text-center py-4">
+      <section
+        id="contentblock"
+        className="text-center py-4"
+        style={{ backgroundColor: data.color ? data.color : "#ffffff" }}
+      >
         <MDBContainer>
           {orientation === "left" && (
             <MDBRow>
@@ -32,7 +38,7 @@ class ContentBlock extends React.Component {
               <MDBCol lg="7" className="text-left">
                 <p className="h3-responsive">{data.contentLeftHead}</p>
                 {data.contentLeftHead || data.contentLeftLead ? (
-                  <hr align="left" />
+                  <img src={formSm} className="form-img mb-3" />
                 ) : null}
                 <p className="lead">{data.contentLeftLead}</p>
                 <p dangerouslySetInnerHTML={{ __html: data.contentLeftText }} />
@@ -44,7 +50,7 @@ class ContentBlock extends React.Component {
               <MDBCol lg="7" className="text-left">
                 <p className="h3-responsive">{data.contentRightHead}</p>
                 {data.contentRightHead || data.contentRightLead ? (
-                  <hr align="left" />
+                  <img src={formSm} className="form-img mb-3" />
                 ) : null}
                 <p className="lead">{data.contentRightLead}</p>
                 <p

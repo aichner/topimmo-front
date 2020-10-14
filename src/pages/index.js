@@ -7,6 +7,9 @@ import Head from "next/head";
 //> Redux
 // Basic Redux provider
 import { connect } from "react-redux";
+//> Tinycolor
+// Color management
+import tinycolor from "tinycolor2";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -99,13 +102,21 @@ class Home extends React.Component {
           {page?.headers && <HeroSection data={page.headers} />}
           {page?.sections &&
             page.sections.map((section, s) => {
-              console.log(section);
               return (
                 <React.Fragment key={s}>
                   {(() => {
                     switch (section.__typename) {
                       case "Home_S_ContentCenter":
-                        return <HeadSection data={section} />;
+                        return (
+                          <HeadSection
+                            data={section}
+                            dark={
+                              section.color
+                                ? tinycolor(section.color).getBrightness() < 100
+                                : false
+                            }
+                          />
+                        );
                       case "Home_S_ContentLeft":
                         return (
                           <ContentBlock data={section} orientation="left" />
