@@ -77,24 +77,134 @@ article {
 }
 
 #project {
+  h1 {
+    color: white !important;
+    background: $dark;
+    display: inline-block;
+    padding: 0.8rem;
+  }
+
+  .object-list {
+    .card-title {
+      color: white !important;
+      background: $dark;
+      display: inline-block;
+      padding: 0.5rem;
+    }
+
+    .col-lg-4 {
+      padding: 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      .item-view {
+        .view {
+          background: $dark;
+          overflow: hidden;
+
+          img {
+            margin: 1.5rem 0;
+            transition: all 0.2s ease;
+          }
+        }
+
+        &:hover {
+          img {
+            transform: scale(1.1);
+          }
+        }
+
+        .badge {
+          border-radius: 0;
+          padding: 0.5rem 0;
+          font-size: 1rem;
+        }
+      }
+
+      .object-view {
+        .view {
+          overflow: hidden;
+        }
+
+        img {
+          transition: all 0.2s ease;
+        }
+
+        &:hover {
+          img {
+            transform: scale(1.1);
+          }
+        }
+
+        .badge {
+          border-radius: 0;
+          box-shadow: none;
+          padding: 0.5rem 1rem;
+          font-size: 0.9rem;
+        }
+      }
+
+      .card {
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: darken(white, 5%) !important;
+        }
+      }
+    }
+  }
+
   .flat-list {
     .col-lg-4 {
       padding: 0;
       cursor: pointer;
       transition: all 0.2s ease;
 
-      .view {
-        background: $dark;
+      .item-view {
+        .view {
+          background: $dark;
+          overflow: hidden;
 
-        img {
-          margin: 1.5rem 0;
+          img {
+            margin: 1.5rem 0;
+            transition: all 0.2s ease;
+          }
+        }
+
+        &:hover {
+          img {
+            transform: scale(1.1);
+          }
+        }
+
+        .badge {
+          border-radius: 0;
+          padding: 0.5rem 0;
+          font-size: 1rem;
         }
       }
 
-      .badge {
-        border-radius: 0;
-        padding: 0.5rem 0;
-        font-size: 1rem;
+      .object-view {
+        .view {
+          overflow: hidden;
+        }
+
+        img {
+          transition: all 0.2s ease;
+        }
+
+        &:hover {
+          img {
+            transform: scale(1.1);
+          }
+        }
+
+        .badge {
+          border-radius: 0;
+          box-shadow: none;
+          padding: 0.5rem 1rem;
+          font-size: 0.9rem;
+        }
       }
 
       .card {

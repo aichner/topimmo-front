@@ -183,7 +183,7 @@ class Product extends React.Component {
                                       }}
                                     ></div>
                                     <MDBMask
-                                      overlay="black-strong"
+                                      overlay="black-slight"
                                       className="flex-center text-white text-center"
                                     >
                                       <h1>{selectedPage.title}</h1>
@@ -195,7 +195,6 @@ class Product extends React.Component {
                           </MDBCarouselInner>
                         </MDBCarousel>
                         <MDBCardBody>
-                          <MDBCardTitle className="indigo-text h3 m-4"></MDBCardTitle>
                           {selectedPage.sections.map((section, s) => {
                             return (
                               <>
@@ -249,7 +248,7 @@ class Product extends React.Component {
                                         <Link
                                           href={"/item/" + flatDetails.slug}
                                         >
-                                          <MDBCard className="z-depth-0 p-0">
+                                          <MDBCard className="z-depth-0 p-0 item-view">
                                             <MDBCardImage
                                               src={
                                                 process.env
