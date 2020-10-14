@@ -1,5 +1,11 @@
 @import "./variables.scss";
 
+.flyout {
+  background-image: url("../static/svg/lines.svg");
+  background-repeat: repeat;
+  background-size: 250px;
+}
+
 #contentblock {
   img {
     max-height: 300px;
