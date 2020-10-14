@@ -154,7 +154,7 @@ class Article extends React.Component {
                             {selectedPage.headers.map((item, i) => {
                               return (
                                 <MDBCarouselItem itemId={i + 1}>
-                                  <MDBView>
+                                  <MDBView className="main-view">
                                     <div
                                       className="w-100 h-100 img-banner"
                                       style={{

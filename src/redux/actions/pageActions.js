@@ -152,7 +152,6 @@ export const getFlats = () => {
         },
       })
       .then(({ data }) => {
-        console.error("YEEEE", data);
         if (data !== undefined) {
           dispatch({
             type: GET_FLATS_PAGE_S,

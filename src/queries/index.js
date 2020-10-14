@@ -227,6 +227,7 @@ export const GET_FLATS = gql`
         available
         lead
         price
+        title
         headers {
           ... on Projects_H_HeroBlock {
             slideImage {

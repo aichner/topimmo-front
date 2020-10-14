@@ -37,7 +37,14 @@ article {
   .jumbotron {
     padding: 0;
 
-    .view {
+    .card-title {
+      color: white !important;
+      background: $dark;
+      display: inline-block;
+      padding: 0.5rem;
+    }
+
+    .main-view {
       height: 50vh;
 
       .img-banner {
@@ -65,6 +72,38 @@ article {
 
     .rgba-black-strong {
       background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+}
+
+#project {
+  .flat-list {
+    .col-lg-4 {
+      padding: 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      .view {
+        background: $dark;
+
+        img {
+          margin: 1.5rem 0;
+        }
+      }
+
+      .badge {
+        border-radius: 0;
+        padding: 0.5rem 0;
+        font-size: 1rem;
+      }
+
+      .card {
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: darken(white, 5%) !important;
+        }
+      }
     }
   }
 }

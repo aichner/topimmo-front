@@ -5,7 +5,6 @@ import React from "react";
 //> NextJS
 import Head from "next/head";
 import { withRouter } from "next/router";
-import Link from "next/link";
 //> Redux
 // Basic Redux provider
 import { connect } from "react-redux";
@@ -29,21 +28,12 @@ import {
   MDBView,
   MDBMask,
   MDBLightbox,
-  MDBListGroup,
-  MDBListGroupItem,
-  MDBBadge,
-  MDBCard,
 } from "mdbreact";
 
 //> Redux
 // Actions
 import { tokenAuth, refreshToken } from "../../redux/actions/authActions";
-import {
-  getProjectsPages,
-  getImages,
-  getFlats,
-  getPage,
-} from "../../redux/actions/pageActions";
+import { getFlats, getImages, getPage } from "../../redux/actions/pageActions";
 //> Components
 //import { ScrollToTop } from "../components/atoms";
 import { Navbar, Footer, CookieModal } from "../../components/molecules";
@@ -51,8 +41,8 @@ import { HeadSection, ContentBlock } from "../../components/organisms/sections";
 //#endregion
 
 //#region > Page
-class Product extends React.Component {
-  state = { pages: undefined, images: undefined, flats: undefined };
+class Article extends React.Component {
+  state = { pages: undefined, images: undefined };
 
   componentDidMount = () => {
     // Get tokens and page data
@@ -60,42 +50,32 @@ class Product extends React.Component {
     // Refresh token every 2 minutes (120000 ms)
     this.refreshInterval = window.setInterval(this.props.refreshToken, 120000);
 
-    if (
-      this.props.logged &&
-      (!this.props.pages || !this.props.images || !this.props.flats)
-    ) {
+    if (this.props.logged && (!this.props.pages || !this.props.images)) {
       // Get root page
-      this.props.getProjectsPages();
+      this.props.getFlats();
+      // Get root page
+      this.props.getPage();
       // Get all images
       this.props.getImages();
-      // Get all pages
-      this.props.getFlats();
-      // Get page
-      this.props.getPage();
-    } else if (this.props.pages && this.props.images) {
+    } else if (this.props.pages && this.props.images && this.props.root) {
       this.setState({
         pages: this.props.pages,
         images: this.props.images,
+        root: this.props.root,
       });
     }
   };
 
   componentDidUpdate = () => {
-    const { pages, images, flats } = this.state;
+    const { pages, images, root } = this.state;
 
-    if (this.props.logged && !pages) {
+    if (this.props.logged && (!pages || !images)) {
       // Get root page
-      this.props.getProjectsPages();
-    }
-
-    if (this.props.logged && !images) {
+      this.props.getFlats();
+      // Get root page
+      this.props.getPage();
       // Get all images
       this.props.getImages();
-    }
-
-    if (this.props.logged && !flats) {
-      // Get all flats
-      this.props.getFlats();
     }
 
     // Set page state
@@ -105,26 +85,24 @@ class Product extends React.Component {
       });
     }
 
+    // Set page state
+    if (!root && this.props.root && this.props.logged && !this.props.error) {
+      this.setState({
+        root: this.props.root[0],
+      });
+    }
+
     // Set all images as state
     if (!images && this.props.images && this.props.logged) {
       this.setState({
         images: this.props.images,
       });
     }
-
-    // Set all flats as state
-    if (!flats && this.props.flats && this.props.logged) {
-      this.setState({
-        flats: this.props.flats,
-      });
-    }
   };
 
   render() {
-    const { pages, flats } = this.state;
-    const { router, root } = this.props;
-
-    console.log("FLATS", flats);
+    const { pages, root } = this.state;
+    const { router } = this.props;
 
     const slug = router.query?.slug;
     const selectedPage = pages
@@ -153,7 +131,7 @@ class Product extends React.Component {
     return (
       <div className="flyout">
         <Navbar />
-        <main id="project">
+        <main>
           <article>
             <MDBContainer className="mt-5 pt-5">
               {selectedPage !== null && selectedPage !== false ? (
@@ -183,11 +161,9 @@ class Product extends React.Component {
                                       }}
                                     ></div>
                                     <MDBMask
-                                      overlay="black-strong"
+                                      overlay="black-slight"
                                       className="flex-center text-white text-center"
-                                    >
-                                      <h1>{selectedPage.title}</h1>
-                                    </MDBMask>
+                                    />
                                   </MDBView>
                                 </MDBCarouselItem>
                               );
@@ -195,7 +171,9 @@ class Product extends React.Component {
                           </MDBCarouselInner>
                         </MDBCarousel>
                         <MDBCardBody>
-                          <MDBCardTitle className="indigo-text h3 m-4"></MDBCardTitle>
+                          <MDBCardTitle className="h3 mt-3">
+                            {selectedPage.title}
+                          </MDBCardTitle>
                           {selectedPage.sections.map((section, s) => {
                             return (
                               <>
@@ -228,56 +206,6 @@ class Product extends React.Component {
                               </>
                             );
                           })}
-                          <MDBRow className="flex-center flat-list">
-                            {selectedPage.flats &&
-                              selectedPage.flats.map((flat, i) => {
-                                const flatDetails = flats
-                                  ? flats.filter(
-                                      (f) => f.slug === flat.flat.slug
-                                    )[0]
-                                  : null;
-
-                                console.log("SELE", flatDetails);
-
-                                return (
-                                  <>
-                                    {flatDetails ? (
-                                      <MDBCol
-                                        lg="4"
-                                        className="border rounded p-0"
-                                      >
-                                        <Link
-                                          href={"/item/" + flatDetails.slug}
-                                        >
-                                          <MDBCard className="z-depth-0 p-0">
-                                            <MDBCardImage
-                                              src={
-                                                process.env
-                                                  .NEXT_PUBLIC_BASEURL +
-                                                flatDetails.groundPlan[0]
-                                                  .groundPlan.url
-                                              }
-                                              className="img-fluid"
-                                            />
-                                            <MDBBadge color="blue">{`€ ${flatDetails.price}`}</MDBBadge>
-                                            <MDBCardBody>
-                                              <p className="lead">
-                                                {flatDetails.title}
-                                              </p>
-                                              <MDBCardText>
-                                                {flatDetails.lead}
-                                              </MDBCardText>
-                                            </MDBCardBody>
-                                          </MDBCard>
-                                        </Link>
-                                      </MDBCol>
-                                    ) : (
-                                      <MDBSpinner />
-                                    )}
-                                  </>
-                                );
-                              })}
-                          </MDBRow>
                           <MDBLightbox md="4" images={images} />
                         </MDBCardBody>
                       </MDBJumbotron>
@@ -289,7 +217,7 @@ class Product extends React.Component {
                   {selectedPage === false ? (
                     <div className="text-center">
                       <p className="lead">
-                        Das gewünschte Projekt ist leider nicht verfügbar.
+                        Der gewünschte Artikel ist leider nicht verfügbar.
                       </p>
                       <MDBBtn color="blue" href="/">
                         <MDBIcon icon="angle-left" />
@@ -307,7 +235,7 @@ class Product extends React.Component {
           </article>
           <CookieModal saveCookie={this.saveCookie} />
         </main>
-        <Footer data={root ? root[0] : null} />
+        <Footer data={root} />
       </div>
     );
   }
@@ -317,8 +245,7 @@ class Product extends React.Component {
 //#region > Functions
 const mapStateToProps = (state) => ({
   logged: state.auth.logged,
-  pages: state.page.projects,
-  flats: state.page.flats,
+  pages: state.page.flats,
   root: state.page.root,
   images: state.page.images,
 });
@@ -326,9 +253,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   tokenAuth,
   refreshToken,
-  getProjectsPages,
-  getFlats,
   getPage,
+  getFlats,
   getImages,
 };
 //#endregion
@@ -337,7 +263,7 @@ const mapDispatchToProps = {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withRouter(Product));
+)(withRouter(Article));
 //#endregion
 
 /**
