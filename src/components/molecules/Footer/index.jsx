@@ -134,13 +134,6 @@ class Footer extends React.Component {
 }
 //#endregion
 
-//#region > PropTypes
-Footer.propTypes = {
-  sections: PropTypes.array.isRequired,
-  images: PropTypes.array.isRequired,
-};
-//#endregion
-
 //#region > Exports
 export default Footer;
 //#endregion

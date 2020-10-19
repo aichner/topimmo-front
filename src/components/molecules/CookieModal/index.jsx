@@ -51,7 +51,7 @@ class ModalPage extends React.Component {
       })
     );
 
-    this.setState({ modal1: false }, () => this.props.saveCookie());
+    this.setState({ modal1: false });
   }
 
   toggle = (nr) => () => {
