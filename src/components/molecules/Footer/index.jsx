@@ -19,6 +19,7 @@ import {
 
 //> Images
 import formSm from "../../../static/svg/form_sm.svg";
+import certificateImg from "../../../static/svg/bautraeger.svg";
 //#endregion
 
 //#region > Components
@@ -64,6 +65,13 @@ class Footer extends React.Component {
                   <Link href="/verkauf">
                     <li className="list-unstyled">Verkauf</li>
                   </Link>
+                </MDBCol>
+                <MDBCol md="3" className="d-sm-none d-block">
+                  <img
+                    src={certificateImg}
+                    alt="Bauträger Staatlich geprüft"
+                    className="img-fluid certificate"
+                  />
                 </MDBCol>
               </MDBRow>
             </MDBContainer>

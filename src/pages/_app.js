@@ -29,6 +29,9 @@ import rootReducer from "../redux/reducers/rootReducer";
 //> Components
 import { ScrollToTop } from "../components/atoms";
 
+//> Images
+import certificateImg from "../static/svg/bautraeger.svg";
+
 //> Global Styling
 // Local
 import "../styles/globals.scss";
@@ -101,6 +104,9 @@ class MyApp extends App {
     return (
       <Provider store={store}>
         <ScrollToTop>
+          <div className="certificate d-sm-block d-none">
+            <img src={certificateImg} />
+          </div>
           <Component {...pageProps} />
         </ScrollToTop>
       </Provider>
