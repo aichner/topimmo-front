@@ -85,7 +85,6 @@ export const sendMessage = (title, link, name, type, email, phone, note) => {
         },
       })
       .then(({ data }) => {
-        console.log(data);
         return true;
       })
       .catch((err) => {

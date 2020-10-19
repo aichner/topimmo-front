@@ -126,8 +126,6 @@ class Verkauf extends React.Component {
     const { pages, flats } = this.state;
     const { root } = this.props;
 
-    console.log(pages, flats);
-
     const selectedPages = pages
       ? pages.length > 0
         ? pages.filter((p) => p.buyAvailable === true)
@@ -135,8 +133,6 @@ class Verkauf extends React.Component {
           : false
         : null
       : null;
-
-    console.log(selectedPages);
 
     return (
       <div className="flyout">

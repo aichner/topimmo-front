@@ -53,7 +53,7 @@ class HeroSection extends React.Component {
             <MDBCarouselInner>
               {data.map((item, i) => {
                 return (
-                  <MDBCarouselItem itemId={i + 1}>
+                  <MDBCarouselItem itemId={i + 1} key={"hero-" + i}>
                     <MDBView>
                       <div
                         className="w-100 h-100 img-banner"

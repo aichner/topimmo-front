@@ -126,8 +126,6 @@ class Product extends React.Component {
     const { pages, flats } = this.state;
     const { router, root } = this.props;
 
-    console.log("FLATS", flats);
-
     const slug = router.query?.slug;
     const selectedPage = pages
       ? pages.length > 0
@@ -216,7 +214,6 @@ class Product extends React.Component {
                             return (
                               <>
                                 {(() => {
-                                  console.log(section);
                                   switch (section.__typename) {
                                     case "Projects_S_ContentCenter":
                                       return <HeadSection data={section} />;

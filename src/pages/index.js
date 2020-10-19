@@ -138,8 +138,6 @@ class Home extends React.Component {
   render() {
     const { page, images } = this.state;
 
-    console.log(this.state);
-
     return (
       <div className="flyout">
         <NextSeo

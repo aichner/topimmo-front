@@ -132,8 +132,6 @@ class Article extends React.Component {
       note
     );
 
-    console.log(success);
-
     if (success) {
       this.setState({
         msgSent: true,
@@ -246,7 +244,6 @@ class Article extends React.Component {
                             return (
                               <>
                                 {(() => {
-                                  console.log(section);
                                   switch (section.__typename) {
                                     case "Projects_S_ContentCenter":
                                       return <HeadSection data={section} />;
