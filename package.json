@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "ReactJS using NextJS for improved SEO and performance.",
-  "main": "index.js",
+  "main": "dist/server/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aichner/nextjs-template.git"
@@ -15,11 +15,20 @@
     "url": "https://github.com/aichner/nextjs-template/issues"
   },
   "homepage": "https://github.com/aichner/nextjs-template#readme",
+  "engines": {
+    "node": "10"
+  },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build && next export",
-    "deploy": "npm run build && firebase deploy",
-    "start": "npm run dev && next start"
+    "dev:client": "next src/client",
+    "dev:server": "babel src/server --out-dir dist/server --source-maps --watch",
+    "dev": "npm run dev:client & npm run dev:server",
+    "build:client": "next build src/client",
+    "build:server": "babel src/server --out-dir dist/server --source-maps",
+    "build": "npm run build:client && npm run build:server",
+    "preserve": "npm run build",
+    "serve": "cross-env NODE_ENV=production firebase serve --only functions,hosting",
+    "predeploy": "rimraf dist/ && npm run build",
+    "deploy": "cross-env NODE_ENV=production firebase deploy --only functions,hosting"
   },
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
@@ -29,9 +38,11 @@
     "apollo-client": "^2.6.10",
     "apollo-link-context": "^1.0.20",
     "apollo-link-http": "^1.5.17",
+    "firebase-admin": "^9.2.0",
+    "firebase-functions": "^3.11.0",
     "graphql": "^15.3.0",
     "mdbreact": "file:mdbreact-4.26.1.tgz",
-    "next": "^9.5.3",
+    "next": "^9.5.5",
     "next-compose-plugins": "^2.2.0",
     "next-fonts": "^1.4.0",
     "next-images": "^1.5.0",
@@ -47,5 +58,11 @@
     "sass": "^1.26.11",
     "tinycolor2": "^1.4.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "cross-env": "^7.0.2",
+    "rimraf": "^3.0.2"
+  }
 }

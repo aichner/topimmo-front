@@ -137,7 +137,7 @@ class ModalPage extends React.Component {
             </MDBFormInline>
           </div>
           <div className="d-block">
-            <MDBBtn color="success" onClick={() => this.checkAll()}>
+            <MDBBtn color="blue" onClick={() => this.checkAll()}>
               <MDBIcon icon="check-circle" />
               Alle akzeptieren
             </MDBBtn>

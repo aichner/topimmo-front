@@ -201,12 +201,22 @@ class Vermietung extends React.Component {
                                     }
                                     className="img-fluid"
                                   />
-                                  {available ? (
+                                  {dedicatedFlats.length > 0 ? (
+                                    <>
+                                      {available ? (
+                                        <MDBBadge color="success">
+                                          Verfügbar
+                                        </MDBBadge>
+                                      ) : (
+                                        <MDBBadge color="danger">
+                                          Belegt
+                                        </MDBBadge>
+                                      )}
+                                    </>
+                                  ) : (
                                     <MDBBadge color="success">
                                       Verfügbar
                                     </MDBBadge>
-                                  ) : (
-                                    <MDBBadge color="danger">Belegt</MDBBadge>
                                   )}
 
                                   <MDBCardBody>

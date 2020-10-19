@@ -112,6 +112,7 @@ class MyApp extends App {
             content="initial-scale=1.0, width=device-width"
           />
           <meta property="og:image" content={previewImg} key="ogimage" />
+          <script type="text/javascript" src="/static/execute.js"></script>
         </Head>
         <ScrollToTop>
           <div className="certificate d-sm-block d-none">
