@@ -1,7 +1,7 @@
 //#region > Imports
 //> Queries
 // Wagtail
-import { LOGIN_USER, REFRESH_TOKEN } from "../../queries";
+import { LOGIN_USER, REFRESH_TOKEN, SEND_MESSAGE } from "../../queries";
 //#endregion
 
 //#region > Action types
@@ -60,6 +60,32 @@ export const refreshToken = () => {
         // Set local storage
         setTokens(data.refreshToken.token, data.refreshToken.refreshToken);
 
+        return true;
+      })
+      .catch((err) => {
+        return false;
+      });
+  };
+};
+
+export const sendMessage = (title, link, name, type, email, phone, note) => {
+  return (dispatch, getState, { clientCMS }) => {
+    return clientCMS
+      .mutate({
+        mutation: SEND_MESSAGE,
+        variables: {
+          token: localStorage.getItem("token"),
+          title,
+          link,
+          name,
+          type,
+          email,
+          phone,
+          note,
+        },
+      })
+      .then(({ data }) => {
+        console.log(data);
         return true;
       })
       .catch((err) => {

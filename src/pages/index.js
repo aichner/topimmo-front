@@ -4,6 +4,8 @@
 import React from "react";
 //> NextJS
 import Head from "next/head";
+//> SEO
+import { NextSeo } from "next-seo";
 //> Redux
 // Basic Redux provider
 import { connect } from "react-redux";
@@ -90,6 +92,37 @@ class Home extends React.Component {
     }
   };
 
+  sendMsg = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const { fullname, email, phone, note } = this.state;
+    const { router } = this.props;
+
+    const slug = router.query?.slug;
+    const link = window.location?.origin;
+
+    const success = await this.props.sendMessage(
+      "Landingpage",
+      "https://www.top-immo.org",
+      fullname,
+      "Miete",
+      email,
+      phone,
+      note
+    );
+
+    if (success) {
+      this.setState({
+        msgSent: true,
+      });
+    } else {
+      this.setState({
+        msgSent: false,
+      });
+    }
+  };
+
   render() {
     const { page, images } = this.state;
 
@@ -97,6 +130,18 @@ class Home extends React.Component {
 
     return (
       <div className="flyout">
+        <NextSeo
+          title="TOP Immo - Immobilien aus erster Hand"
+          description="Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt."
+          canonical="https://www.top-immo.org/"
+          openGraph={{
+            url: "https://www.top-immo.org",
+            title: "TOP Immo - Immobilien aus erster Hand",
+            description:
+              "Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt.",
+            site_name: "TopImmo",
+          }}
+        />
         <Navbar />
         <main>
           {page?.headers && <HeroSection data={page.headers} />}
@@ -133,6 +178,20 @@ class Home extends React.Component {
                         return (
                           <PartnerSection data={section} images={images} />
                         );
+                      case "Home_S_AboutBlock":
+                        return (
+                          <ContentBlock
+                            data={{
+                              __typename: "Home_S_ContentRight",
+                              contentRightHead: section.aboutHead,
+                              contentRightLead: section.aboutLead,
+                              contentRightText: section.aboutText,
+                              contentRightImg: section.aboutImg,
+                            }}
+                            orientation="right"
+                            id="about"
+                          />
+                        );
                       default:
                         console.warn(
                           "Unimplemented section " + section.__typename
@@ -148,76 +207,117 @@ class Home extends React.Component {
                 Kontaktiere uns
               </h2>
               <p className="text-center w-responsive mx-auto pb-3">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit,
-                error amet numquam iure provident voluptate esse quasi,
-                veritatis totam voluptas nostrum quisquam eum porro a pariatur
-                veniam.
+                Sie haben Fragen zu unserem Unternehmen oder Immobilien?
               </p>
-              <MDBRow>
+              <MDBRow className="flex-center">
                 <MDBCol lg="5" className="lg-0 mb-4">
                   <MDBCard>
                     <MDBCardBody>
-                      <div className="md-form">
-                        <MDBInput
-                          icon="user"
-                          label="Name"
-                          iconClass="grey-text"
-                          type="text"
-                          id="form-name"
-                          outline
-                        />
-                      </div>
-                      <div className="md-form">
-                        <MDBInput
-                          icon="envelope"
-                          label="E-Mail"
-                          iconClass="grey-text"
-                          type="text"
-                          id="form-name"
-                          outline
-                        />
-                      </div>
-                      <div className="md-form">
-                        <MDBInput
-                          icon="phone"
-                          label="Telefonnummer (optional)"
-                          iconClass="grey-text"
-                          type="text"
-                          id="form-name"
-                          outline
-                        />
-                      </div>
-                      <div className="md-form">
-                        <MDBInput
-                          icon="pen"
-                          label="Notiz (optional)"
-                          iconClass="grey-text"
-                          type="textarea"
-                          id="form-text"
-                          outline
-                        />
-                      </div>
-                      <div className="text-center">
-                        <MDBBtn color="light-blue">Submit</MDBBtn>
-                      </div>
+                      {this.state.msgSent === undefined ? (
+                        <form onSubmit={(e) => this.sendMsg(e)}>
+                          <div className="md-form">
+                            <MDBInput
+                              icon="user"
+                              label="Name"
+                              iconClass="grey-text"
+                              type="text"
+                              id="form-name"
+                              name="fullname"
+                              onChange={(e) =>
+                                this.setState({
+                                  [e.target.name]: e.target.value,
+                                })
+                              }
+                              value={this.state.fullname}
+                              outline
+                              required
+                            />
+                          </div>
+                          <div className="md-form">
+                            <MDBInput
+                              icon="envelope"
+                              label="E-Mail"
+                              iconClass="grey-text"
+                              type="email"
+                              id="form-name"
+                              name="email"
+                              onChange={(e) =>
+                                this.setState({
+                                  [e.target.name]: e.target.value,
+                                })
+                              }
+                              value={this.state.email}
+                              outline
+                              required
+                            />
+                          </div>
+                          <div className="md-form">
+                            <MDBInput
+                              icon="phone"
+                              label="Telefonnummer (optional)"
+                              iconClass="grey-text"
+                              type="text"
+                              id="form-name"
+                              name="phone"
+                              onChange={(e) =>
+                                this.setState({
+                                  [e.target.name]: e.target.value,
+                                })
+                              }
+                              value={this.state.phone}
+                              outline
+                            />
+                          </div>
+                          <div className="md-form">
+                            <MDBInput
+                              icon="pen"
+                              label="Notiz (optional)"
+                              iconClass="grey-text"
+                              type="textarea"
+                              id="form-text"
+                              name="note"
+                              onChange={(e) =>
+                                this.setState({
+                                  [e.target.name]: e.target.value,
+                                })
+                              }
+                              value={this.state.note}
+                              outline
+                            />
+                          </div>
+                          <div className="text-center">
+                            <MDBBtn color="blue" type="submit">
+                              Senden
+                            </MDBBtn>
+                          </div>
+                        </form>
+                      ) : (
+                        <>
+                          {this.state.msgSent ? (
+                            <>
+                              <MDBAlert color="success" className="text-center">
+                                <MDBIcon far icon="check-circle" size="2x" />
+                                <p className="mb-1 lead">
+                                  Vielen Dank für Ihr Interesse.
+                                </p>
+                                <p>Wir melden uns bei Ihnen.</p>
+                              </MDBAlert>
+                            </>
+                          ) : (
+                            <>
+                              <MDBAlert color="danger" className="text-center">
+                                <MDBIcon far icon="times-circle" size="2x" />
+                                <p className="mb-1 lead">
+                                  Wir konnten Ihre Nachricht nicht zustellen.
+                                </p>
+                                <p>Bitte versuchen Sie es später erneut.</p>
+                              </MDBAlert>
+                            </>
+                          )}
+                        </>
+                      )}
                     </MDBCardBody>
                   </MDBCard>
-                </MDBCol>
-                <MDBCol lg="7">
-                  <div
-                    id="map-container"
-                    className="rounded z-depth-1-half map-container"
-                    style={{ height: "400px" }}
-                  >
-                    <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2740.809652841172!2d13.91627631579545!3d46.610764564226194!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47707fe3eac35ec3%3A0x83b007f48483c09!2sKlampfererweg%2010%2C%209524%20Villach!5e0!3m2!1sde!2sat!4v1602079024962!5m2!1sde!2sat"
-                      title="This is a unique title"
-                      width="100%"
-                      height="100%"
-                      frameBorder="0"
-                      style={{ border: 0 }}
-                    />
-                  </div>
                 </MDBCol>
               </MDBRow>
             </section>

@@ -4,7 +4,10 @@
 import React from "react";
 //> NextJS
 import Head from "next/head";
+import Link from "next/link";
 import { withRouter } from "next/router";
+//> SEO
+import { NextSeo } from "next-seo";
 //> Redux
 // Basic Redux provider
 import { connect } from "react-redux";
@@ -30,11 +33,18 @@ import {
   MDBLightbox,
   MDBInput,
   MDBCard,
+  MDBBreadcrumb,
+  MDBBreadcrumbItem,
+  MDBAlert,
 } from "mdbreact";
 
 //> Redux
 // Actions
-import { tokenAuth, refreshToken } from "../../redux/actions/authActions";
+import {
+  tokenAuth,
+  refreshToken,
+  sendMessage,
+} from "../../redux/actions/authActions";
 import { getFlats, getImages, getPage } from "../../redux/actions/pageActions";
 //> Components
 //import { ScrollToTop } from "../components/atoms";
@@ -102,6 +112,39 @@ class Article extends React.Component {
     }
   };
 
+  sendMsg = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const { fullname, email, phone, note } = this.state;
+    const { router } = this.props;
+
+    const slug = router.query?.slug;
+    const link = window.location?.origin;
+
+    const success = await this.props.sendMessage(
+      slug,
+      link,
+      fullname,
+      "Miete",
+      email,
+      phone,
+      note
+    );
+
+    console.log(success);
+
+    if (success) {
+      this.setState({
+        msgSent: true,
+      });
+    } else {
+      this.setState({
+        msgSent: false,
+      });
+    }
+  };
+
   render() {
     const { pages, root } = this.state;
     const { router } = this.props;
@@ -128,10 +171,22 @@ class Article extends React.Component {
       });
     }
 
-    console.log(selectedPage);
-
     return (
       <div className="flyout">
+        {selectedPage !== null && selectedPage !== false && (
+          <NextSeo
+            title={selectedPage.title + " - TOP Immo"}
+            description="Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt."
+            canonical={"https://www.top-immo.org/item/" + selectedPage.slug}
+            openGraph={{
+              url: "https://www.top-immo.org/item/" + selectedPage.slug,
+              title: selectedPage.title + " - TOP Immo",
+              description:
+                "Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt.",
+              site_name: "TopImmo",
+            }}
+          />
+        )}
         <Navbar />
         <main>
           <article>
@@ -141,6 +196,17 @@ class Article extends React.Component {
                   <MDBRow>
                     <MDBCol>
                       <MDBJumbotron className="text-center">
+                        <MDBBreadcrumb className="mb-0 d-sm-none d-flex">
+                          <Link href="/">
+                            <MDBBreadcrumbItem>Home</MDBBreadcrumbItem>
+                          </Link>
+                          <MDBBreadcrumbItem onClick={() => router.back()}>
+                            Projekt
+                          </MDBBreadcrumbItem>
+                          <MDBBreadcrumbItem active>
+                            {selectedPage.title}
+                          </MDBBreadcrumbItem>
+                        </MDBBreadcrumb>
                         <MDBCarousel
                           activeItem={1}
                           length={selectedPage.headers.length}
@@ -213,49 +279,127 @@ class Article extends React.Component {
                             <MDBCol lg="5">
                               <MDBCard className="text-left z-depth-0 my-4">
                                 <MDBCardBody>
-                                  <div className="md-form">
-                                    <MDBInput
-                                      icon="user"
-                                      label="Name"
-                                      iconClass="grey-text"
-                                      type="text"
-                                      id="form-name"
-                                      outline
-                                    />
-                                  </div>
-                                  <div className="md-form">
-                                    <MDBInput
-                                      icon="envelope"
-                                      label="E-Mail"
-                                      iconClass="grey-text"
-                                      type="text"
-                                      id="form-name"
-                                      outline
-                                    />
-                                  </div>
-                                  <div className="md-form">
-                                    <MDBInput
-                                      icon="phone"
-                                      label="Telefonnummer (optional)"
-                                      iconClass="grey-text"
-                                      type="text"
-                                      id="form-name"
-                                      outline
-                                    />
-                                  </div>
-                                  <div className="md-form">
-                                    <MDBInput
-                                      icon="pen"
-                                      label="Notiz (optional)"
-                                      iconClass="grey-text"
-                                      type="textarea"
-                                      id="form-text"
-                                      outline
-                                    />
-                                  </div>
-                                  <div className="text-center">
-                                    <MDBBtn color="blue">Senden</MDBBtn>
-                                  </div>
+                                  {this.state.msgSent === undefined ? (
+                                    <form onSubmit={(e) => this.sendMsg(e)}>
+                                      <div className="md-form">
+                                        <MDBInput
+                                          icon="user"
+                                          label="Name"
+                                          iconClass="grey-text"
+                                          type="text"
+                                          id="form-name"
+                                          name="fullname"
+                                          onChange={(e) =>
+                                            this.setState({
+                                              [e.target.name]: e.target.value,
+                                            })
+                                          }
+                                          value={this.state.fullname}
+                                          outline
+                                          required
+                                        />
+                                      </div>
+                                      <div className="md-form">
+                                        <MDBInput
+                                          icon="envelope"
+                                          label="E-Mail"
+                                          iconClass="grey-text"
+                                          type="email"
+                                          id="form-name"
+                                          name="email"
+                                          onChange={(e) =>
+                                            this.setState({
+                                              [e.target.name]: e.target.value,
+                                            })
+                                          }
+                                          value={this.state.email}
+                                          outline
+                                          required
+                                        />
+                                      </div>
+                                      <div className="md-form">
+                                        <MDBInput
+                                          icon="phone"
+                                          label="Telefonnummer (optional)"
+                                          iconClass="grey-text"
+                                          type="text"
+                                          id="form-name"
+                                          name="phone"
+                                          onChange={(e) =>
+                                            this.setState({
+                                              [e.target.name]: e.target.value,
+                                            })
+                                          }
+                                          value={this.state.phone}
+                                          outline
+                                        />
+                                      </div>
+                                      <div className="md-form">
+                                        <MDBInput
+                                          icon="pen"
+                                          label="Notiz (optional)"
+                                          iconClass="grey-text"
+                                          type="textarea"
+                                          id="form-text"
+                                          name="note"
+                                          onChange={(e) =>
+                                            this.setState({
+                                              [e.target.name]: e.target.value,
+                                            })
+                                          }
+                                          value={this.state.note}
+                                          outline
+                                        />
+                                      </div>
+                                      <div className="text-center">
+                                        <MDBBtn color="blue" type="submit">
+                                          Senden
+                                        </MDBBtn>
+                                      </div>
+                                    </form>
+                                  ) : (
+                                    <>
+                                      {this.state.msgSent ? (
+                                        <>
+                                          <MDBAlert
+                                            color="success"
+                                            className="text-center"
+                                          >
+                                            <MDBIcon
+                                              far
+                                              icon="check-circle"
+                                              size="2x"
+                                            />
+                                            <p className="mb-1 lead">
+                                              Vielen Dank für Ihr Interesse.
+                                            </p>
+                                            <p>Wir melden uns bei Ihnen.</p>
+                                          </MDBAlert>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <MDBAlert
+                                            color="danger"
+                                            className="text-center"
+                                          >
+                                            <MDBIcon
+                                              far
+                                              icon="times-circle"
+                                              size="2x"
+                                            />
+                                            <p className="mb-1 lead">
+                                              Wir konnten Ihre Nachricht nicht
+                                              zustellen.
+                                            </p>
+                                            <p>
+                                              Bitte versuchen Sie es später
+                                              erneut.
+                                            </p>
+                                          </MDBAlert>
+                                        </>
+                                      )}
+                                    </>
+                                  )}
                                 </MDBCardBody>
                               </MDBCard>
                             </MDBCol>
@@ -309,6 +453,7 @@ const mapDispatchToProps = {
   getPage,
   getFlats,
   getImages,
+  sendMessage,
 };
 //#endregion
 

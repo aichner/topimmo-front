@@ -65,6 +65,14 @@ export const GET_PAGE = gql`
             color
             partners
           }
+          ... on Home_S_AboutBlock {
+            aboutImg {
+              url
+            }
+            aboutHead
+            aboutLead
+            aboutText
+          }
         }
         headers {
           ... on Home_H_HeroBlock {
@@ -219,6 +227,32 @@ export const GET_PROJECTS = gql`
           }
         }
       }
+    }
+  }
+`;
+
+export const SEND_MESSAGE = gql`
+  mutation sendMessage(
+    $title: String!
+    $link: String!
+    $name: String!
+    $type: String!
+    $email: String
+    $phone: String
+    $note: String
+    $token: String
+  ) {
+    createRequest(
+      title: $title
+      link: $link
+      name: $name
+      Type: $type
+      email: $email
+      phone: $phone
+      note: $note
+      token: $token
+    ) {
+      r
     }
   }
 `;
