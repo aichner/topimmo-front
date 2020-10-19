@@ -10,6 +10,7 @@ import {
   MDBIcon,
   MDBNavbar,
   MDBNavbarBrand,
+  MDBNavbarToggler,
   MDBCollapse,
   MDBNavbarNav,
   MDBNavItem,
@@ -60,6 +61,7 @@ class Navbar extends React.Component {
                 className="navbar-brand clickable"
               />
             </Link>
+            <MDBNavbarToggler onClick={this.onClick} />
             <MDBCollapse isOpen={this.state.collapse} navbar>
               <MDBNavbarNav right>
                 <MDBNavItem>
