@@ -90,6 +90,18 @@ class Home extends React.Component {
         images: this.props.images,
       });
     }
+
+    const hash = window.location.hash;
+
+    if (hash) {
+      const element = document.querySelector(hash);
+
+      if (element) {
+        element.scrollIntoView();
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
   };
 
   sendMsg = async (e) => {

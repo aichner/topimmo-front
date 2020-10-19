@@ -13,11 +13,11 @@ import formSm from "../../../../static/svg/form_sm.svg";
 //#region > Components
 class ContentBlock extends React.Component {
   render() {
-    const { data, orientation } = this.props;
+    const { data, orientation, id } = this.props;
 
     return (
       <section
-        id="contentblock"
+        id={id ? id : "contentblock"}
         className="text-center py-4"
         style={{ backgroundColor: data.color ? data.color : "#ffffff" }}
       >

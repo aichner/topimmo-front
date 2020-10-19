@@ -75,13 +75,13 @@ export const sendMessage = (title, link, name, type, email, phone, note) => {
         mutation: SEND_MESSAGE,
         variables: {
           token: localStorage.getItem("token"),
-          title,
-          link,
-          name,
-          type,
-          email,
-          phone,
-          note,
+          title: title ? title : "",
+          link: link ? link : "",
+          name: name ? name : "",
+          type: type ? type : "",
+          email: email ? email : "",
+          phone: phone ? phone : "",
+          note: note ? note : "",
         },
       })
       .then(({ data }) => {

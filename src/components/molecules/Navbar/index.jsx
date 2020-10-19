@@ -4,6 +4,7 @@
 import React from "react";
 // React Router DOM bindings
 import Link from "next/link";
+import { withRouter } from "next/router";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -11,6 +12,7 @@ import {
   MDBNavbar,
   MDBNavbarBrand,
   MDBNavbarToggler,
+  MDBSmoothScroll,
   MDBCollapse,
   MDBNavbarNav,
   MDBNavItem,
@@ -50,6 +52,8 @@ class Navbar extends React.Component {
   };
 
   render() {
+    const { router } = this.props;
+
     return (
       <header>
         <MDBNavbar light expand="md" scrolling fixed="top">
@@ -89,12 +93,21 @@ class Navbar extends React.Component {
                   </Link>
                 </MDBNavItem>
                 <MDBNavItem>
-                  <Link
-                    href="/#about"
-                    onClick={this.state.collapse ? this.onClick : undefined}
-                  >
-                    <a className="nav-link">Über mich</a>
-                  </Link>
+                  {router.route === "/" ? (
+                    <MDBSmoothScroll
+                      to="about"
+                      onClick={this.state.collapse ? this.onClick : undefined}
+                    >
+                      Über mich
+                    </MDBSmoothScroll>
+                  ) : (
+                    <Link
+                      href="/#about"
+                      onClick={this.state.collapse ? this.onClick : undefined}
+                    >
+                      <a className="nav-link">Über mich</a>
+                    </Link>
+                  )}
                 </MDBNavItem>
               </MDBNavbarNav>
             </MDBCollapse>
@@ -107,7 +120,7 @@ class Navbar extends React.Component {
 //#endregion
 
 //#region > Exports
-export default Navbar;
+export default withRouter(Navbar);
 //#endregion
 
 /**
