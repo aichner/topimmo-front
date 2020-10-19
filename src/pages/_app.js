@@ -2,6 +2,8 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
+//> NextJS
+import Head from "next/head";
 //> Redux
 // Basic Redux provider
 import { Provider } from "react-redux";
@@ -31,6 +33,7 @@ import { ScrollToTop } from "../components/atoms";
 
 //> Images
 import certificateImg from "../static/svg/bautraeger.svg";
+import previewImg from "../static/og.jpg";
 
 //> Global Styling
 // Local
@@ -103,6 +106,13 @@ class MyApp extends App {
 
     return (
       <Provider store={store}>
+        <Head>
+          <meta
+            name="viewport"
+            content="initial-scale=1.0, width=device-width"
+          />
+          <meta property="og:image" content={previewImg} key="ogimage" />
+        </Head>
         <ScrollToTop>
           <div className="certificate d-sm-block d-none">
             <img src={certificateImg} />

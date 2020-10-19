@@ -6,6 +6,8 @@ import React from "react";
 import Head from "next/head";
 import { withRouter } from "next/router";
 import Link from "next/link";
+//> SEO
+import { NextSeo } from "next-seo";
 //> Redux
 // Basic Redux provider
 import { connect } from "react-redux";
@@ -138,6 +140,18 @@ class Verkauf extends React.Component {
 
     return (
       <div className="flyout">
+        <NextSeo
+          title="Verkauf - TOP Immo"
+          description="Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt."
+          canonical="https://www.top-immo.org/verkauf"
+          openGraph={{
+            url: "https://www.top-immo.org/verkauf",
+            title: "Verkauf - TOP Immo",
+            description:
+              "Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt.",
+            site_name: "TopImmo",
+          }}
+        />
         <Navbar />
         <main id="project">
           <article>

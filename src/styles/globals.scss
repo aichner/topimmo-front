@@ -12,6 +12,10 @@
   box-sizing: border-box;
 }
 
+b {
+  font-weight: bold !important;
+}
+
 html,
 body {
   padding: 0;
@@ -31,6 +35,17 @@ a {
   flex-direction: column;
   min-height: 100vh;
   justify-content: space-between;
+}
+
+.certificate {
+  img {
+    width: 140px;
+    height: auto;
+    position: fixed;
+    bottom: 5%;
+    right: 3%;
+    opacity: 0.8;
+  }
 }
 
 // Custom text colors

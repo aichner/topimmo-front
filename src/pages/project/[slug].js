@@ -6,6 +6,8 @@ import React from "react";
 import Head from "next/head";
 import { withRouter } from "next/router";
 import Link from "next/link";
+//> SEO
+import { NextSeo } from "next-seo";
 //> Redux
 // Basic Redux provider
 import { connect } from "react-redux";
@@ -148,10 +150,22 @@ class Product extends React.Component {
       });
     }
 
-    console.log(selectedPage);
-
     return (
       <div className="flyout">
+        {selectedPage !== null && selectedPage !== false && (
+          <NextSeo
+            title={selectedPage.title + " - TOP Immo"}
+            description="Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt."
+            canonical={"https://www.top-immo.org/project/" + selectedPage.slug}
+            openGraph={{
+              url: "https://www.top-immo.org/project/" + selectedPage.slug,
+              title: selectedPage.title + " - TOP Immo",
+              description:
+                "Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt.",
+              site_name: "TopImmo",
+            }}
+          />
+        )}
         <Navbar />
         <main id="project">
           <article>
@@ -184,7 +198,7 @@ class Product extends React.Component {
                                     ></div>
                                     <MDBMask
                                       overlay="black-slight"
-                                      className="flex-center text-white text-center"
+                                      className="text-white text-center d-sm-block d-none pt-5"
                                     >
                                       <h1>{selectedPage.title}</h1>
                                     </MDBMask>
@@ -195,6 +209,9 @@ class Product extends React.Component {
                           </MDBCarouselInner>
                         </MDBCarousel>
                         <MDBCardBody>
+                          <h1 className="d-sm-none d-block">
+                            {selectedPage.title}
+                          </h1>
                           {selectedPage.sections.map((section, s) => {
                             return (
                               <>
@@ -236,14 +253,12 @@ class Product extends React.Component {
                                     )[0]
                                   : null;
 
-                                console.log("SELE", flatDetails);
-
                                 return (
                                   <>
                                     {flatDetails ? (
                                       <MDBCol
                                         lg="4"
-                                        className="border rounded p-0"
+                                        className="border rounded p-0 mb-4"
                                       >
                                         <Link
                                           href={"/item/" + flatDetails.slug}

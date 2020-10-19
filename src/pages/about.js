@@ -5,6 +5,8 @@ import React from "react";
 //> NextJS
 import Head from "next/head";
 import Link from "next/link";
+//> SEO
+import { NextSeo } from "next-seo";
 //> Redux
 // Basic Redux provider
 import { connect } from "react-redux";
@@ -97,6 +99,18 @@ class About extends React.Component {
 
     return (
       <div className="flyout">
+        <NextSeo
+          title="Impressum - TOP Immo"
+          description="Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt."
+          canonical="https://www.top-immo.org/about"
+          openGraph={{
+            url: "https://www.top-immo.org/about",
+            title: "Impressum - TOP Immo",
+            description:
+              "Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt.",
+            site_name: "TopImmo",
+          }}
+        />
         <Navbar />
         <main>
           <MDBContainer className="mt-5 pt-5">

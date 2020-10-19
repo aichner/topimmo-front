@@ -8,6 +8,8 @@ import Link from "next/link";
 //> Redux
 // Basic Redux provider
 import { connect } from "react-redux";
+//> SEO
+import { NextSeo } from "next-seo";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import { MDBBtn, MDBIcon, MDBContainer, MDBSpinner } from "mdbreact";
@@ -90,6 +92,18 @@ class Privacy extends React.Component {
 
     return (
       <div className="flyout">
+        <NextSeo
+          title="Datenschutz - TOP Immo"
+          description="Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt."
+          canonical="https://www.top-immo.org/privacy"
+          openGraph={{
+            url: "https://www.top-immo.org/privacy",
+            title: "Datenschutz - TOP Immo",
+            description:
+              "Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt.",
+            site_name: "TopImmo",
+          }}
+        />
         <Navbar />
         <main>
           <MDBContainer className="mt-5 pt-5">
