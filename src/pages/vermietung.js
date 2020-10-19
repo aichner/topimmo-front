@@ -216,11 +216,21 @@ class Vermietung extends React.Component {
                                   <MDBCardBody>
                                     <p className="lead">{page.title}</p>
                                     <p className="font-weight-bold">
-                                      {page.flats.length} Objekte
+                                      {dedicatedFlats.length > 0 ? (
+                                        <>{page.flats.length} Objekte</>
+                                      ) : (
+                                        <>1 Objekt</>
+                                      )}
                                     </p>
                                     <MDBCardText className="mt-3">
                                       <MDBBadge color="blue">
-                                        {`€ ${min}`} - {`€ ${max}`}
+                                        {dedicatedFlats.length > 0 ? (
+                                          <>
+                                            {`€ ${min}`} - {`€ ${max}`}
+                                          </>
+                                        ) : (
+                                          <>€ {page.priceMin}</>
+                                        )}
                                       </MDBBadge>
                                     </MDBCardText>
                                   </MDBCardBody>
