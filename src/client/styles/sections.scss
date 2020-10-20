@@ -1,0 +1,238 @@
+@import "./variables.scss";
+
+.flyout {
+  background-image: url("../static/svg/lines.svg");
+  background-repeat: repeat;
+  background-size: 250px;
+}
+
+#contentblock {
+  img {
+    max-height: 300px;
+  }
+
+  hr {
+    width: 60px;
+  }
+}
+
+#features {
+  background: $dark;
+  color: white;
+
+  img {
+    max-width: 100%;
+    height: 60px;
+    margin: 1rem 0;
+    filter: invert(1);
+  }
+
+  hr {
+    background: transparentize($color: white, $amount: 0.7);
+  }
+}
+
+#partners {
+  img {
+    max-height: 60px;
+    mix-blend-mode: multiply;
+    margin-bottom: 1.5rem;
+  }
+}
+
+#about {
+  padding-top: 4rem !important;
+  padding-bottom: 3rem !important;
+}
+
+article {
+  .jumbotron {
+    padding: 0;
+
+    .card-title {
+      color: white !important;
+      background: $dark;
+      display: inline-block;
+      padding: 0.5rem;
+    }
+
+    .main-view {
+      height: 50vh;
+
+      .img-banner {
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+      .rgba-black-strong {
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+}
+
+#hero {
+  .view {
+    height: 70vh;
+
+    .hero-title {
+      color: white !important;
+      background: $dark;
+      display: inline-block;
+      padding: 0.7rem;
+    }
+
+    .img-banner {
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .rgba-black-strong {
+      background-color: rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+#project {
+  h1 {
+    color: white !important;
+    background: $dark;
+    display: inline-block;
+    padding: 0.8rem;
+  }
+
+  .object-list {
+    .card-title {
+      color: white !important;
+      background: $dark;
+      display: inline-block;
+      padding: 0.5rem;
+    }
+
+    .col-lg-4 {
+      padding: 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      .item-view {
+        .view {
+          background: $dark;
+          overflow: hidden;
+
+          img {
+            margin: 1.5rem 0;
+            transition: all 0.2s ease;
+          }
+        }
+
+        &:hover {
+          img {
+            transform: scale(1.1);
+          }
+        }
+
+        .badge {
+          border-radius: 0;
+          padding: 0.5rem 0;
+          font-size: 1rem;
+        }
+      }
+
+      .object-view {
+        .view {
+          overflow: hidden;
+        }
+
+        img {
+          transition: all 0.2s ease;
+        }
+
+        &:hover {
+          img {
+            transform: scale(1.1);
+          }
+        }
+
+        .badge {
+          border-radius: 0;
+          box-shadow: none;
+          padding: 0.5rem 1rem;
+          font-size: 0.9rem;
+        }
+      }
+
+      .card {
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: darken(white, 5%) !important;
+        }
+      }
+    }
+  }
+
+  .flat-list {
+    .col-lg-4 {
+      padding: 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      .item-view {
+        .view {
+          background: $dark;
+          overflow: hidden;
+
+          img {
+            margin: 1.5rem 0;
+            transition: all 0.2s ease;
+          }
+        }
+
+        &:hover {
+          img {
+            transform: scale(1.1);
+          }
+        }
+
+        .badge {
+          border-radius: 0;
+          padding: 0.5rem 0;
+          font-size: 1rem;
+        }
+      }
+
+      .object-view {
+        .view {
+          overflow: hidden;
+        }
+
+        img {
+          transition: all 0.2s ease;
+        }
+
+        &:hover {
+          img {
+            transform: scale(1.1);
+          }
+        }
+
+        .badge {
+          border-radius: 0;
+          box-shadow: none;
+          padding: 0.5rem 1rem;
+          font-size: 0.9rem;
+        }
+      }
+
+      .card {
+        transition: all 0.2s ease;
+
+        &:hover {
+          background: darken(white, 5%) !important;
+        }
+      }
+    }
+  }
+}

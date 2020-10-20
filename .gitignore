@@ -10,16 +10,21 @@ package-lock.json
 /coverage
 
 # next.js
-/.next/
+.next
 /out/
+
 
 # production
 /build
+/dist
 
 # firebase
 src/config/fbConfig.js
 .firebase
 .firebaserc
+
+# mdb
+mdbreact-*
 
 # misc
 .DS_Store

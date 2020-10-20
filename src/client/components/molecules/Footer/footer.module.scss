@@ -1,0 +1,87 @@
+@import "../../../styles/variables.scss";
+
+// Footer
+footer.cloud-footer {
+  .footer-body {
+    background: $dark !important;
+
+    .form-img {
+      margin: 0.2rem 0 1rem 0;
+    }
+
+    .certificate {
+      max-height: 150px;
+    }
+
+    li {
+      color: white;
+      transition: all 0.1s ease;
+      margin-bottom: 1rem !important;
+      margin: 0.3rem 0;
+      cursor: pointer;
+
+      &:hover {
+        color: darken(white, 20%) !important;
+      }
+
+      .badge {
+        box-shadow: none;
+      }
+    }
+
+    // Custom pulsating heart
+    .pulse {
+      -webkit-animation: pulse 1s infinite;
+      animation: pulse 1s infinite;
+    }
+
+    .trusted {
+      img {
+        margin: 0 0.3rem;
+        max-height: 50px;
+        max-width: 300px;
+      }
+    }
+
+    .payment {
+      img {
+        margin: 0 0.3rem;
+        max-height: 35px;
+        margin-bottom: 0.4rem;
+      }
+    }
+
+    .underlined {
+      &:hover {
+        color: lighten(#2196f3, 10%) !important;
+      }
+    }
+
+    // Column header separator
+    .col-md-3,
+    .col-md-4 {
+      hr {
+        width: 60px;
+        height: 1px;
+      }
+    }
+
+    // Footer link icons
+    ul li i {
+      width: 30px;
+      text-align: center;
+      padding-right: 0.5rem;
+    }
+
+    .btn {
+      i {
+        margin-right: 0.3rem;
+      }
+    }
+  }
+}
+
+/**
+ * SPDX-License-Identifier: (EUPL-1.2)
+ * Copyright © 2020 InspireMedia GmbH
+ */
