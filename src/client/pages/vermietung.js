@@ -196,8 +196,19 @@ class Vermietung extends React.Component {
                                 <MDBCard className="z-depth-0 p-0 object-view">
                                   <MDBCardImage
                                     src={
-                                      process.env.NEXT_PUBLIC_BASEURL +
-                                      page.headers[0].slideImage.url
+                                      page.sections.filter(
+                                        (p) =>
+                                          p.__typename ===
+                                          "Projects_S_InfoBlock"
+                                      ).length > 0
+                                        ? process.env.NEXT_PUBLIC_BASEURL +
+                                          page.sections.filter(
+                                            (p) =>
+                                              p.__typename ===
+                                              "Projects_S_InfoBlock"
+                                          )[0].thumbnailImage.url
+                                        : process.env.NEXT_PUBLIC_BASEURL +
+                                          page.headers[0].slideImage.url
                                     }
                                     className="img-fluid"
                                   />

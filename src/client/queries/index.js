@@ -182,6 +182,11 @@ export const GET_PROJECTS = gql`
             thumbnailImage {
               url
             }
+          }
+          ... on Projects_S_InfoBlock {
+            thumbnailImage {
+              url
+            }
             infoText
           }
           ... on Projects_S_ContentCenter {

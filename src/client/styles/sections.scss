@@ -49,6 +49,15 @@ article {
   .jumbotron {
     padding: 0;
 
+    .groundplan {
+      .figure-img {
+        box-shadow: none !important;
+        max-height: 250px;
+        width: auto !important;
+        outline: none !important;
+      }
+    }
+
     .card-title {
       color: white !important;
       background: $dark;
