@@ -170,6 +170,7 @@ export const GET_PROJECTS = gql`
         buyAvailable
         rentAvailable
         coordinates
+        locationName
         headers {
           ... on Projects_H_HeroBlock {
             slideImage {
@@ -178,11 +179,6 @@ export const GET_PROJECTS = gql`
           }
         }
         sections {
-          ... on Projects_S_InfoBlock {
-            thumbnailImage {
-              url
-            }
-          }
           ... on Projects_S_InfoBlock {
             thumbnailImage {
               url

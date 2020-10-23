@@ -249,6 +249,15 @@ class Vermietung extends React.Component {
                                           <>€ {page.priceMin}</>
                                         )}
                                       </MDBBadge>
+                                      {page.locationName && (
+                                        <p className="text-muted mt-3 mb-0">
+                                          <MDBIcon
+                                            icon="map-marker-alt"
+                                            className="mr-1"
+                                          />
+                                          {page.locationName}
+                                        </p>
+                                      )}
                                     </MDBCardText>
                                   </MDBCardBody>
                                 </MDBCard>
