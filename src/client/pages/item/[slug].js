@@ -237,9 +237,27 @@ class Article extends React.Component {
                           </MDBCarouselInner>
                         </MDBCarousel>
                         <MDBCardBody>
-                          <MDBCardTitle className="h3 mt-3">
-                            {selectedPage.title}
-                          </MDBCardTitle>
+                          <MDBRow className="flex-center">
+                            <MDBCol lg="12">
+                              <MDBCardTitle className="h3 mt-3">
+                                {selectedPage.title}
+                              </MDBCardTitle>
+                            </MDBCol>
+                            <MDBCol lg="12">
+                              <MDBLightbox
+                                md="12"
+                                className="justify-content-center groundplan"
+                                images={[
+                                  {
+                                    src:
+                                      process.env.NEXT_PUBLIC_BASEURL +
+                                      selectedPage.groundPlan[0].groundPlan.url,
+                                  },
+                                ]}
+                              />
+                            </MDBCol>
+                          </MDBRow>
+                          <hr className="mt-5" />
                           {selectedPage.sections.map((section, s) => {
                             return (
                               <>
