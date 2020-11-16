@@ -39,12 +39,14 @@ class Footer extends React.Component {
                 <MDBCol lg="3">
                   <p className="lead text-left mb-0">Kontakt</p>
                   <img src={formSm} className="form-img" />
-                  <p className="mb-0">{data && data.phone}</p>
-                  <p className="mb-2">{data && data.email}</p>
-                  <p className="mb-0">{data && data.address}</p>
-                  <p className="mb-2">
-                    {data && data.zipCode} {data && data.city}
+                  <p className="mb-0">
+                    <a href="tel:+43 680 5511013">+43 680 5511013</a>
                   </p>
+                  <p className="mb-2">
+                    <a href="mailto:office@top-immo.org">office@top-immo.org</a>
+                  </p>
+                  <p className="mb-0">Klampfererweg 10</p>
+                  <p className="mb-2">9524 Villach St. Ulrich</p>
                 </MDBCol>
                 <MDBCol md="3">
                   <p className="lead text-left mb-0">Links</p>
@@ -78,8 +80,8 @@ class Footer extends React.Component {
             <div className="footer-copyright text-center py-3 text-white">
               <MDBContainer fluid>
                 <div>
-                  &copy; {new Date().getFullYear()} Copyright:{" "}
-                  {data && data.copyrightholder}
+                  &copy; {new Date().getFullYear()} Copyright: TOP Immo W.M.
+                  Treuhand GmbH
                   <p className="my-2 font-weight-bold">
                     Made with
                     <i
