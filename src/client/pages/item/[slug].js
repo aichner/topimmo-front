@@ -289,11 +289,21 @@ class Article extends React.Component {
                               </>
                             );
                           })}
-                          <MDBLightbox md="4" images={images} />
+                          <MDBLightbox
+                            md="4"
+                            images={images}
+                            className="mt-4"
+                          />
                           <MDBRow className="flex-center">
                             <MDBCol lg="5">
                               <MDBCard className="text-left z-depth-0 my-4">
                                 <MDBCardBody>
+                                  <div className="text-center">
+                                    <p className="lead text-muted">
+                                      Interessiert?
+                                    </p>
+                                    <h2>Kontaktanfrage</h2>
+                                  </div>
                                   {this.state.msgSent === undefined ? (
                                     <form onSubmit={(e) => this.sendMsg(e)}>
                                       <div className="md-form">
