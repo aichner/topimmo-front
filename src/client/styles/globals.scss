@@ -292,6 +292,18 @@ a {
   background-size: cover;
 }
 
+.groundplan {
+  .figure-img {
+    &.zoom {
+      max-height: none !important;
+    }
+  }
+}
+
+.spinner-container {
+  height: 100vh !important;
+}
+
 /** 
  * SPDX-License-Identifier: (EUPL-1.2)
  * Copyright © 2020 InspireMedia GmbH
