@@ -225,11 +225,8 @@ class Vermietung extends React.Component {
                                       )}
                                     </>
                                   ) : (
-                                    <MDBBadge color="success">
-                                      Verfügbar
-                                    </MDBBadge>
+                                    <MDBBadge color="danger">Belegt</MDBBadge>
                                   )}
-
                                   <MDBCardBody>
                                     <p className="lead">{page.title}</p>
                                     <p className="font-weight-bold">
