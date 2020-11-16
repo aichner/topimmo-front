@@ -277,7 +277,7 @@ class Product extends React.Component {
                                               </MDBBadge>
                                             ) : (
                                               <MDBBadge color="danger">
-                                                Vermietet
+                                                Nicht verfügbar
                                               </MDBBadge>
                                             )}
                                             <MDBCardBody>
