@@ -2,7 +2,7 @@
 // Apollo
 import { gql } from "apollo-boost";
 
-export const LOGIN_USER = gql`
+export const TOKEN_AUTH = gql`
   mutation tokenAuth {
     tokenAuth(username: "anon", password: "aew5rb734AE1a7Ad7dERadf") {
       token
@@ -20,9 +20,9 @@ export const REFRESH_TOKEN = gql`
   }
 `;
 
-export const GET_PAGE = gql`
-  query HomePage($token: String) {
-    pages(token: $token) {
+export const PAGE_QUERY = gql`
+  query HomePage {
+    pages {
       ... on HomeHomePage {
         about
         privacy

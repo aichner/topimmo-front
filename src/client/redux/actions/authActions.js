@@ -1,7 +1,7 @@
 //#region > Imports
 //> Queries
 // Wagtail
-import { LOGIN_USER, REFRESH_TOKEN, SEND_MESSAGE } from "../../queries";
+import { TOKEN_AUTH, REFRESH_TOKEN, SEND_MESSAGE } from "../../queries";
 //#endregion
 
 //#region > Action types
@@ -21,7 +21,7 @@ export const tokenAuth = () => {
   return (dispatch, getState, { clientCMS }) => {
     clientCMS
       .mutate({
-        mutation: LOGIN_USER,
+        mutation: TOKEN_AUTH,
       })
       .then(({ data }) => {
         if (data !== undefined) {

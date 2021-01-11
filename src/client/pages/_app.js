@@ -4,29 +4,11 @@
 import React from "react";
 //> NextJS
 import Head from "next/head";
-//> Redux
-// Basic Redux provider
-import { Provider } from "react-redux";
-// Store, Middleware, Compose
-import { createStore, applyMiddleware, compose } from "redux";
-// Thunk
-import thunk from "redux-thunk";
-// Enables us to create a store
-import withRedux from "next-redux-wrapper";
-//> Apollo
-import { ApolloClient } from "apollo-client";
-import { createHttpLink, HttpLink } from "apollo-link-http";
-import { setContext } from "apollo-link-context";
-import {
-  InMemoryCache,
-  IntrospectionFragmentMatcher,
-} from "apollo-cache-inmemory";
 //> App
 import App from "next/app";
 
-//> Redux
-// Root reducer
-import rootReducer from "../redux/reducers/rootReducer";
+//> Queries
+import { TOKEN_AUTH, REFRESH_TOKEN } from "../queries";
 
 //> Components
 import { ScrollToTop } from "../components/atoms";
@@ -46,39 +28,74 @@ import "../styles/external/bootstrap.min.css";
 import "../styles/external.scss";
 //#endregion
 
-//#region > Config
-//> CMS API
-// Client
-const clientCMS = new ApolloClient({
-  link: new HttpLink({
-    uri: process.env.NEXT_PUBLIC_BASEURL + "/api/graphiql",
-  }),
-  cache: new InMemoryCache({
-    fragmentMatcher: new IntrospectionFragmentMatcher({
-      introspectionQueryResultData: {
-        __schema: {
-          types: [],
-        },
-      },
-    }),
-  }),
-});
+//#region > Functions
+const getStandaloneApolloClient = async () => {
+  const { ApolloClient, InMemoryCache, HttpLink } = await import(
+    "@apollo/client"
+  );
 
-const store = createStore(
-  rootReducer,
-  compose(
-    applyMiddleware(
-      thunk.withExtraArgument({
-        /* Aichner Cloud CMS binding*/
-        clientCMS,
-      })
-    )
-  )
-);
+  return new ApolloClient({
+    link: new HttpLink({
+      uri: process.env.NEXT_PUBLIC_BASEURL,
+    }),
+    cache: new InMemoryCache(),
+  });
+};
+
+const tokenAuth = async () => {
+  const client = await getStandaloneApolloClient();
+
+  client
+    .mutate({
+      mutation: TOKEN_AUTH,
+    })
+    .then(({ data }) => {
+      if (data !== undefined) {
+        // Set local storage
+        localStorage.setItem("token", data.tokenAuth.token);
+        localStorage.setItem("refreshToken", data.tokenAuth.refreshToken);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+const refreshToken = async () => {
+  const client = await getStandaloneApolloClient();
+
+  client
+    .mutate({
+      mutation: REFRESH_TOKEN,
+      variables: { token: localStorage.getItem("refreshToken") },
+    })
+    .then(({ data }) => {
+      // Set local storage
+      localStorage.setItem("token", data.refreshToken.token);
+      localStorage.setItem("refreshToken", data.refreshToken.refreshToken);
+    })
+    .catch((err) => {
+      dispatch({
+        type: "REFRESH_FAIL",
+        payload: {
+          errorCode: 661,
+          message: "Refresh token failed",
+          error: err,
+        },
+      });
+    });
+};
 //#endregion
 
 //#region > App
 class MyApp extends App {
+  componentDidMount = () => {
+    // Get tokens and page data
+    tokenAuth();
+    // Refresh token every 2 minutes (120000 ms)
+    this.refreshInterval = window.setInterval(refreshToken, 120000);
+  };
+
   /**
    * getInitialProps
    *
@@ -105,7 +122,7 @@ class MyApp extends App {
     const { Component, pageProps } = this.props;
 
     return (
-      <Provider store={store}>
+      <ScrollToTop>
         <Head>
           <meta
             name="viewport"
@@ -114,13 +131,11 @@ class MyApp extends App {
           <meta property="og:image" content={previewImg} key="ogimage" />
           <script type="text/javascript" src="/static/execute.js"></script>
         </Head>
-        <ScrollToTop>
-          <div className="certificate d-sm-block d-none">
-            <img src={certificateImg} />
-          </div>
-          <Component {...pageProps} />
-        </ScrollToTop>
-      </Provider>
+        <div className="certificate d-sm-block d-none">
+          <img src={certificateImg} />
+        </div>
+        <Component {...pageProps} />
+      </ScrollToTop>
     );
   }
 }
@@ -128,6 +143,7 @@ class MyApp extends App {
 
 //#region > Exports
 export default MyApp;
+//#endregion
 //#endregion
 
 /**

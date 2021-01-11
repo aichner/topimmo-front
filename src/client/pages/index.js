@@ -6,9 +6,6 @@ import React from "react";
 import Head from "next/head";
 //> SEO
 import { NextSeo } from "next-seo";
-//> Redux
-// Basic Redux provider
-import { connect } from "react-redux";
 //> Tinycolor
 // Color management
 import tinycolor from "tinycolor2";
@@ -28,12 +25,9 @@ import {
 //> Animations
 import Fade from "react-reveal/Fade";
 
-//> Redux
-// Actions
-import { tokenAuth, refreshToken } from "../redux/actions/authActions";
-import { getPage, getImages } from "../redux/actions/pageActions";
+//> Queries
+import { PAGE_QUERY } from "../queries";
 //> Components
-//import { ScrollToTop } from "../components/atoms";
 import { Navbar, Footer, CookieModal } from "../components/molecules";
 import {
   HeadSection,
@@ -48,52 +42,7 @@ import {
 class Home extends React.Component {
   state = { page: undefined, images: undefined };
 
-  componentDidMount = () => {
-    // Get tokens and page data
-    this.props.tokenAuth();
-    // Refresh token every 2 minutes (120000 ms)
-    this.refreshInterval = window.setInterval(this.props.refreshToken, 120000);
-
-    if (this.props.logged && !this.props.error) {
-      // Get root page
-      this.props.getPage();
-      // Get all images
-      this.props.getImages();
-    }
-  };
-
   componentDidUpdate = () => {
-    const { page, images } = this.state;
-
-    if (this.props.logged && !page && !this.props.error) {
-      // Get root page
-      this.props.getPage();
-    }
-
-    if (this.props.logged && !images && !this.props.error) {
-      // Get all images
-      this.props.getImages();
-    }
-
-    // Set page state
-    if (!page && this.props.page && this.props.logged && !this.props.error) {
-      this.setState({
-        page: this.props.page[0],
-      });
-    }
-
-    // Set all images as state
-    if (
-      !images &&
-      this.props.images &&
-      this.props.logged &&
-      !this.props.error
-    ) {
-      this.setState({
-        images: this.props.images,
-      });
-    }
-
     const hash = window.location.hash;
 
     if (hash) {
@@ -140,6 +89,8 @@ class Home extends React.Component {
 
   render() {
     const { page, images } = this.state;
+
+    console.log(this.props);
 
     return (
       <div className="flyout">
@@ -376,23 +327,36 @@ class Home extends React.Component {
 //#endregion
 
 //#region > Functions
-const mapStateToProps = (state) => ({
-  logged: state.auth.logged,
-  page: state.page.root,
-  error: state.page.error,
-  images: state.page.images,
-});
+export async function getStandaloneApolloClient() {
+  const { ApolloClient, InMemoryCache, HttpLink } = await import(
+    "@apollo/client"
+  );
 
-const mapDispatchToProps = {
-  tokenAuth,
-  refreshToken,
-  getPage,
-  getImages,
+  return new ApolloClient({
+    link: new HttpLink({
+      uri: process.env.NEXT_PUBLIC_BASEURL,
+    }),
+    cache: new InMemoryCache(),
+  });
+}
+
+Home.getInitialProps = async () => {
+  const client = await getStandaloneApolloClient();
+
+  const res = await client.query({
+    query: PAGE_QUERY,
+  });
+
+  console.log(res);
+
+  /*return {
+    data,
+  };*/
 };
 //#endregion
 
 //#region > Exports
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default Home;
 //#endregion
 
 /**
