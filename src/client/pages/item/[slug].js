@@ -150,7 +150,7 @@ class Item extends React.Component {
                                       className="w-100 h-100 img-banner"
                                       style={{
                                         backgroundImage: `url("${
-                                          process.env.NEXT_PUBLIC_BASEURL +
+                                          process.env.NEXT_PUBLIC_MEDIAURL +
                                           item.slideImage.url
                                         }")`,
                                       }}
@@ -180,7 +180,7 @@ class Item extends React.Component {
                                   images={[
                                     {
                                       src:
-                                        process.env.NEXT_PUBLIC_BASEURL +
+                                        process.env.NEXT_PUBLIC_MEDIAURL +
                                         page.groundPlan[0].groundPlan.url,
                                     },
                                   ]}
@@ -436,7 +436,7 @@ Item.getInitialProps = async ({ query }) => {
       images = [
         ...images,
         {
-          src: process.env.NEXT_PUBLIC_BASEURL + image.galleryImage?.url,
+          src: process.env.NEXT_PUBLIC_MEDIAURL + image.galleryImage?.url,
         },
       ];
     });

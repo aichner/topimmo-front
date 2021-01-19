@@ -75,14 +75,7 @@ const refreshToken = async () => {
       localStorage.setItem("refreshToken", data.refreshToken.refreshToken);
     })
     .catch((err) => {
-      dispatch({
-        type: "REFRESH_FAIL",
-        payload: {
-          errorCode: 661,
-          message: "Refresh token failed",
-          error: err,
-        },
-      });
+      console.error(err);
     });
 };
 //#endregion

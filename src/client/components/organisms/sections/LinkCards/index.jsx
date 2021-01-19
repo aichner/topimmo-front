@@ -30,7 +30,7 @@ class LinkCards extends React.Component {
             {data.features.map((col, c) => {
               const image = this.mapImage(col.value.feature_image);
               const urlLink = image
-                ? process.env.NEXT_PUBLIC_BASEURL + image[0].url
+                ? process.env.NEXT_PUBLIC_MEDIAURL + image[0].url
                 : null;
 
               return (
@@ -50,11 +50,11 @@ class LinkCards extends React.Component {
                   {col.value.feature_text && (
                     <>
                       <hr />
-                      <p
+                      <div
                         dangerouslySetInnerHTML={{
                           __html: col.value.feature_text,
                         }}
-                      ></p>
+                      ></div>
                     </>
                   )}
                 </MDBCol>

@@ -22,6 +22,10 @@ export const REFRESH_TOKEN = gql`
 
 export const PAGE_QUERY = gql`
   query HomePage {
+    images {
+      id
+      url
+    }
     pages {
       ... on HomeHomePage {
         about
@@ -111,6 +115,10 @@ export const PAGE_QUERY = gql`
 
 export const GET_NEWS = gql`
   query NewsPages($token: String) {
+    images {
+      id
+      url
+    }
     pages(token: $token) {
       ... on NewsNewsPage {
         __typename
@@ -160,6 +168,10 @@ export const GET_NEWS = gql`
 
 export const GET_PROJECTS = gql`
   query ProjectPages($token: String) {
+    images {
+      id
+      url
+    }
     pages(token: $token) {
       ... on ProjectsProjectsPage {
         __typename
@@ -260,6 +272,10 @@ export const SEND_MESSAGE = gql`
 
 export const GET_FLATS = gql`
   query FlatPages {
+    images {
+      id
+      url
+    }
     pages {
       ... on ProjectsFlatPage {
         __typename
@@ -319,6 +335,10 @@ export const GET_FLATS = gql`
 
 export const GET_EVERYTHING = gql`
   query EveryPage {
+    images {
+      id
+      url
+    }
     pages {
       ... on HomeHomePage {
         about

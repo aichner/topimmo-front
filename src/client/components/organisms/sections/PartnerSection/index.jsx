@@ -42,7 +42,7 @@ class PartnerSection extends React.Component {
                       <img
                         src={
                           partnerImg[0]
-                            ? process.env.NEXT_PUBLIC_BASEURL +
+                            ? process.env.NEXT_PUBLIC_MEDIAURL +
                               partnerImg[0]?.url
                             : undefined
                         }

@@ -5,6 +5,8 @@ import React from "react";
 import Link from "next/link";
 //> SEO
 import { NextSeo } from "next-seo";
+//> Animations
+import Fade from "react-reveal/Fade";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -69,77 +71,97 @@ class Verkauf extends React.Component {
                   <MDBCardTitle className="indigo-text h3 m-4">
                     Verkauf
                   </MDBCardTitle>
-                  <MDBRow className="flex-center">
-                    {selectedPages && flats && selectedPages.length > 0 ? (
-                      <>
-                        {selectedPages.map((page, i) => {
-                          let dedicatedFlats = [];
+                  <Fade bottom cascade>
+                    <MDBRow className="flex-center">
+                      {selectedPages && flats && selectedPages.length > 0 ? (
+                        <>
+                          {selectedPages.map((page, i) => {
+                            let dedicatedFlats = [];
 
-                          page.flats.forEach((flat) => {
-                            flats.forEach((f) => {
-                              if (flat.flat.slug === f.slug) {
-                                dedicatedFlats = [...dedicatedFlats, f];
-                              }
+                            page.flats.forEach((flat) => {
+                              flats.forEach((f) => {
+                                if (flat.flat.slug === f.slug) {
+                                  dedicatedFlats = [...dedicatedFlats, f];
+                                }
+                              });
                             });
-                          });
 
-                          const max = Math.max.apply(
-                            Math,
-                            dedicatedFlats.map(function (o) {
-                              return o.price;
-                            })
-                          );
+                            const max = Math.max.apply(
+                              Math,
+                              dedicatedFlats.map(function (o) {
+                                return o.price;
+                              })
+                            );
 
-                          const min = Math.min.apply(
-                            Math,
-                            dedicatedFlats.map(function (o) {
-                              return o.price;
-                            })
-                          );
+                            const min = Math.min.apply(
+                              Math,
+                              dedicatedFlats.map(function (o) {
+                                return o.price;
+                              })
+                            );
 
-                          const available =
-                            dedicatedFlats.filter((flat) => flat.available)
-                              .length > 0;
+                            const available =
+                              dedicatedFlats.filter((flat) => flat.available)
+                                .length > 0;
 
-                          return (
-                            <>
-                              <MDBCol lg="4" className="border rounded p-0">
-                                <Link href={"/project/" + page.slug}>
-                                  <MDBCard className="z-depth-0 p-0 object-view">
-                                    <MDBCardImage
-                                      src={
-                                        process.env.NEXT_PUBLIC_BASEURL +
-                                        page.headers[0].slideImage.url
-                                      }
-                                      className="img-fluid"
-                                    />
-                                    {available ? (
-                                      <MDBBadge color="success">
-                                        Verfügbar
-                                      </MDBBadge>
-                                    ) : (
-                                      <MDBBadge color="danger">Belegt</MDBBadge>
-                                    )}
-
-                                    <MDBCardBody>
-                                      <p className="lead">{page.title}</p>
-                                      <p className="font-weight-bold">
-                                        {page.flats.length} Objekte
-                                      </p>
-                                      <MDBCardText className="mt-3">
-                                        <MDBBadge color="blue">
-                                          {`€ ${min}`} - {`€ ${max}`}
+                            return (
+                              <>
+                                <MDBCol lg="4" className="border rounded p-0">
+                                  <Link href={"/project/" + page.slug}>
+                                    <MDBCard className="z-depth-0 p-0 object-view">
+                                      <MDBCardImage
+                                        src={
+                                          process.env.NEXT_PUBLIC_MEDIAURL +
+                                          page.headers[0].slideImage.url
+                                        }
+                                        className="img-fluid"
+                                      />
+                                      {available ? (
+                                        <MDBBadge color="success">
+                                          Verfügbar
                                         </MDBBadge>
-                                      </MDBCardText>
-                                    </MDBCardBody>
-                                  </MDBCard>
-                                </Link>
-                              </MDBCol>
-                            </>
-                          );
-                        })}
-                      </>
-                    ) : (
+                                      ) : (
+                                        <MDBBadge color="danger">
+                                          Belegt
+                                        </MDBBadge>
+                                      )}
+
+                                      <MDBCardBody>
+                                        <p className="lead">{page.title}</p>
+                                        <p className="font-weight-bold">
+                                          {page.flats.length} Objekte
+                                        </p>
+                                        <MDBCardText className="mt-3">
+                                          <MDBBadge color="blue">
+                                            {`€ ${min}`} - {`€ ${max}`}
+                                          </MDBBadge>
+                                        </MDBCardText>
+                                      </MDBCardBody>
+                                    </MDBCard>
+                                  </Link>
+                                </MDBCol>
+                              </>
+                            );
+                          })}
+                        </>
+                      ) : (
+                        <div className="text-center white rounded p-3">
+                          <p className="lead">
+                            Es stehen derzeit leider keine Objekte zum Verkauf.
+                          </p>
+                          <MDBBtn color="blue" href="/">
+                            <MDBIcon icon="angle-left" />
+                            Zurück
+                          </MDBBtn>
+                        </div>
+                      )}
+                    </MDBRow>
+                  </Fade>
+                </div>
+              ) : (
+                <>
+                  <Fade bottom cascade>
+                    {selectedPages === false ? (
                       <div className="text-center white rounded p-3">
                         <p className="lead">
                           Es stehen derzeit leider keine Objekte zum Verkauf.
@@ -149,26 +171,12 @@ class Verkauf extends React.Component {
                           Zurück
                         </MDBBtn>
                       </div>
+                    ) : (
+                      <div className="text-center">
+                        <MDBSpinner blue />
+                      </div>
                     )}
-                  </MDBRow>
-                </div>
-              ) : (
-                <>
-                  {selectedPages === false ? (
-                    <div className="text-center white rounded p-3">
-                      <p className="lead">
-                        Es stehen derzeit leider keine Objekte zum Verkauf.
-                      </p>
-                      <MDBBtn color="blue" href="/">
-                        <MDBIcon icon="angle-left" />
-                        Zurück
-                      </MDBBtn>
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <MDBSpinner blue />
-                    </div>
-                  )}
+                  </Fade>
                 </>
               )}
             </MDBContainer>

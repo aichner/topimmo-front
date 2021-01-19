@@ -31,7 +31,7 @@ class ContentBlock extends React.Component {
                   {data.contentLeftImg && (
                     <img
                       src={
-                        process.env.NEXT_PUBLIC_BASEURL +
+                        process.env.NEXT_PUBLIC_MEDIAURL +
                         data.contentLeftImg.url
                       }
                       alt=""
@@ -45,7 +45,7 @@ class ContentBlock extends React.Component {
                     <img src={formSm} className="form-img mb-3" />
                   ) : null}
                   <p className="lead">{data.contentLeftLead}</p>
-                  <p
+                  <div
                     dangerouslySetInnerHTML={{ __html: data.contentLeftText }}
                   />
                 </MDBCol>
@@ -61,7 +61,7 @@ class ContentBlock extends React.Component {
                     <img src={formSm} className="form-img mb-3" />
                   ) : null}
                   <p className="lead">{data.contentRightLead}</p>
-                  <p
+                  <div
                     dangerouslySetInnerHTML={{ __html: data.contentRightText }}
                   />
                 </MDBCol>
@@ -69,7 +69,7 @@ class ContentBlock extends React.Component {
                   {data.contentRightImg && (
                     <img
                       src={
-                        process.env.NEXT_PUBLIC_BASEURL +
+                        process.env.NEXT_PUBLIC_MEDIAURL +
                         data.contentRightImg.url
                       }
                       alt=""

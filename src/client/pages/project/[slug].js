@@ -86,7 +86,7 @@ class Product extends React.Component {
                                       className="w-100 h-100 img-banner"
                                       style={{
                                         backgroundImage: `url("${
-                                          process.env.NEXT_PUBLIC_BASEURL +
+                                          process.env.NEXT_PUBLIC_MEDIAURL +
                                           item.slideImage.url
                                         }")`,
                                       }}
@@ -159,7 +159,7 @@ class Product extends React.Component {
                                             <MDBCardImage
                                               src={
                                                 process.env
-                                                  .NEXT_PUBLIC_BASEURL +
+                                                  .NEXT_PUBLIC_MEDIAURL +
                                                 flatDetails.groundPlan[0]
                                                   .groundPlan.url
                                               }
@@ -270,7 +270,7 @@ Product.getInitialProps = async ({ query }) => {
       images = [
         ...images,
         {
-          src: process.env.NEXT_PUBLIC_BASEURL + image.galleryImage?.url,
+          src: process.env.NEXT_PUBLIC_MEDIAURL + image.galleryImage?.url,
         },
       ];
     });

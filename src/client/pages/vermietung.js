@@ -5,6 +5,8 @@ import React from "react";
 import Link from "next/link";
 //> SEO
 import { NextSeo } from "next-seo";
+//> Animations
+import Fade from "react-reveal/Fade";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -71,113 +73,118 @@ class Vermietung extends React.Component {
                   <MDBCardTitle className="indigo-text h3 m-4">
                     Vermietung
                   </MDBCardTitle>
-                  <MDBRow className="flex-center">
-                    {selectedPages &&
-                      flats &&
-                      selectedPages.map((page, i) => {
-                        let dedicatedFlats = [];
+                  <Fade bottom cascade>
+                    <MDBRow className="flex-center">
+                      {selectedPages &&
+                        flats &&
+                        selectedPages.map((page, i) => {
+                          let dedicatedFlats = [];
 
-                        page.flats.forEach((flat) => {
-                          flats.forEach((f) => {
-                            if (flat.flat.slug === f.slug) {
-                              dedicatedFlats = [...dedicatedFlats, f];
-                            }
+                          page.flats.forEach((flat) => {
+                            flats.forEach((f) => {
+                              if (flat.flat.slug === f.slug) {
+                                dedicatedFlats = [...dedicatedFlats, f];
+                              }
+                            });
                           });
-                        });
 
-                        const max = Math.max.apply(
-                          Math,
-                          dedicatedFlats.map(function (o) {
-                            return o.price;
-                          })
-                        );
+                          const max = Math.max.apply(
+                            Math,
+                            dedicatedFlats.map(function (o) {
+                              return o.price;
+                            })
+                          );
 
-                        const min = Math.min.apply(
-                          Math,
-                          dedicatedFlats.map(function (o) {
-                            return o.price;
-                          })
-                        );
+                          const min = Math.min.apply(
+                            Math,
+                            dedicatedFlats.map(function (o) {
+                              return o.price;
+                            })
+                          );
 
-                        const available =
-                          dedicatedFlats.filter((flat) => flat.available)
-                            .length > 0;
+                          const available =
+                            dedicatedFlats.filter((flat) => flat.available)
+                              .length > 0;
 
-                        return (
-                          <>
-                            <MDBCol lg="4" className="border rounded p-0">
-                              <Link href={"/project/" + page.slug}>
-                                <MDBCard className="z-depth-0 p-0 object-view">
-                                  <MDBCardImage
-                                    src={
-                                      page.sections.filter(
-                                        (p) =>
-                                          p.__typename ===
-                                          "Projects_S_InfoBlock"
-                                      ).length > 0
-                                        ? process.env.NEXT_PUBLIC_BASEURL +
-                                          page.sections.filter(
-                                            (p) =>
-                                              p.__typename ===
-                                              "Projects_S_InfoBlock"
-                                          )[0].thumbnailImage.url
-                                        : process.env.NEXT_PUBLIC_BASEURL +
-                                          page.headers[0].slideImage.url
-                                    }
-                                    className="img-fluid"
-                                  />
-                                  {dedicatedFlats.length > 0 ? (
-                                    <>
-                                      {available ? (
-                                        <MDBBadge color="success">
-                                          Verfügbar
-                                        </MDBBadge>
-                                      ) : (
-                                        <MDBBadge color="danger">
-                                          Belegt
-                                        </MDBBadge>
-                                      )}
-                                    </>
-                                  ) : (
-                                    <MDBBadge color="danger">Belegt</MDBBadge>
-                                  )}
-                                  <MDBCardBody>
-                                    <p className="lead">{page.title}</p>
-                                    <p className="font-weight-bold">
-                                      {dedicatedFlats.length > 0 ? (
-                                        <>{page.flats.length} Objekte</>
-                                      ) : (
-                                        <>1 Objekt</>
-                                      )}
-                                    </p>
-                                    <MDBCardText className="mt-3">
-                                      <MDBBadge color="blue">
-                                        {dedicatedFlats.length > 0 ? (
-                                          <>
-                                            {`€ ${min}`} - {`€ ${max}`}
-                                          </>
+                          return (
+                            <>
+                              <MDBCol
+                                lg="4"
+                                className="border rounded p-0 wow slideInLeft"
+                              >
+                                <Link href={"/project/" + page.slug}>
+                                  <MDBCard className="z-depth-0 p-0 object-view">
+                                    <MDBCardImage
+                                      src={
+                                        page.sections.filter(
+                                          (p) =>
+                                            p.__typename ===
+                                            "Projects_S_InfoBlock"
+                                        ).length > 0
+                                          ? process.env.NEXT_PUBLIC_MEDIAURL +
+                                            page.sections.filter(
+                                              (p) =>
+                                                p.__typename ===
+                                                "Projects_S_InfoBlock"
+                                            )[0].thumbnailImage.url
+                                          : process.env.NEXT_PUBLIC_MEDIAURL +
+                                            page.headers[0].slideImage.url
+                                      }
+                                      className="img-fluid"
+                                    />
+                                    {dedicatedFlats.length > 0 ? (
+                                      <>
+                                        {available ? (
+                                          <MDBBadge color="success">
+                                            Verfügbar
+                                          </MDBBadge>
                                         ) : (
-                                          <>€ {page.priceMin}</>
+                                          <MDBBadge color="danger">
+                                            Belegt
+                                          </MDBBadge>
                                         )}
-                                      </MDBBadge>
-                                      {page.locationName && (
-                                        <p className="text-muted mt-3 mb-0">
-                                          <MDBIcon
-                                            icon="map-marker-alt"
-                                            className="mr-1"
-                                          />
-                                          {page.locationName}
-                                        </p>
-                                      )}
-                                    </MDBCardText>
-                                  </MDBCardBody>
-                                </MDBCard>
-                              </Link>
-                            </MDBCol>
-                          </>
-                        );
-                      })}
-                  </MDBRow>
+                                      </>
+                                    ) : (
+                                      <MDBBadge color="danger">Belegt</MDBBadge>
+                                    )}
+                                    <MDBCardBody>
+                                      <p className="lead">{page.title}</p>
+                                      <p className="font-weight-bold">
+                                        {dedicatedFlats.length > 0 ? (
+                                          <>{page.flats.length} Objekte</>
+                                        ) : (
+                                          <>1 Objekt</>
+                                        )}
+                                      </p>
+                                      <MDBCardText className="mt-3">
+                                        <MDBBadge color="blue">
+                                          {dedicatedFlats.length > 0 ? (
+                                            <>
+                                              {`€ ${min}`} - {`€ ${max}`}
+                                            </>
+                                          ) : (
+                                            <>€ {page.priceMin}</>
+                                          )}
+                                        </MDBBadge>
+                                        {page.locationName && (
+                                          <p className="text-muted mt-3 mb-0">
+                                            <MDBIcon
+                                              icon="map-marker-alt"
+                                              className="mr-1"
+                                            />
+                                            {page.locationName}
+                                          </p>
+                                        )}
+                                      </MDBCardText>
+                                    </MDBCardBody>
+                                  </MDBCard>
+                                </Link>
+                              </MDBCol>
+                            </>
+                          );
+                        })}
+                    </MDBRow>
+                  </Fade>
                 </div>
               ) : (
                 <>

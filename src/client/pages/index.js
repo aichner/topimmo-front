@@ -102,14 +102,12 @@ class Home extends React.Component {
 
   render() {
     const { data } = this.props;
+    const { images } = data;
+
     const page =
       data &&
       data.pages &&
       data.pages.filter((p) => p.__typename === "HomeHomePage")[0];
-
-    const images = [];
-
-    console.log(data, page);
 
     return (
       <div className="flyout">

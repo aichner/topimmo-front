@@ -4,6 +4,8 @@
 import React from "react";
 //> Next
 import Link from "next/link";
+//> Animations
+import Fade from "react-reveal/Fade";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -59,7 +61,7 @@ class HeroSection extends React.Component {
                         className="w-100 h-100 img-banner"
                         style={{
                           backgroundImage: `url("${
-                            process.env.NEXT_PUBLIC_BASEURL +
+                            process.env.NEXT_PUBLIC_MEDIAURL +
                             item.slideImage.url
                           }")`,
                         }}
@@ -71,7 +73,9 @@ class HeroSection extends React.Component {
                         <div>
                           <img src={formLg} className="form-lg" />
                           <div>
-                            <h3 className="hero-title">{item.slideHead}</h3>
+                            <Fade bottom>
+                              <h3 className="hero-title">{item.slideHead}</h3>
+                            </Fade>
                           </div>
                           <div>
                             {item.slidePage && item.slidePage.slug && (
