@@ -2,19 +2,12 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-//> NextJS
-import Head from "next/head";
-import { withRouter } from "next/router";
 import Link from "next/link";
 //> SEO
 import { NextSeo } from "next-seo";
-//> Redux
-// Basic Redux provider
-import { connect } from "react-redux";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
-  MDBJumbotron,
   MDBContainer,
   MDBRow,
   MDBCol,
@@ -25,27 +18,12 @@ import {
   MDBCardText,
   MDBSpinner,
   MDBBtn,
-  MDBCarousel,
-  MDBCarouselInner,
-  MDBCarouselItem,
-  MDBView,
-  MDBMask,
-  MDBLightbox,
-  MDBListGroup,
-  MDBListGroupItem,
   MDBBadge,
   MDBCard,
 } from "mdbreact";
 
-//> Redux
-// Actions
-import { tokenAuth, refreshToken } from "../redux/actions/authActions";
-import {
-  getProjectsPages,
-  getImages,
-  getFlats,
-  getPage,
-} from "../redux/actions/pageActions";
+//> Queries
+import { GET_EVERYTHING } from "../queries";
 //> Components
 //import { ScrollToTop } from "../components/atoms";
 import { Navbar, Footer, CookieModal } from "../components/molecules";
@@ -54,77 +32,9 @@ import { HeadSection, ContentBlock } from "../components/organisms/sections";
 
 //#region > Page
 class Verkauf extends React.Component {
-  state = { pages: undefined, images: undefined, flats: undefined };
-
-  componentDidMount = () => {
-    // Get tokens and page data
-    this.props.tokenAuth();
-    // Refresh token every 2 minutes (120000 ms)
-    this.refreshInterval = window.setInterval(this.props.refreshToken, 120000);
-
-    if (
-      this.props.logged &&
-      (!this.props.pages || !this.props.images || !this.props.flats)
-    ) {
-      // Get root page
-      this.props.getProjectsPages();
-      // Get all images
-      this.props.getImages();
-      // Get all pages
-      this.props.getFlats();
-      // Get page
-      this.props.getPage();
-    } else if (this.props.pages && this.props.images) {
-      this.setState({
-        pages: this.props.pages,
-        images: this.props.images,
-      });
-    }
-  };
-
-  componentDidUpdate = () => {
-    const { pages, images, flats } = this.state;
-
-    if (this.props.logged && !pages) {
-      // Get root page
-      this.props.getProjectsPages();
-    }
-
-    if (this.props.logged && !images) {
-      // Get all images
-      this.props.getImages();
-    }
-
-    if (this.props.logged && !flats) {
-      // Get all flats
-      this.props.getFlats();
-    }
-
-    // Set page state
-    if (!pages && this.props.pages && this.props.logged) {
-      this.setState({
-        pages: this.props.pages,
-      });
-    }
-
-    // Set all images as state
-    if (!images && this.props.images && this.props.logged) {
-      this.setState({
-        images: this.props.images,
-      });
-    }
-
-    // Set all flats as state
-    if (!flats && this.props.flats && this.props.logged) {
-      this.setState({
-        flats: this.props.flats,
-      });
-    }
-  };
-
   render() {
-    const { pages, flats } = this.state;
-    const { root } = this.props;
+    const { data } = this.props;
+    const { pages } = data;
 
     const selectedPages = pages
       ? pages.length > 0
@@ -133,6 +43,8 @@ class Verkauf extends React.Component {
           : false
         : null
       : null;
+
+    const flats = pages.filter((p) => p.__typename === "ProjectsFlatPage");
 
     return (
       <div className="flyout">
@@ -263,7 +175,7 @@ class Verkauf extends React.Component {
           </article>
           <CookieModal saveCookie={this.saveCookie} />
         </main>
-        <Footer data={root ? root[0] : null} />
+        <Footer /*data={root ? root[0] : null}*/ />
       </div>
     );
   }
@@ -271,29 +183,34 @@ class Verkauf extends React.Component {
 //#endregion
 
 //#region > Functions
-const mapStateToProps = (state) => ({
-  logged: state.auth.logged,
-  pages: state.page.projects,
-  flats: state.page.flats,
-  root: state.page.root,
-  images: state.page.images,
-});
+export async function getStandaloneApolloClient() {
+  const { ApolloClient, InMemoryCache, HttpLink } = await import(
+    "@apollo/client"
+  );
 
-const mapDispatchToProps = {
-  tokenAuth,
-  refreshToken,
-  getProjectsPages,
-  getFlats,
-  getPage,
-  getImages,
+  return new ApolloClient({
+    link: new HttpLink({
+      uri: process.env.NEXT_PUBLIC_BASEURL,
+    }),
+    cache: new InMemoryCache(),
+  });
+}
+
+Verkauf.getInitialProps = async () => {
+  const client = await getStandaloneApolloClient();
+
+  const { data } = await client.query({
+    query: GET_EVERYTHING,
+  });
+
+  return {
+    data,
+  };
 };
 //#endregion
 
 //#region > Exports
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(Verkauf));
+export default Verkauf;
 //#endregion
 
 /**

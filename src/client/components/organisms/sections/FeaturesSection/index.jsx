@@ -30,7 +30,7 @@ class FeaturesSection extends React.Component {
             {data.features.map((col, c) => {
               const image = this.mapImage(col.value.feature_image);
               const urlLink = image
-                ? process.env.NEXT_PUBLIC_BASEURL + image[0].url
+                ? process.env.NEXT_PUBLIC_BASEURL + image[0]?.url
                 : null;
 
               return (

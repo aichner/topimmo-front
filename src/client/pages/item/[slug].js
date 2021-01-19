@@ -3,14 +3,9 @@
 // Contains all the functionality necessary to define React components
 import React from "react";
 //> NextJS
-import Head from "next/head";
 import Link from "next/link";
-import { withRouter } from "next/router";
 //> SEO
 import { NextSeo } from "next-seo";
-//> Redux
-// Basic Redux provider
-import { connect } from "react-redux";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -38,14 +33,8 @@ import {
   MDBAlert,
 } from "mdbreact";
 
-//> Redux
-// Actions
-import {
-  tokenAuth,
-  refreshToken,
-  sendMessage,
-} from "../../redux/actions/authActions";
-import { getFlats, getImages, getPage } from "../../redux/actions/pageActions";
+//> Queries
+import { GET_EVERYTHING, SEND_MESSAGE } from "../../queries";
 //> Components
 //import { ScrollToTop } from "../components/atoms";
 import { Navbar, Footer, CookieModal } from "../../components/molecules";
@@ -53,63 +42,12 @@ import { HeadSection, ContentBlock } from "../../components/organisms/sections";
 //#endregion
 
 //#region > Page
-class Article extends React.Component {
-  state = { pages: undefined, images: undefined };
-
-  componentDidMount = () => {
-    // Get tokens and page data
-    this.props.tokenAuth();
-    // Refresh token every 2 minutes (120000 ms)
-    this.refreshInterval = window.setInterval(this.props.refreshToken, 120000);
-
-    if (this.props.logged && (!this.props.pages || !this.props.images)) {
-      // Get root page
-      this.props.getFlats();
-      // Get root page
-      this.props.getPage();
-      // Get all images
-      this.props.getImages();
-    } else if (this.props.pages && this.props.images && this.props.root) {
-      this.setState({
-        pages: this.props.pages,
-        images: this.props.images,
-        root: this.props.root,
-      });
-    }
-  };
-
-  componentDidUpdate = () => {
-    const { pages, images, root } = this.state;
-
-    if (this.props.logged && (!pages || !images)) {
-      // Get root page
-      this.props.getFlats();
-      // Get root page
-      this.props.getPage();
-      // Get all images
-      this.props.getImages();
-    }
-
-    // Set page state
-    if (!pages && this.props.pages && this.props.logged) {
-      this.setState({
-        pages: this.props.pages,
-      });
-    }
-
-    // Set page state
-    if (!root && this.props.root && this.props.logged && !this.props.error) {
-      this.setState({
-        root: this.props.root[0],
-      });
-    }
-
-    // Set all images as state
-    if (!images && this.props.images && this.props.logged) {
-      this.setState({
-        images: this.props.images,
-      });
-    }
+class Item extends React.Component {
+  state = {
+    name: "",
+    email: "",
+    phone: "",
+    note: "",
   };
 
   sendMsg = async (e) => {
@@ -117,68 +55,59 @@ class Article extends React.Component {
     e.stopPropagation();
 
     const { fullname, email, phone, note } = this.state;
-    const { router } = this.props;
 
-    const slug = router.query?.slug;
-    const link = window.location?.origin;
+    if (email) {
+      try {
+        const client = await getStandaloneApolloClient();
+        const link = window.location.href;
 
-    const success = await this.props.sendMessage(
-      slug,
-      link,
-      fullname,
-      "Miete",
-      email,
-      phone,
-      note
-    );
+        const res = await client.mutate({
+          mutation: SEND_MESSAGE,
+          variables: {
+            token: localStorage.getItem("token"),
+            title: this.props.data?.slug ? this.props.data?.slug : "",
+            link: link ? link : "",
+            name: fullname ? fullname : "",
+            type: "Miete",
+            email: email ? email : "",
+            phone: phone ? phone : "",
+            note: note ? note : "",
+          },
+        });
 
-    if (success) {
-      this.setState({
-        msgSent: true,
-      });
-    } else {
-      this.setState({
-        msgSent: false,
-      });
+        if (res) {
+          this.setState({
+            msgSent: true,
+          });
+        } else {
+          this.setState({
+            msgSent: false,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+
+        this.setState({
+          msgSent: false,
+        });
+      }
     }
   };
 
   render() {
-    const { pages, root } = this.state;
-    const { router } = this.props;
-
-    const slug = router.query?.slug;
-    const selectedPage = pages
-      ? pages.length > 0
-        ? pages.filter((p) => p.slug === slug)[0]
-          ? pages.filter((p) => p.slug === slug)[0]
-          : false
-        : null
-      : null;
-
-    let images = [];
-
-    if (selectedPage !== null && selectedPage !== false) {
-      selectedPage.gallery.forEach((image) => {
-        images = [
-          ...images,
-          {
-            src: process.env.NEXT_PUBLIC_BASEURL + image.galleryImage.url,
-          },
-        ];
-      });
-    }
+    const { data } = this.props;
+    const { page, images } = data;
 
     return (
       <div className="flyout">
-        {selectedPage !== null && selectedPage !== false && (
+        {page !== null && page !== false && (
           <NextSeo
-            title={selectedPage.title + " - TOP Immo"}
+            title={page.title + " - TOP Immo"}
             description="Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt."
-            canonical={"https://www.top-immo.org/item/" + selectedPage.slug}
+            canonical={"https://www.top-immo.org/item/" + page.slug}
             openGraph={{
-              url: "https://www.top-immo.org/item/" + selectedPage.slug,
-              title: selectedPage.title + " - TOP Immo",
+              url: "https://www.top-immo.org/item/" + page.slug,
+              title: page.title + " - TOP Immo",
               description:
                 "Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt.",
               site_name: "TopImmo",
@@ -189,7 +118,7 @@ class Article extends React.Component {
         <main>
           <article>
             <MDBContainer className="mt-5 pt-5">
-              {selectedPage !== null && selectedPage !== false ? (
+              {page !== null && page !== false ? (
                 <div className="mt-5">
                   <MDBRow>
                     <MDBCol>
@@ -202,18 +131,18 @@ class Article extends React.Component {
                             Projekt
                           </MDBBreadcrumbItem>
                           <MDBBreadcrumbItem active>
-                            {selectedPage.title}
+                            {page.title}
                           </MDBBreadcrumbItem>
                         </MDBBreadcrumb>
                         <MDBCarousel
                           activeItem={1}
-                          length={selectedPage.headers.length}
-                          showControls={selectedPage.headers.length > 1}
-                          showIndicators={selectedPage.headers.length > 1}
+                          length={page.headers.length}
+                          showControls={page.headers.length > 1}
+                          showIndicators={page.headers.length > 1}
                           className="z-depth-1"
                         >
                           <MDBCarouselInner>
-                            {selectedPage.headers.map((item, i) => {
+                            {page.headers.map((item, i) => {
                               return (
                                 <MDBCarouselItem itemId={i + 1}>
                                   <MDBView className="main-view">
@@ -240,25 +169,27 @@ class Article extends React.Component {
                           <MDBRow className="flex-center">
                             <MDBCol lg="12">
                               <MDBCardTitle className="h3 mt-3">
-                                {selectedPage.title}
+                                {page.title}
                               </MDBCardTitle>
                             </MDBCol>
-                            <MDBCol lg="12">
-                              <MDBLightbox
-                                md="12"
-                                className="justify-content-center groundplan"
-                                images={[
-                                  {
-                                    src:
-                                      process.env.NEXT_PUBLIC_BASEURL +
-                                      selectedPage.groundPlan[0].groundPlan.url,
-                                  },
-                                ]}
-                              />
-                            </MDBCol>
+                            {process.browser && (
+                              <MDBCol lg="12">
+                                <MDBLightbox
+                                  md="12"
+                                  className="justify-content-center groundplan"
+                                  images={[
+                                    {
+                                      src:
+                                        process.env.NEXT_PUBLIC_BASEURL +
+                                        page.groundPlan[0].groundPlan.url,
+                                    },
+                                  ]}
+                                />
+                              </MDBCol>
+                            )}
                           </MDBRow>
                           <hr className="mt-5" />
-                          {selectedPage.sections.map((section, s) => {
+                          {page.sections.map((section, s) => {
                             return (
                               <>
                                 {(() => {
@@ -289,11 +220,13 @@ class Article extends React.Component {
                               </>
                             );
                           })}
-                          <MDBLightbox
-                            md="4"
-                            images={images}
-                            className="mt-4"
-                          />
+                          {process.browser && (
+                            <MDBLightbox
+                              md="4"
+                              images={images}
+                              className="mt-4"
+                            />
+                          )}
                           <MDBRow className="flex-center">
                             <MDBCol lg="5">
                               <MDBCard className="text-left z-depth-0 my-4">
@@ -436,7 +369,7 @@ class Article extends React.Component {
                 </div>
               ) : (
                 <>
-                  {selectedPage === false ? (
+                  {page === false ? (
                     <div className="text-center">
                       <p className="lead">
                         Der gewünschte Artikel ist leider nicht verfügbar.
@@ -457,7 +390,7 @@ class Article extends React.Component {
           </article>
           <CookieModal saveCookie={this.saveCookie} />
         </main>
-        <Footer data={root} />
+        <Footer /*data={root}*/ />
       </div>
     );
   }
@@ -465,28 +398,58 @@ class Article extends React.Component {
 //#endregion
 
 //#region > Functions
-const mapStateToProps = (state) => ({
-  logged: state.auth.logged,
-  pages: state.page.flats,
-  root: state.page.root,
-  images: state.page.images,
-});
+export async function getStandaloneApolloClient() {
+  const { ApolloClient, InMemoryCache, HttpLink } = await import(
+    "@apollo/client"
+  );
 
-const mapDispatchToProps = {
-  tokenAuth,
-  refreshToken,
-  getPage,
-  getFlats,
-  getImages,
-  sendMessage,
+  return new ApolloClient({
+    link: new HttpLink({
+      uri: process.env.NEXT_PUBLIC_BASEURL,
+    }),
+    cache: new InMemoryCache(),
+  });
+}
+
+Item.getInitialProps = async ({ query }) => {
+  const client = await getStandaloneApolloClient();
+
+  const { data } = await client.query({
+    query: GET_EVERYTHING,
+  });
+
+  const { pages } = data;
+  const slug = query.slug;
+
+  const selectedPage = pages
+    ? pages.length > 0
+      ? pages.filter((p) => p.slug === slug)[0]
+        ? pages.filter((p) => p.slug === slug)[0]
+        : false
+      : null
+    : null;
+
+  let images = [];
+
+  if (selectedPage !== null && selectedPage !== false) {
+    selectedPage.gallery.forEach((image) => {
+      images = [
+        ...images,
+        {
+          src: process.env.NEXT_PUBLIC_BASEURL + image.galleryImage?.url,
+        },
+      ];
+    });
+  }
+
+  return {
+    data: { page: selectedPage, images, slug },
+  };
 };
 //#endregion
 
 //#region > Exports
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(Article));
+export default Item;
 //#endregion
 
 /**

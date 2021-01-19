@@ -40,7 +40,7 @@ import {
 
 //#region > Page
 class Home extends React.Component {
-  state = { page: undefined, images: undefined };
+  state = { name: "", email: "", phone: "", note: "" };
 
   componentDidUpdate = () => {
     const hash = window.location.hash;
@@ -61,36 +61,55 @@ class Home extends React.Component {
     e.stopPropagation();
 
     const { fullname, email, phone, note } = this.state;
-    const { router } = this.props;
 
-    const slug = router.query?.slug;
-    const link = window.location?.origin;
+    if (email) {
+      try {
+        const client = await getStandaloneApolloClient();
+        const link = window.location.href;
 
-    const success = await this.props.sendMessage(
-      "Landingpage",
-      "https://www.top-immo.org",
-      fullname,
-      "Miete",
-      email,
-      phone,
-      note
-    );
+        const res = await client.mutate({
+          mutation: SEND_MESSAGE,
+          variables: {
+            token: localStorage.getItem("token"),
+            title: "Anfrage auf Startseite",
+            link: link ? link : "",
+            name: fullname ? fullname : "",
+            type: "Startseite",
+            email: email ? email : "",
+            phone: phone ? phone : "",
+            note: note ? note : "",
+          },
+        });
 
-    if (success) {
-      this.setState({
-        msgSent: true,
-      });
-    } else {
-      this.setState({
-        msgSent: false,
-      });
+        if (res) {
+          this.setState({
+            msgSent: true,
+          });
+        } else {
+          this.setState({
+            msgSent: false,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+
+        this.setState({
+          msgSent: false,
+        });
+      }
     }
   };
 
   render() {
-    const { page, images } = this.state;
+    const { data } = this.props;
+    const page =
+      data &&
+      data.pages &&
+      data.pages.filter((p) => p.__typename === "HomeHomePage")[0];
 
-    console.log(this.props);
+    const images = [];
+
+    console.log(data, page);
 
     return (
       <div className="flyout">
@@ -343,15 +362,13 @@ export async function getStandaloneApolloClient() {
 Home.getInitialProps = async () => {
   const client = await getStandaloneApolloClient();
 
-  const res = await client.query({
+  const { data } = await client.query({
     query: PAGE_QUERY,
   });
 
-  console.log(res);
-
-  /*return {
+  return {
     data,
-  };*/
+  };
 };
 //#endregion
 

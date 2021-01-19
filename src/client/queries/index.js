@@ -259,8 +259,216 @@ export const SEND_MESSAGE = gql`
 `;
 
 export const GET_FLATS = gql`
-  query FlatPages($token: String) {
-    pages(token: $token) {
+  query FlatPages {
+    pages {
+      ... on ProjectsFlatPage {
+        __typename
+        slug
+        available
+        lead
+        price
+        title
+        headers {
+          ... on Projects_H_HeroBlock {
+            slideImage {
+              url
+            }
+          }
+        }
+        groundPlan {
+          ... on Projects_P_GroundPlanBlock {
+            groundPlan {
+              url
+            }
+          }
+        }
+        gallery {
+          ... on Projects_G_GalleryBlock {
+            galleryImage {
+              url
+            }
+          }
+        }
+        sections {
+          ... on Projects_S_ContentCenter {
+            contentCenterHead
+            contentCenterLead
+            contentCenterText
+          }
+          ... on Projects_S_ContentLeft {
+            contentLeftImg {
+              url
+            }
+            contentLeftHead
+            contentLeftLead
+            contentLeftText
+          }
+          ... on Projects_S_ContentRight {
+            contentRightImg {
+              url
+            }
+            contentRightHead
+            contentRightLead
+            contentRightText
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_EVERYTHING = gql`
+  query EveryPage {
+    pages {
+      ... on HomeHomePage {
+        about
+        privacy
+        telephone
+        email
+        zipCode
+        address
+        city
+        copyrightholder
+        sections {
+          ... on Home_S_ContentCenter {
+            color
+            contentCenterHead
+            contentCenterLead
+            contentCenterText
+          }
+          ... on Home_S_ContentRight {
+            color
+            contentRightImg {
+              url
+            }
+            contentRightHead
+            contentRightLead
+            contentRightText
+          }
+          ... on Home_S_ContentLeft {
+            color
+            contentLeftImg {
+              url
+            }
+            contentLeftHead
+            contentLeftLead
+            contentLeftText
+          }
+          ... on Home_S_FeatureBlock {
+            color
+            features
+          }
+          ... on Home_S_PartnersBlock {
+            color
+            partners
+          }
+          ... on Home_S_AboutBlock {
+            aboutImg {
+              url
+            }
+            aboutHead
+            aboutLead
+            aboutText
+          }
+        }
+        headers {
+          ... on Home_H_HeroBlock {
+            slideImage {
+              url
+            }
+            slideHead
+            slidePage {
+              __typename
+              ... on Page {
+                __typename
+                ... on ProjectsProjectsPage {
+                  __typename
+                  slug
+                }
+                ... on NewsNewsPage {
+                  __typename
+                  slug
+                }
+                ... on ProjectsFlatPage {
+                  __typename
+                  slug
+                }
+                ... on HomeHomePage {
+                  __typename
+                  slug
+                }
+              }
+            }
+          }
+        }
+      }
+      ... on ProjectsProjectsPage {
+        __typename
+        slug
+        title
+        priceMin
+        priceMax
+        buyAvailable
+        rentAvailable
+        coordinates
+        locationName
+        headers {
+          ... on Projects_H_HeroBlock {
+            slideImage {
+              url
+            }
+          }
+        }
+        sections {
+          ... on Projects_S_InfoBlock {
+            thumbnailImage {
+              url
+            }
+            infoText
+          }
+          ... on Projects_S_ContentCenter {
+            contentCenterHead
+            contentCenterLead
+            contentCenterText
+          }
+          ... on Projects_S_ContentLeft {
+            contentLeftImg {
+              url
+            }
+            contentLeftHead
+            contentLeftLead
+            contentLeftText
+          }
+          ... on Projects_S_ContentRight {
+            contentRightImg {
+              url
+            }
+            contentRightHead
+            contentRightLead
+            contentRightText
+          }
+        }
+        gallery {
+          ... on Projects_G_GalleryBlock {
+            galleryImage {
+              url
+            }
+          }
+        }
+        flats {
+          __typename
+          ... on Projects_F_FlatsBlock {
+            __typename
+            flat {
+              __typename
+              ... on ProjectsFlatPage {
+                __typename
+                slug
+              }
+            }
+          }
+        }
+      }
       ... on ProjectsFlatPage {
         __typename
         slug
