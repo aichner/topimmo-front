@@ -137,7 +137,6 @@ class MyApp extends App {
 //#region > Exports
 export default MyApp;
 //#endregion
-//#endregion
 
 /**
  * SPDX-License-Identifier: (EUPL-1.2)
