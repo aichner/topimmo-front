@@ -98,14 +98,14 @@ class Navbar extends React.Component {
                       to="about"
                       onClick={this.state.collapse ? this.onClick : undefined}
                     >
-                      Über mich
+                      Über uns
                     </MDBSmoothScroll>
                   ) : (
                     <Link
                       href="/#about"
                       onClick={this.state.collapse ? this.onClick : undefined}
                     >
-                      <a className="nav-link">Über mich</a>
+                      <a className="nav-link">Über uns</a>
                     </Link>
                   )}
                 </MDBNavItem>

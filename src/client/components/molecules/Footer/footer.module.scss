@@ -2,6 +2,9 @@
 
 // Footer
 footer.cloud-footer {
+  position: relative;
+  z-index: 100;
+
   .footer-body {
     background: $dark !important;
 

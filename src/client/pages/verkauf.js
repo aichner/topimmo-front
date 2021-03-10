@@ -2,19 +2,14 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-//> NextJS
-import Head from "next/head";
-import { withRouter } from "next/router";
 import Link from "next/link";
 //> SEO
 import { NextSeo } from "next-seo";
-//> Redux
-// Basic Redux provider
-import { connect } from "react-redux";
+//> Animations
+import Fade from "react-reveal/Fade";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
-  MDBJumbotron,
   MDBContainer,
   MDBRow,
   MDBCol,
@@ -25,27 +20,12 @@ import {
   MDBCardText,
   MDBSpinner,
   MDBBtn,
-  MDBCarousel,
-  MDBCarouselInner,
-  MDBCarouselItem,
-  MDBView,
-  MDBMask,
-  MDBLightbox,
-  MDBListGroup,
-  MDBListGroupItem,
   MDBBadge,
   MDBCard,
 } from "mdbreact";
 
-//> Redux
-// Actions
-import { tokenAuth, refreshToken } from "../redux/actions/authActions";
-import {
-  getProjectsPages,
-  getImages,
-  getFlats,
-  getPage,
-} from "../redux/actions/pageActions";
+//> Queries
+import { GET_EVERYTHING } from "../queries";
 //> Components
 //import { ScrollToTop } from "../components/atoms";
 import { Navbar, Footer, CookieModal } from "../components/molecules";
@@ -54,77 +34,9 @@ import { HeadSection, ContentBlock } from "../components/organisms/sections";
 
 //#region > Page
 class Verkauf extends React.Component {
-  state = { pages: undefined, images: undefined, flats: undefined };
-
-  componentDidMount = () => {
-    // Get tokens and page data
-    this.props.tokenAuth();
-    // Refresh token every 2 minutes (120000 ms)
-    this.refreshInterval = window.setInterval(this.props.refreshToken, 120000);
-
-    if (
-      this.props.logged &&
-      (!this.props.pages || !this.props.images || !this.props.flats)
-    ) {
-      // Get root page
-      this.props.getProjectsPages();
-      // Get all images
-      this.props.getImages();
-      // Get all pages
-      this.props.getFlats();
-      // Get page
-      this.props.getPage();
-    } else if (this.props.pages && this.props.images) {
-      this.setState({
-        pages: this.props.pages,
-        images: this.props.images,
-      });
-    }
-  };
-
-  componentDidUpdate = () => {
-    const { pages, images, flats } = this.state;
-
-    if (this.props.logged && !pages) {
-      // Get root page
-      this.props.getProjectsPages();
-    }
-
-    if (this.props.logged && !images) {
-      // Get all images
-      this.props.getImages();
-    }
-
-    if (this.props.logged && !flats) {
-      // Get all flats
-      this.props.getFlats();
-    }
-
-    // Set page state
-    if (!pages && this.props.pages && this.props.logged) {
-      this.setState({
-        pages: this.props.pages,
-      });
-    }
-
-    // Set all images as state
-    if (!images && this.props.images && this.props.logged) {
-      this.setState({
-        images: this.props.images,
-      });
-    }
-
-    // Set all flats as state
-    if (!flats && this.props.flats && this.props.logged) {
-      this.setState({
-        flats: this.props.flats,
-      });
-    }
-  };
-
   render() {
-    const { pages, flats } = this.state;
-    const { root } = this.props;
+    const { data } = this.props;
+    const { pages } = data;
 
     const selectedPages = pages
       ? pages.length > 0
@@ -133,6 +45,8 @@ class Verkauf extends React.Component {
           : false
         : null
       : null;
+
+    const flats = pages.filter((p) => p.__typename === "ProjectsFlatPage");
 
     return (
       <div className="flyout">
@@ -157,77 +71,97 @@ class Verkauf extends React.Component {
                   <MDBCardTitle className="indigo-text h3 m-4">
                     Verkauf
                   </MDBCardTitle>
-                  <MDBRow className="flex-center">
-                    {selectedPages && flats && selectedPages.length > 0 ? (
-                      <>
-                        {selectedPages.map((page, i) => {
-                          let dedicatedFlats = [];
+                  <Fade bottom cascade>
+                    <MDBRow className="flex-center">
+                      {selectedPages && flats && selectedPages.length > 0 ? (
+                        <>
+                          {selectedPages.map((page, i) => {
+                            let dedicatedFlats = [];
 
-                          page.flats.forEach((flat) => {
-                            flats.forEach((f) => {
-                              if (flat.flat.slug === f.slug) {
-                                dedicatedFlats = [...dedicatedFlats, f];
-                              }
+                            page.flats.forEach((flat) => {
+                              flats.forEach((f) => {
+                                if (flat.flat.slug === f.slug) {
+                                  dedicatedFlats = [...dedicatedFlats, f];
+                                }
+                              });
                             });
-                          });
 
-                          const max = Math.max.apply(
-                            Math,
-                            dedicatedFlats.map(function (o) {
-                              return o.price;
-                            })
-                          );
+                            const max = Math.max.apply(
+                              Math,
+                              dedicatedFlats.map(function (o) {
+                                return o.price;
+                              })
+                            );
 
-                          const min = Math.min.apply(
-                            Math,
-                            dedicatedFlats.map(function (o) {
-                              return o.price;
-                            })
-                          );
+                            const min = Math.min.apply(
+                              Math,
+                              dedicatedFlats.map(function (o) {
+                                return o.price;
+                              })
+                            );
 
-                          const available =
-                            dedicatedFlats.filter((flat) => flat.available)
-                              .length > 0;
+                            const available =
+                              dedicatedFlats.filter((flat) => flat.available)
+                                .length > 0;
 
-                          return (
-                            <>
-                              <MDBCol lg="4" className="border rounded p-0">
-                                <Link href={"/project/" + page.slug}>
-                                  <MDBCard className="z-depth-0 p-0 object-view">
-                                    <MDBCardImage
-                                      src={
-                                        process.env.NEXT_PUBLIC_BASEURL +
-                                        page.headers[0].slideImage.url
-                                      }
-                                      className="img-fluid"
-                                    />
-                                    {available ? (
-                                      <MDBBadge color="success">
-                                        Verfügbar
-                                      </MDBBadge>
-                                    ) : (
-                                      <MDBBadge color="danger">Belegt</MDBBadge>
-                                    )}
-
-                                    <MDBCardBody>
-                                      <p className="lead">{page.title}</p>
-                                      <p className="font-weight-bold">
-                                        {page.flats.length} Objekte
-                                      </p>
-                                      <MDBCardText className="mt-3">
-                                        <MDBBadge color="blue">
-                                          {`€ ${min}`} - {`€ ${max}`}
+                            return (
+                              <>
+                                <MDBCol lg="4" className="border rounded p-0">
+                                  <Link href={"/project/" + page.slug}>
+                                    <MDBCard className="z-depth-0 p-0 object-view">
+                                      <MDBCardImage
+                                        src={
+                                          process.env.NEXT_PUBLIC_MEDIAURL +
+                                          page.headers[0].slideImage.url
+                                        }
+                                        className="img-fluid"
+                                      />
+                                      {available ? (
+                                        <MDBBadge color="success">
+                                          Verfügbar
                                         </MDBBadge>
-                                      </MDBCardText>
-                                    </MDBCardBody>
-                                  </MDBCard>
-                                </Link>
-                              </MDBCol>
-                            </>
-                          );
-                        })}
-                      </>
-                    ) : (
+                                      ) : (
+                                        <MDBBadge color="danger">
+                                          Belegt
+                                        </MDBBadge>
+                                      )}
+
+                                      <MDBCardBody>
+                                        <p className="lead">{page.title}</p>
+                                        <p className="font-weight-bold">
+                                          {page.flats.length} Objekte
+                                        </p>
+                                        <MDBCardText className="mt-3">
+                                          <MDBBadge color="blue">
+                                            {`€ ${min}`} - {`€ ${max}`}
+                                          </MDBBadge>
+                                        </MDBCardText>
+                                      </MDBCardBody>
+                                    </MDBCard>
+                                  </Link>
+                                </MDBCol>
+                              </>
+                            );
+                          })}
+                        </>
+                      ) : (
+                        <div className="text-center white rounded p-3">
+                          <p className="lead">
+                            Es stehen derzeit leider keine Objekte zum Verkauf.
+                          </p>
+                          <MDBBtn color="blue" href="/">
+                            <MDBIcon icon="angle-left" />
+                            Zurück
+                          </MDBBtn>
+                        </div>
+                      )}
+                    </MDBRow>
+                  </Fade>
+                </div>
+              ) : (
+                <>
+                  <Fade bottom cascade>
+                    {selectedPages === false ? (
                       <div className="text-center white rounded p-3">
                         <p className="lead">
                           Es stehen derzeit leider keine Objekte zum Verkauf.
@@ -237,33 +171,19 @@ class Verkauf extends React.Component {
                           Zurück
                         </MDBBtn>
                       </div>
+                    ) : (
+                      <div className="text-center">
+                        <MDBSpinner blue />
+                      </div>
                     )}
-                  </MDBRow>
-                </div>
-              ) : (
-                <>
-                  {selectedPages === false ? (
-                    <div className="text-center white rounded p-3">
-                      <p className="lead">
-                        Es stehen derzeit leider keine Objekte zum Verkauf.
-                      </p>
-                      <MDBBtn color="blue" href="/">
-                        <MDBIcon icon="angle-left" />
-                        Zurück
-                      </MDBBtn>
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <MDBSpinner blue />
-                    </div>
-                  )}
+                  </Fade>
                 </>
               )}
             </MDBContainer>
           </article>
           <CookieModal saveCookie={this.saveCookie} />
         </main>
-        <Footer data={root ? root[0] : null} />
+        <Footer /*data={root ? root[0] : null}*/ />
       </div>
     );
   }
@@ -271,29 +191,34 @@ class Verkauf extends React.Component {
 //#endregion
 
 //#region > Functions
-const mapStateToProps = (state) => ({
-  logged: state.auth.logged,
-  pages: state.page.projects,
-  flats: state.page.flats,
-  root: state.page.root,
-  images: state.page.images,
-});
+export async function getStandaloneApolloClient() {
+  const { ApolloClient, InMemoryCache, HttpLink } = await import(
+    "@apollo/client"
+  );
 
-const mapDispatchToProps = {
-  tokenAuth,
-  refreshToken,
-  getProjectsPages,
-  getFlats,
-  getPage,
-  getImages,
+  return new ApolloClient({
+    link: new HttpLink({
+      uri: process.env.NEXT_PUBLIC_BASEURL,
+    }),
+    cache: new InMemoryCache(),
+  });
+}
+
+Verkauf.getInitialProps = async () => {
+  const client = await getStandaloneApolloClient();
+
+  const { data } = await client.query({
+    query: GET_EVERYTHING,
+  });
+
+  return {
+    data,
+  };
 };
 //#endregion
 
 //#region > Exports
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(Verkauf));
+export default Verkauf;
 //#endregion
 
 /**

@@ -33,7 +33,7 @@ class PartnerSection extends React.Component {
         <MDBContainer className="text-center">
           <Fade bottom>
             <MDBRow className="flex-center">
-              {data?.partners &&
+              {data?.partners && 
                 data.partners.map((partner, p) => {
                   const partnerImg = this.mapImage(partner.value.partner_img);
 
@@ -42,8 +42,8 @@ class PartnerSection extends React.Component {
                       <img
                         src={
                           partnerImg[0]
-                            ? process.env.NEXT_PUBLIC_BASEURL +
-                              partnerImg[0].url
+                            ? process.env.NEXT_PUBLIC_MEDIAURL +
+                              partnerImg[0]?.url
                             : undefined
                         }
                         alt=""

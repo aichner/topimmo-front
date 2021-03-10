@@ -27,10 +27,10 @@ class HeadSection extends React.Component {
             </p>
           )}
           {data.contentCenterText && (
-            <p
+            <div
               dangerouslySetInnerHTML={{ __html: data.contentCenterText }}
               className="mb-0"
-            ></p>
+            ></div>
           )}
         </MDBContainer>
       </section>

@@ -2,15 +2,9 @@
 //> React
 // Contains all the functionality necessary to define React components
 import React from "react";
-//> NextJS
-import Head from "next/head";
-import { withRouter } from "next/router";
 import Link from "next/link";
 //> SEO
 import { NextSeo } from "next-seo";
-//> Redux
-// Basic Redux provider
-import { connect } from "react-redux";
 //> MDB
 // "Material Design for Bootstrap" is a great UI design framework
 import {
@@ -37,15 +31,8 @@ import {
   MDBCard,
 } from "mdbreact";
 
-//> Redux
-// Actions
-import { tokenAuth, refreshToken } from "../../redux/actions/authActions";
-import {
-  getProjectsPages,
-  getImages,
-  getFlats,
-  getPage,
-} from "../../redux/actions/pageActions";
+//> Queries
+import { GET_EVERYTHING } from "../../queries";
 //> Components
 //import { ScrollToTop } from "../components/atoms";
 import { Navbar, Footer, CookieModal } from "../../components/molecules";
@@ -54,110 +41,20 @@ import { HeadSection, ContentBlock } from "../../components/organisms/sections";
 
 //#region > Page
 class Product extends React.Component {
-  state = { pages: undefined, images: undefined, flats: undefined };
-
-  componentDidMount = () => {
-    // Get tokens and page data
-    this.props.tokenAuth();
-    // Refresh token every 2 minutes (120000 ms)
-    this.refreshInterval = window.setInterval(this.props.refreshToken, 120000);
-
-    if (
-      this.props.logged &&
-      (!this.props.pages || !this.props.images || !this.props.flats)
-    ) {
-      // Get root page
-      this.props.getProjectsPages();
-      // Get all images
-      this.props.getImages();
-      // Get all pages
-      this.props.getFlats();
-      // Get page
-      this.props.getPage();
-    } else if (this.props.pages && this.props.images) {
-      this.setState({
-        pages: this.props.pages,
-        images: this.props.images,
-      });
-    }
-  };
-
-  componentDidUpdate = () => {
-    const { pages, images, flats } = this.state;
-
-    if (this.props.logged && !pages) {
-      // Get root page
-      this.props.getProjectsPages();
-    }
-
-    if (this.props.logged && !images) {
-      // Get all images
-      this.props.getImages();
-    }
-
-    if (this.props.logged && !flats) {
-      // Get all flats
-      this.props.getFlats();
-    }
-
-    // Set page state
-    if (!pages && this.props.pages && this.props.logged) {
-      this.setState({
-        pages: this.props.pages,
-      });
-    }
-
-    // Set all images as state
-    if (!images && this.props.images && this.props.logged) {
-      this.setState({
-        images: this.props.images,
-      });
-    }
-
-    // Set all flats as state
-    if (!flats && this.props.flats && this.props.logged) {
-      this.setState({
-        flats: this.props.flats,
-      });
-    }
-  };
-
   render() {
-    const { pages, flats } = this.state;
-    const { router, root } = this.props;
-
-    const slug = router.query?.slug;
-    const selectedPage = pages
-      ? pages.length > 0
-        ? pages.filter((p) => p.slug === slug)[0]
-          ? pages.filter((p) => p.slug === slug)[0]
-          : false
-        : null
-      : null;
-
-    let images = [];
-
-    if (selectedPage !== null && selectedPage !== false) {
-      selectedPage.gallery.forEach((image) => {
-        images = [
-          ...images,
-          {
-            src: process.env.NEXT_PUBLIC_BASEURL + image.galleryImage.url,
-          },
-        ];
-      });
-    }
+    const { data } = this.props;
+    const { page, images, flats } = data;
 
     return (
       <div className="flyout">
-        {selectedPage !== null && selectedPage !== false && (
+        {page !== null && page !== false && (
           <NextSeo
-            title={selectedPage.title + " - TOP Immo"}
+            title={page.title + " - TOP Immo"}
             description="Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt."
-            canonical={"https://www.top-immo.org/project/" + selectedPage.slug}
+            canonical={"https://www.top-immo.org/project/" + page.slug}
             openGraph={{
-              url: "https://www.top-immo.org/project/" + selectedPage.slug,
-              title: selectedPage.title + " - TOP Immo",
+              url: "https://www.top-immo.org/project/" + page.slug,
+              title: page.title + " - TOP Immo",
               description:
                 "Leistbar, top Qualität, top Lage. Das sind die Ansprüche der TOP Immo W.M. Treuhand GmbH als Bauträger am österreichischen Immobilienmarkt.",
               site_name: "TopImmo",
@@ -168,20 +65,20 @@ class Product extends React.Component {
         <main id="project">
           <article>
             <MDBContainer className="mt-5 pt-5">
-              {selectedPage !== null && selectedPage !== false ? (
+              {page !== null && page !== false ? (
                 <div className="mt-5">
                   <MDBRow>
                     <MDBCol>
                       <MDBJumbotron className="text-center">
                         <MDBCarousel
                           activeItem={1}
-                          length={selectedPage.headers.length}
-                          showControls={selectedPage.headers.length > 1}
-                          showIndicators={selectedPage.headers.length > 1}
+                          length={page.headers.length}
+                          showControls={page.headers.length > 1}
+                          showIndicators={page.headers.length > 1}
                           className="z-depth-1"
                         >
                           <MDBCarouselInner>
-                            {selectedPage.headers.map((item, i) => {
+                            {page.headers.map((item, i) => {
                               return (
                                 <MDBCarouselItem itemId={i + 1}>
                                   <MDBView className="main-view">
@@ -189,7 +86,7 @@ class Product extends React.Component {
                                       className="w-100 h-100 img-banner"
                                       style={{
                                         backgroundImage: `url("${
-                                          process.env.NEXT_PUBLIC_BASEURL +
+                                          process.env.NEXT_PUBLIC_MEDIAURL +
                                           item.slideImage.url
                                         }")`,
                                       }}
@@ -198,7 +95,7 @@ class Product extends React.Component {
                                       overlay="black-slight"
                                       className="text-white text-center d-sm-block d-none pt-5"
                                     >
-                                      <h1>{selectedPage.title}</h1>
+                                      <h1>{page.title}</h1>
                                     </MDBMask>
                                   </MDBView>
                                 </MDBCarouselItem>
@@ -207,10 +104,8 @@ class Product extends React.Component {
                           </MDBCarouselInner>
                         </MDBCarousel>
                         <MDBCardBody>
-                          <h1 className="d-sm-none d-block">
-                            {selectedPage.title}
-                          </h1>
-                          {selectedPage.sections.map((section, s) => {
+                          <h1 className="d-sm-none d-block">{page.title}</h1>
+                          {page.sections.map((section, s) => {
                             return (
                               <>
                                 {(() => {
@@ -242,8 +137,8 @@ class Product extends React.Component {
                             );
                           })}
                           <MDBRow className="flex-center flat-list">
-                            {selectedPage.flats &&
-                              selectedPage.flats.map((flat, i) => {
+                            {page.flats &&
+                              page.flats.map((flat, i) => {
                                 const flatDetails = flats
                                   ? flats.filter(
                                       (f) => f.slug === flat.flat.slug
@@ -264,7 +159,7 @@ class Product extends React.Component {
                                             <MDBCardImage
                                               src={
                                                 process.env
-                                                  .NEXT_PUBLIC_BASEURL +
+                                                  .NEXT_PUBLIC_MEDIAURL +
                                                 flatDetails.groundPlan[0]
                                                   .groundPlan.url
                                               }
@@ -298,7 +193,9 @@ class Product extends React.Component {
                                 );
                               })}
                           </MDBRow>
-                          <MDBLightbox md="4" images={images} />
+                          {process.browser && (
+                            <MDBLightbox md="4" images={images} />
+                          )}
                         </MDBCardBody>
                       </MDBJumbotron>
                     </MDBCol>
@@ -306,7 +203,7 @@ class Product extends React.Component {
                 </div>
               ) : (
                 <>
-                  {selectedPage === false ? (
+                  {page === false ? (
                     <div className="text-center">
                       <p className="lead">
                         Das gewünschte Projekt ist leider nicht verfügbar.
@@ -327,7 +224,7 @@ class Product extends React.Component {
           </article>
           <CookieModal saveCookie={this.saveCookie} />
         </main>
-        <Footer data={root ? root[0] : null} />
+        <Footer /*data={root ? root[0] : null}*/ />
       </div>
     );
   }
@@ -335,29 +232,60 @@ class Product extends React.Component {
 //#endregion
 
 //#region > Functions
-const mapStateToProps = (state) => ({
-  logged: state.auth.logged,
-  pages: state.page.projects,
-  flats: state.page.flats,
-  root: state.page.root,
-  images: state.page.images,
-});
+export async function getStandaloneApolloClient() {
+  const { ApolloClient, InMemoryCache, HttpLink } = await import(
+    "@apollo/client"
+  );
 
-const mapDispatchToProps = {
-  tokenAuth,
-  refreshToken,
-  getProjectsPages,
-  getFlats,
-  getPage,
-  getImages,
+  return new ApolloClient({
+    link: new HttpLink({
+      uri: process.env.NEXT_PUBLIC_BASEURL,
+    }),
+    cache: new InMemoryCache(),
+  });
+}
+
+Product.getInitialProps = async ({ query }) => {
+  const client = await getStandaloneApolloClient();
+
+  const { data } = await client.query({
+    query: GET_EVERYTHING,
+  });
+
+  const { pages } = data;
+  const slug = query.slug;
+
+  const selectedPage = pages
+    ? pages.length > 0
+      ? pages.filter((p) => p.slug === slug)[0]
+        ? pages.filter((p) => p.slug === slug)[0]
+        : false
+      : null
+    : null;
+
+  let images = [];
+
+  if (selectedPage !== null && selectedPage !== false) {
+    selectedPage.gallery.forEach((image) => {
+      images = [
+        ...images,
+        {
+          src: process.env.NEXT_PUBLIC_MEDIAURL + image.galleryImage?.url,
+        },
+      ];
+    });
+  }
+
+  const flats = pages.filter((p) => p.__typename === "ProjectsFlatPage");
+
+  return {
+    data: { page: selectedPage, images, flats },
+  };
 };
 //#endregion
 
 //#region > Exports
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(Product));
+export default Product;
 //#endregion
 
 /**
