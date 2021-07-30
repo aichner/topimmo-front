@@ -227,7 +227,7 @@ class Home extends React.Component {
                                     label="E-Mail"
                                     iconClass="grey-text"
                                     type="email"
-                                    id="form-name"
+                                    id="form-email"
                                     name="email"
                                     onChange={(e) =>
                                       this.setState({
@@ -245,7 +245,7 @@ class Home extends React.Component {
                                     label="Telefonnummer (optional)"
                                     iconClass="grey-text"
                                     type="text"
-                                    id="form-name"
+                                    id="form-phone"
                                     name="phone"
                                     onChange={(e) =>
                                       this.setState({
